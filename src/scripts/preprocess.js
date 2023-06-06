@@ -105,6 +105,21 @@ export function processDateTime (data) {
 }
 
 /**
+ * Filters the data by only keeping entries within the dates.THIS FUNCTION ASSUMES processDateTime was applied.
+ * @param {object[]} data The data
+ * @param {string} startDate The start date
+ * @param {string} endDate The end date
+ * @returns {object[]} The data within the dates
+ */
+export function filterDataByDates (data, startDate, endDate) {
+  const filteredData = data.filter(obj => {
+    const date = obj.date // Assuming the date column is in the format "yyyy-mm-dd"
+    return date >= startDate && date <= endDate
+  })
+
+  return filteredData
+}
+/**
  * Adds time block dpending on time of publication
  *
  * @param {object[]} data The data to analyze
