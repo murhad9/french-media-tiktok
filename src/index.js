@@ -26,7 +26,7 @@ import * as d3Chromatic from 'd3-scale-chromatic'
   const yScale = d3.scaleBand().padding(0.2)
   const colorScale = d3.scaleSequential(d3Chromatic.interpolateYlGnBu)
 
-  d3.csv('./arbres.csv', d3.autoType).then(function (data) {
+  d3.csv('./data_source.csv', d3.autoType).then(function (data) {
     const neighborhoodNames = preproc.getNeighborhoodNames(data)
     data = preproc.filterYears(data, 2010, 2020)
 
