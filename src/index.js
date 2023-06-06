@@ -9,8 +9,8 @@ import * as hover from './scripts/hover.js'
 import * as d3Chromatic from 'd3-scale-chromatic'
 
 /**
- * @file This file is the entry-point for the the code for TP3 for the course INF8808.
- * @author Olivia Gélinas
+ * @file This file is the entry-point for the the code for the data viz project of team 10
+ * @author Team 10
  * @version v1.0.0
  */
 
@@ -29,10 +29,11 @@ import * as d3Chromatic from 'd3-scale-chromatic'
     // These are just examples
     data = preproc.addTimeBlocks(preproc.processDateTime(data))
     data = preproc.aggregateColumns(data, ['vues', 'likes', 'partages', 'commentaires'], ['dayOfWeek', 'timeBlock'])
-    data = preproc.sortByColumns(data, ['vues', 'likes', 'partages', 'commentaires'], true)
+    data = preproc.sortByColumns(data, ['averageVues', 'vues', 'likes', 'partages', 'commentaires'], true)
     console.log(data)
-
-    viz.setColorScaleDomain(colorScale, data)
+    data = preproc.normalizeColumn(data, 'vuesAverage')
+    console.log(data)
+    viz.setColorScaleDomain(colorScale, data, 'vuesAverageNormalized')
 
     legend.initGradient(colorScale)
     legend.initLegendBar()

@@ -3,10 +3,11 @@
  * Sets the domain of the color scale
  *
  * @param {*} colorScale The color scale used in the heatmap
+ * @param {string} targetColumn The column to use as domain
  * @param {object[]} data The data to be displayed
  */
-export function setColorScaleDomain (colorScale, data) {
-  const averageViews = data.map(entry => entry.vuesAverage)
+export function setColorScaleDomain (colorScale, data, targetColumn) {
+  const averageViews = data.map(entry => entry[targetColumn])
   colorScale.domain(d3.extent(averageViews))
 }
 
@@ -91,14 +92,15 @@ export function rotateYTicks () {
  *
  * @param {*} xScale The x scale used to position the rectangles
  * @param {*} yScale The y scale used to position the rectangles
+ * @param {string} targetColumn The column to use as domain
  * @param {*} colorScale The color scale used to set the rectangles' colors
  */
-export function updateRects (xScale, yScale, colorScale) {
+export function updateRects (xScale, yScale, colorScale, targetColumn) {
   // TODO : Set position, size and fill of rectangles according to bound data
   d3.selectAll('#graph-g .cell')
     .attr('transform', d => `translate(${xScale(d.dayOfWeek)},${yScale(d.timeBlock)})`)
     .select('rect')
     .attr('width', xScale.bandwidth())
     .attr('height', yScale.bandwidth())
-    .attr('fill', d => colorScale(d.vuesAverage))
+    .attr('fill', d => colorScale(d[targetColumn]))
 }

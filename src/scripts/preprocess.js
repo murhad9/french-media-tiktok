@@ -154,8 +154,18 @@ export function getUniqueTimeBlocks (data) {
 }
 
 /**
- * Computes average of a column after performing a groupby
+ * Normalizes a column
  *
  * @param {object[]} data The data to analyze
- * @returns {string[]} The unique timeBlocks in the data
+ * @param {string} targetColumn The column to normalize
+ * @returns {object[]} The column with the normalized data
  */
+export function normalizeColumn (data, targetColumn) {
+  const min = Math.min(...data.map(obj => obj[targetColumn]))
+  const max = Math.max(...data.map(obj => obj[targetColumn]))
+  data.forEach(obj => {
+    obj[`${targetColumn}Normalized`] = (obj[targetColumn] - min) / (max - min)
+  })
+
+  return data
+}
