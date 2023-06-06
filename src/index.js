@@ -2,10 +2,9 @@
 
 import * as helper from './scripts/helper.js'
 import * as preproc from './scripts/preprocess.js'
-import * as viz from './scripts/viz.js'
+import * as viz from './scripts/heatmap_viz.js'
 import * as legend from './scripts/legend.js'
 import * as hover from './scripts/hover.js'
-import * as util from './scripts/util.js'
 
 import * as d3Chromatic from 'd3-scale-chromatic'
 
@@ -16,7 +15,6 @@ import * as d3Chromatic from 'd3-scale-chromatic'
  */
 
 (function (d3) {
-  /*
   let bounds
   let svgSize
   let graphSize
@@ -25,17 +23,15 @@ import * as d3Chromatic from 'd3-scale-chromatic'
   // TODO: Use this file for welcom vizs
   const xScale = d3.scaleBand().padding(0.05)
   const yScale = d3.scaleBand().padding(0.2)
-  const colorScale = d3.scaleSequential(d3Chromatic.interpolateYlGnBu)
-  */
+  const colorScale = d3.scaleSequential(d3Chromatic.interpolateBuPu)
+
   d3.csv('./data_source.csv', d3.autoType).then(function (data) {
     // These are just examples
     data = preproc.addTimeBlocks(preproc.processDateTime(data))
-    console.log(data)
     data = preproc.aggregateColumns(data, ['vues', 'likes', 'partages', 'commentaires'], ['dayOfWeek', 'timeBlock'])
-    console.log(data)
     data = preproc.sortByColumns(data, ['vues', 'likes', 'partages', 'commentaires'], true)
     console.log(data)
-    /*
+
     viz.setColorScaleDomain(colorScale, data)
 
     legend.initGradient(colorScale)
@@ -49,10 +45,10 @@ import * as d3Chromatic from 'd3-scale-chromatic'
 
     setSizing()
     build()
-    */
+
     /**
      *   This function handles the graph's sizing.
-     *//*
+     */
     function setSizing () {
       bounds = d3.select('.graph').node().getBoundingClientRect()
 
@@ -68,13 +64,13 @@ import * as d3Chromatic from 'd3-scale-chromatic'
 
       helper.setCanvasSize(svgSize.width, svgSize.height)
     }
-    */
+
     /**
      *   This function builds the graph.
-     */ /*
+     */
     function build () {
-      viz.updateXScale(xScale, data, graphSize.width, util.range)
-      viz.updateYScale(yScale, neighborhoodNames, graphSize.height)
+      viz.updateXScale(xScale, graphSize.width)
+      viz.updateYScale(yScale, preproc.getUniqueTimeBlocks(data), graphSize.height)
 
       viz.drawXAxis(xScale)
       viz.drawYAxis(yScale, graphSize.width)
@@ -92,6 +88,5 @@ import * as d3Chromatic from 'd3-scale-chromatic'
       setSizing()
       build()
     })
-    */
   })
 })(d3)

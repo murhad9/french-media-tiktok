@@ -36,7 +36,10 @@ export function aggregateColumns (data, targets, groupBy) {
       count: values.length
     }
     targets.forEach((target) => {
-      aggregation[target] = d3.sum(values, (d) => d[target])
+      const sum = d3.sum(values, (d) => d[target])
+      const average = sum / values.length
+      aggregation[target] = sum
+      aggregation[`${target}Average`] = Math.floor(average)
     })
     groupBy.forEach((column, index) => {
       aggregation[column] = key.split('-')[index]
@@ -132,3 +135,27 @@ export function addTimeBlocks (data, timeBlockLength = 2) {
 
   return processedData
 }
+
+/**
+ * Returns a list of unique time blocks (useful to get the domain)
+ *
+ * @param {object[]} data The data to analyze
+ * @returns {string[]} The unique timeBlocks in the data
+ */
+export function getUniqueTimeBlocks (data) {
+  const uniqueTimeBlocks = new Set()
+
+  data.forEach(item => {
+    const timeBlock = item.timeBlock
+    uniqueTimeBlocks.add(timeBlock)
+  })
+
+  return Array.from(uniqueTimeBlocks)
+}
+
+/**
+ * Computes average of a column after performing a groupby
+ *
+ * @param {object[]} data The data to analyze
+ * @returns {string[]} The unique timeBlocks in the data
+ */

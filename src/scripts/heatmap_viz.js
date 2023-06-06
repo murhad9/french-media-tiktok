@@ -6,9 +6,8 @@
  * @param {object[]} data The data to be displayed
  */
 export function setColorScaleDomain (colorScale, data) {
-  // TODO : Set domain of color scale
-  const counts = data.map(entry => entry.Counts)
-  colorScale.domain(d3.extent(counts))
+  const averageViews = data.map(entry => entry.vuesAverage)
+  colorScale.domain(d3.extent(averageViews))
 }
 
 /**
@@ -31,27 +30,23 @@ export function appendRects (data) {
  * Updates the domain and range of the scale for the x axis
  *
  * @param {*} xScale The scale for the x axis
- * @param {object[]} data The data to be used
  * @param {number} width The width of the diagram
- * @param {Function} range A utilitary funtion that could be useful to generate a list of numbers in a range
  */
-export function updateXScale (xScale, data, width, range) {
-  // TODO : Update X scale
-  const yearDomain = range(d3.min(data, entry => entry.Plantation_Year), d3.max(data, entry => entry.Plantation_Year))
-  xScale.domain(yearDomain).range([0, width])
+export function updateXScale (xScale, width) {
+  const daysOfWeekDomain = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  xScale.domain(daysOfWeekDomain).range([0, width])
 }
 
 /**
  * Updates the domain and range of the scale for the y axis
  *
  * @param {*} yScale The scale for the y axis
- * @param {string[]} neighborhoodNames The names of the neighborhoods
+ * @param {object[]} timeBlocks The names of the neighborhoods
  * @param {number} height The height of the diagram
  */
-export function updateYScale (yScale, neighborhoodNames, height) {
-  // TODO : Update Y scale
-  const sortedNeighborhoods = neighborhoodNames.sort()
-  yScale.domain(sortedNeighborhoods).range([0, height])
+export function updateYScale (yScale, timeBlocks, height) {
+  const sortedTimeBlocks = timeBlocks.sort()
+  yScale.domain(sortedTimeBlocks).range([0, height])
 }
 
 /**
@@ -101,9 +96,9 @@ export function rotateYTicks () {
 export function updateRects (xScale, yScale, colorScale) {
   // TODO : Set position, size and fill of rectangles according to bound data
   d3.selectAll('#graph-g .cell')
-    .attr('transform', d => `translate(${xScale(d.Plantation_Year)},${yScale(d.Arrond_Nom)})`)
+    .attr('transform', d => `translate(${xScale(d.dayOfWeek)},${yScale(d.timeBlock)})`)
     .select('rect')
     .attr('width', xScale.bandwidth())
     .attr('height', yScale.bandwidth())
-    .attr('fill', d => colorScale(d.Counts))
+    .attr('fill', d => colorScale(d.vuesAverage))
 }
