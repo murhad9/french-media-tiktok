@@ -16,23 +16,24 @@ import * as d3Chromatic from 'd3-scale-chromatic'
  */
 
 (function (d3) {
+  /*
   let bounds
   let svgSize
   let graphSize
 
   const margin = { top: 35, right: 200, bottom: 35, left: 200 }
-
+  // TODO: Use this file for welcom vizs
   const xScale = d3.scaleBand().padding(0.05)
   const yScale = d3.scaleBand().padding(0.2)
   const colorScale = d3.scaleSequential(d3Chromatic.interpolateYlGnBu)
-
+  */
   d3.csv('./data_source.csv', d3.autoType).then(function (data) {
-    const neighborhoodNames = preproc.getNeighborhoodNames(data)
-    data = preproc.filterYears(data, 2010, 2020)
-
-    data = preproc.summarizeYearlyCounts(data)
-    data = preproc.fillMissingData(data, neighborhoodNames, 2010, 2020, util.range)
-
+    // These are just examples
+    data = preproc.aggregateColumns(data, ['vues', 'likes', 'partages', 'commentaires'], ['média'])
+    console.log(data)
+    data = preproc.sortByColumns(data, ['vues', 'likes', 'partages', 'commentaires'], true)
+    console.log(data)
+    /*
     viz.setColorScaleDomain(colorScale, data)
 
     legend.initGradient(colorScale)
@@ -46,10 +47,10 @@ import * as d3Chromatic from 'd3-scale-chromatic'
 
     setSizing()
     build()
-
+    */
     /**
      *   This function handles the graph's sizing.
-     */
+     *//*
     function setSizing () {
       bounds = d3.select('.graph').node().getBoundingClientRect()
 
@@ -65,10 +66,10 @@ import * as d3Chromatic from 'd3-scale-chromatic'
 
       helper.setCanvasSize(svgSize.width, svgSize.height)
     }
-
+    */
     /**
      *   This function builds the graph.
-     */
+     */ /*
     function build () {
       viz.updateXScale(xScale, data, graphSize.width, util.range)
       viz.updateYScale(yScale, neighborhoodNames, graphSize.height)
@@ -89,5 +90,6 @@ import * as d3Chromatic from 'd3-scale-chromatic'
       setSizing()
       build()
     })
+    */
   })
 })(d3)
