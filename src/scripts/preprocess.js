@@ -32,7 +32,8 @@ export function aggregateColumns (data, targets, groupBy) {
 
   const aggregatedData = Array.from(groupedData, ([key, values]) => {
     const aggregation = {
-      ...values[0]
+      ...values[0],
+      count: values.length
     }
     targets.forEach((target) => {
       aggregation[target] = d3.sum(values, (d) => d[target])
@@ -72,4 +73,62 @@ export function sortByColumns (data, sortBy, isDescending = false) {
   })
 
   return sortedData
+}
+
+/**
+ * Splits date into date and time and adds day of week
+ *
+ * @param {object[]} data The data to analyze
+ * @returns {object[]} The data with the processed datetime and day of week
+ */
+export function processDateTime (data) {
+  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+  const processedData = data.map(item => {
+    const dateTimeParts = item.date.split(' ')
+    const date = dateTimeParts[0]
+    const time = dateTimeParts[1]
+    const dayOfWeekIndex = new Date(date).getDay()
+    const dayOfWeek = daysOfWeek[dayOfWeekIndex]
+
+    return {
+      ...item,
+      date: date,
+      time: time,
+      dayOfWeek: dayOfWeek
+    }
+  })
+  return processedData
+}
+
+/**
+ * Adds time block dpending on time of publication
+ *
+ * @param {object[]} data The data to analyze
+ * @param {number} timeBlockLength the length of the time block. Default is 2
+ * @returns {object[]} The data with the time block clomun added
+ */
+export function addTimeBlocks (data, timeBlockLength = 2) {
+  const processedData = data.map(item => {
+    const timeParts = item.time.split(':')
+    const hour = Number(timeParts[0])
+    const minute = Number(timeParts[1])
+
+    // Calculate the total minutes from 00:00
+    const totalMinutes = hour * 60 + minute
+
+    // Calculate the time block
+    const timeBlockStart = Math.floor(totalMinutes / (timeBlockLength * 60)) * (timeBlockLength * 60)
+    const timeBlockEnd = timeBlockStart + timeBlockLength * 60
+
+    // Format the time block as HH:MM - HH:MM
+    const timeBlock = `${String(Math.floor(timeBlockStart / 60)).padStart(2, '0')}:${String(timeBlockStart % 60).padStart(2, '0')} to ${String(Math.floor(timeBlockEnd / 60)).padStart(2, '0')}:${String(timeBlockEnd % 60).padStart(2, '0')}`
+
+    return {
+      ...item,
+      timeBlock: timeBlock
+    }
+  })
+
+  return processedData
 }

@@ -29,7 +29,9 @@ import * as d3Chromatic from 'd3-scale-chromatic'
   */
   d3.csv('./data_source.csv', d3.autoType).then(function (data) {
     // These are just examples
-    data = preproc.aggregateColumns(data, ['vues', 'likes', 'partages', 'commentaires'], ['média'])
+    data = preproc.addTimeBlocks(preproc.processDateTime(data))
+    console.log(data)
+    data = preproc.aggregateColumns(data, ['vues', 'likes', 'partages', 'commentaires'], ['dayOfWeek', 'timeBlock'])
     console.log(data)
     data = preproc.sortByColumns(data, ['vues', 'likes', 'partages', 'commentaires'], true)
     console.log(data)
