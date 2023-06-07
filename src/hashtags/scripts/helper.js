@@ -1,17 +1,16 @@
-
 /**
  * Generates the SVG element g which will contain the data visualisation.
  *
  * @param {object} margin The desired margins around the graph
  * @returns {*} The d3 Selection for the created g element
  */
-export function generateG (margin) {
-  return d3.select('.graph')
-    .select('svg')
-    .append('g')
-    .attr('id', 'graph-g')
-    .attr('transform',
-      'translate(' + margin.left + ',' + margin.top + ')')
+export function generateG(margin) {
+  return d3
+    .select(".hashtags-graph")
+    .select("svg")
+    .append("g")
+    .attr("id", "hashtags-graph-g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 }
 
 /**
@@ -20,10 +19,11 @@ export function generateG (margin) {
  * @param {number} width The desired width
  * @param {number} height The desired height
  */
-export function setCanvasSize (width, height) {
-  d3.select('#heatmap').select('svg')
-    .attr('width', width)
-    .attr('height', height)
+export function setCanvasSize(width, height) {
+  d3.select("#hashtags-heatmap")
+    .select("svg")
+    .attr("width", width)
+    .attr("height", height);
 }
 
 /**
@@ -31,10 +31,8 @@ export function setCanvasSize (width, height) {
  *
  * @param {*} g The d3 Selection of the graph's g SVG element
  */
-export function appendAxes (g) {
-  g.append('g')
-    .attr('class', 'x axis')
+export function appendAxes(g) {
+  g.append("g").attr("class", "x axis");
 
-  g.append('g')
-    .attr('class', 'y axis')
+  g.append("g").attr("class", "y axis");
 }

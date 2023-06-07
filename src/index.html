@@ -12,22 +12,128 @@
       </head>
 
       <body>
-        <header>
-          <h1>
-            A heatmap of the times french speaking medias made the most views by posting on tiktok
-          </h1>
-          <h2>
-            From Sunday to Saturday
-          </h2>
-        </header>
-        <main>
-          <div class="viz-container">
-            <div class="graph" id="heatmap">
-              <svg class="heatmap-svg"></svg>
+        <div class="tab-container">
+          <button class="tab-link" onclick="openPage('overview', this)" id="default-page">Overview of media outlets</button>
+          <button class="tab-link" onclick="openPage('hashtags', this)">Hashtags</button>
+          <button class="tab-link" onclick="openPage('video-length', this)">Video Length</button>
+          <button class="tab-link" onclick="openPage('songs', this)">Songs</button>
+          <button class="tab-link" onclick="openPage('video-posting', this)">Video Posting</button>
+        </div>
+
+        <div id="overview" class="tab-content">
+          <header>
+            <h1>
+              A heatmap of the times french speaking medias made the most views by posting on tiktok
+            </h1>
+            <h2>
+              From Sunday to Saturday
+            </h2>
+          </header>
+          <main>
+            <div class="viz-container">
+              <div class="overview-graph" id="overview-heatmap">
+                <svg class="overview-heatmap-svg"></svg>
+              </div>
             </div>
-          </div>
-        </main>
+          </main>
+        </div>
+
+        <div id="hashtags" class="tab-content">
+          <header>
+            <h1>
+              A heatmap of the times french speaking medias made the most views by posting on tiktok
+            </h1>
+            <h2>
+              From Sunday to Saturday
+            </h2>
+          </header>
+          <main>
+            <div class="viz-container">
+              <div class="hashtags-graph" id="hashtags-heatmap">
+                <svg class="hashtags-heatmap-svg"></svg>
+              </div>
+            </div>
+          </main>
+        </div>
+
+        <div id="video-length" class="tab-content">
+          <header>
+            <h1>
+              A heatmap of the times french speaking medias made the most views by posting on tiktok
+            </h1>
+            <h2>
+              From Sunday to Saturday
+            </h2>
+          </header>
+          <main>
+            <div class="viz-container">
+              <div class="video-length-graph" id="video-length-heatmap">
+                <svg class="video-length-heatmap-svg"></svg>
+              </div>
+            </div>
+          </main>
+        </div>
+
+        <div id="songs" class="tab-content">
+          <header>
+            <h1>
+              A heatmap of the times french speaking medias made the most views by posting on tiktok
+            </h1>
+            <h2>
+              From Sunday to Saturday
+            </h2>
+          </header>
+          <main>
+            <div class="viz-container">
+              <div class="songs-graph" id="songs-heatmap">
+                <svg class="songs-heatmap-svg"></svg>
+              </div>
+            </div>
+          </main>
+        </div>
+
+        <div id="video-posting" class="tab-content">
+          <header>
+            <h1>
+              A heatmap of the times french speaking medias made the most views by posting on tiktok
+            </h1>
+            <h2>
+              From Sunday to Saturday
+            </h2>
+          </header>
+          <main>
+            <div class="viz-container">
+              <div class="video-posting-graph" id="video-posting-heatmap">
+                <svg class="video-posting-heatmap-svg"></svg>
+              </div>
+            </div>
+          </main>
+        </div>
+
+          <script type="module" src="video-posting/index.js" id="video-posting-script"></script>
+          <script type="module" src="hashtags/index.js" id="hashtags-script"></script>
+          <script type="module" src="video-length/index.js" id="video-length-script"></script>
+          <script type="module" src="songs/index.js" id="songs-script"></script>
+          <script type="module" src="overview/index.js" id="overview-script"></script>
+
         <script src="https://d3js.org/d3.v7.js"></script>
-        <script type="module" src="index.js"></script>
+
+        <script>
+          function openPage(pageName, element) {
+            let tabcontent = document.getElementsByClassName("tab-content");
+            // hide all tab contents by default
+            for (let i = 0; i < tabcontent.length; i++) {
+              tabcontent[i].style.display = "none";
+            }
+            document.getElementById(pageName).style.display = "block";
+
+            reloadVideoPosting();
+            reloadHashtags();
+            reloadVideoLength();
+            reloadSongs();
+          }
+
+          document.getElementById("default-page").click();
+        </script>
       </body>
 </html>

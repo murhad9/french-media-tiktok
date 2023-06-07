@@ -1,4 +1,3 @@
-
 /**
  * Sets the domain of the color scale
  *
@@ -6,9 +5,9 @@
  * @param {string} targetColumn The column to use as domain
  * @param {object[]} data The data to be displayed
  */
-export function setColorScaleDomain (colorScale, data, targetColumn) {
-  const averageViews = data.map(entry => entry[targetColumn])
-  colorScale.domain(d3.extent(averageViews))
+export function setColorScaleDomain(colorScale, data, targetColumn) {
+  const averageViews = data.map((entry) => entry[targetColumn]);
+  colorScale.domain(d3.extent(averageViews));
 }
 
 /**
@@ -16,15 +15,15 @@ export function setColorScaleDomain (colorScale, data, targetColumn) {
  *
  * @param {object[]} data The data to use for binding
  */
-export function appendRects (data) {
+export function appendRects(data) {
   // TODO : Append SVG rect elements
-  d3.select('#graph-g')
-    .selectAll('g.cell')
+  d3.select("#video-length-graph-g")
+    .selectAll("g.cell")
     .data(data)
     .enter()
-    .append('g')
-    .attr('class', 'cell')
-    .append('rect')
+    .append("g")
+    .attr("class", "cell")
+    .append("rect");
 }
 
 /**
@@ -33,9 +32,17 @@ export function appendRects (data) {
  * @param {*} xScale The scale for the x axis
  * @param {number} width The width of the diagram
  */
-export function updateXScale (xScale, width) {
-  const daysOfWeekDomain = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-  xScale.domain(daysOfWeekDomain).range([0, width])
+export function updateXScale(xScale, width) {
+  const daysOfWeekDomain = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  xScale.domain(daysOfWeekDomain).range([0, width]);
 }
 
 /**
@@ -45,9 +52,9 @@ export function updateXScale (xScale, width) {
  * @param {object[]} timeBlocks The names of the neighborhoods
  * @param {number} height The height of the diagram
  */
-export function updateYScale (yScale, timeBlocks, height) {
-  const sortedTimeBlocks = timeBlocks.sort()
-  yScale.domain(sortedTimeBlocks).range([0, height])
+export function updateYScale(yScale, timeBlocks, height) {
+  const sortedTimeBlocks = timeBlocks.sort();
+  yScale.domain(sortedTimeBlocks).range([0, height]);
 }
 
 /**
@@ -55,11 +62,10 @@ export function updateYScale (yScale, timeBlocks, height) {
  *
  *  @param {*} xScale The scale to use to draw the axis
  */
-export function drawXAxis (xScale) {
+export function drawXAxis(xScale) {
   // TODO : Draw X axis
-  const xAxisGenerator = d3.axisTop().scale(xScale)
-  d3.select('#graph-g .x')
-    .call(xAxisGenerator)
+  const xAxisGenerator = d3.axisTop().scale(xScale);
+  d3.select("#video-length-graph-g .x").call(xAxisGenerator);
 }
 
 /**
@@ -68,22 +74,22 @@ export function drawXAxis (xScale) {
  * @param {*} yScale The scale to use to draw the axis
  * @param {number} width The width of the graphic
  */
-export function drawYAxis (yScale, width) {
+export function drawYAxis(yScale, width) {
   // TODO : Draw Y axis
-  const yAxisGenerator = d3.axisRight().scale(yScale)
-  d3.select('#graph-g .y')
-    .attr('transform', `translate(${width},0)`)
-    .call(yAxisGenerator)
+  const yAxisGenerator = d3.axisRight().scale(yScale);
+  d3.select("#video-length-graph-g .y")
+    .attr("transform", `translate(${width},0)`)
+    .call(yAxisGenerator);
 }
 
 /**
  * Rotates the ticks on the Y axis 30 degrees towards the left.
  */
-export function rotateYTicks () {
+export function rotateYTicks() {
   // TODO : Rotate Y ticks.
-  d3.selectAll('#graph-g .y .tick').attr('transform', function () {
-    return d3.select(this).attr('transform') + ` rotate(${-30})`
-  })
+  d3.selectAll("#video-length-graph-g .y .tick").attr("transform", function () {
+    return d3.select(this).attr("transform") + ` rotate(${-30})`;
+  });
 }
 
 /**
@@ -95,12 +101,15 @@ export function rotateYTicks () {
  * @param {string} targetColumn The column to use as domain
  * @param {*} colorScale The color scale used to set the rectangles' colors
  */
-export function updateRects (xScale, yScale, colorScale, targetColumn) {
+export function updateRects(xScale, yScale, colorScale, targetColumn) {
   // TODO : Set position, size and fill of rectangles according to bound data
-  d3.selectAll('#graph-g .cell')
-    .attr('transform', d => `translate(${xScale(d.dayOfWeek)},${yScale(d.timeBlock)})`)
-    .select('rect')
-    .attr('width', xScale.bandwidth())
-    .attr('height', yScale.bandwidth())
-    .attr('fill', d => colorScale(d[targetColumn]))
+  d3.selectAll("#video-length-graph-g .cell")
+    .attr(
+      "transform",
+      (d) => `translate(${xScale(d.dayOfWeek)},${yScale(d.timeBlock)})`
+    )
+    .select("rect")
+    .attr("width", xScale.bandwidth())
+    .attr("height", yScale.bandwidth())
+    .attr("fill", (d) => colorScale(d[targetColumn]));
 }
