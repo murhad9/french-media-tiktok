@@ -106,6 +106,7 @@ export function processDateTime (data) {
 
 /**
  * Filters the data by only keeping entries within the dates.THIS FUNCTION ASSUMES processDateTime was applied.
+ *
  * @param {object[]} data The data
  * @param {string} startDate The start date
  * @param {string} endDate The end date
