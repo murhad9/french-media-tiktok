@@ -6,7 +6,7 @@ import * as viz from './scripts/heatmap_viz.js'
 import * as legend from './scripts/legend.js'
 import * as hover from './scripts/hover.js'
 
-import * as d3Chromatic from 'd3-scale-chromatic'
+import * as d3Chromatic from 'd3-scale-chromatic';
 
 /**
  * @file This file is the entry-point for the the code for the data viz project of team 10
@@ -28,8 +28,16 @@ import * as d3Chromatic from 'd3-scale-chromatic'
   d3.csv('./data_source.csv', d3.autoType).then(function (data) {
     // These are just examples
     data = preproc.addTimeBlocks(preproc.processDateTime(data))
-    data = preproc.aggregateColumns(data, ['vues', 'likes', 'partages', 'commentaires'], ['dayOfWeek', 'timeBlock'])
-    data = preproc.sortByColumns(data, ['averageVues', 'vues', 'likes', 'partages', 'commentaires'], true)
+    data = preproc.aggregateColumns(
+      data,
+      ['vues', 'likes', 'partages', 'commentaires'],
+      ['dayOfWeek', 'timeBlock']
+    )
+    data = preproc.sortByColumns(
+      data,
+      ['averageVues', 'vues', 'likes', 'partages', 'commentaires'],
+      true
+    )
     console.log(data)
     data = preproc.normalizeColumn(data, 'vuesAverage')
     console.log(data)
@@ -51,7 +59,7 @@ import * as d3Chromatic from 'd3-scale-chromatic'
      *   This function handles the graph's sizing.
      */
     function setSizing () {
-      bounds = d3.select('.graph').node().getBoundingClientRect()
+      bounds = d3.select('.overview-graph').node().getBoundingClientRect()
 
       svgSize = {
         width: bounds.width,
@@ -71,7 +79,11 @@ import * as d3Chromatic from 'd3-scale-chromatic'
      */
     function build () {
       viz.updateXScale(xScale, graphSize.width)
-      viz.updateYScale(yScale, preproc.getUniqueTimeBlocks(data), graphSize.height)
+      viz.updateYScale(
+        yScale,
+        preproc.getUniqueTimeBlocks(data),
+        graphSize.height
+      )
 
       viz.drawXAxis(xScale)
       viz.drawYAxis(yScale, graphSize.width)
@@ -80,9 +92,23 @@ import * as d3Chromatic from 'd3-scale-chromatic'
 
       viz.updateRects(xScale, yScale, colorScale)
 
-      hover.setRectHandler(xScale, yScale, hover.rectSelected, hover.rectUnselected, hover.selectTicks, hover.unselectTicks)
+      hover.setRectHandler(
+        xScale,
+        yScale,
+        hover.rectSelected,
+        hover.rectUnselected,
+        hover.selectTicks,
+        hover.unselectTicks
+      )
 
-      legend.draw(margin.left / 2, margin.top + 5, graphSize.height - 10, 15, 'url(#gradient)', colorScale)
+      legend.draw(
+        margin.left / 2,
+        margin.top + 5,
+        graphSize.height - 10,
+        15,
+        'url(#gradient)',
+        colorScale
+      )
     }
 
     window.addEventListener('resize', () => {
