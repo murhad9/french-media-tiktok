@@ -2,7 +2,7 @@
 
 import * as helper from './scripts/helper.js'
 import * as preproc from './scripts/preprocess.js'
-import * as viz from './scripts/heatmap_viz.js'
+import * as viz from './scripts/viz.js'
 import * as legend from './scripts/legend.js'
 import * as hover from './scripts/hover.js'
 
@@ -44,9 +44,7 @@ window.reloadSongs = function () {
         ['averageVues', 'vues', 'likes', 'partages', 'commentaires'],
         true
       )
-      // console.log(data)
       data = preproc.normalizeColumn(data, 'vuesAverage')
-      // console.log(data)
       viz.setColorScaleDomain(colorScale, data, 'vuesAverageNormalized')
 
       legend.initGradient(colorScale)

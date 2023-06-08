@@ -39,9 +39,7 @@ window.reloadVideoPosting = function () {
         ['averageVues', 'vues', 'likes', 'partages', 'commentaires'],
         true
       )
-      console.log(data)
       data = preproc.normalizeColumn(data, 'vuesAverage')
-      console.log(data)
       viz.setColorScaleDomain(colorScale, data, 'vuesAverageNormalized')
 
       legend.initGradient(colorScale)

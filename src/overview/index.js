@@ -38,9 +38,7 @@ import * as d3Chromatic from 'd3-scale-chromatic';
       ['averageVues', 'vues', 'likes', 'partages', 'commentaires'],
       true
     )
-    console.log(data)
     data = preproc.normalizeColumn(data, 'vuesAverage')
-    console.log(data)
     viz.setColorScaleDomain(colorScale, data, 'vuesAverageNormalized')
 
     legend.initGradient(colorScale)
