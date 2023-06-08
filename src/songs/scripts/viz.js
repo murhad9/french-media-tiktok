@@ -48,9 +48,8 @@ export function appendAxis (g) {
  * For each data element, appends an SVG circle to the points' g element
  *
  * @param {object[]} data The data to use for binding
- * @param {number} position The y position of the circles in the graph
  */
-export function appendCircles (data, position) {
+export function appendCircles (data) {
   d3.select('#songs-graph-g .points')
     .selectAll('circle')
     .data(data)
@@ -59,14 +58,29 @@ export function appendCircles (data, position) {
     .attr('fill', 'black')
     .attr('r', 5)
     .attr('stroke', 'white')
-    .attr('cy', position)
+}
+
+/**
+ * Defines the log scale used to position the center of the circles in X.
+ *
+ * @param {object[]} data The data to which coordinates must be bound
+ * @param {*} xScale The scale to be used for the x coordinate
+ * @param {number} yPosition The fixed y position for each data point
+ * @param {string} domainColumn The column used to determine the domain of the scale
+ */
+export function addCoordinatesToData (data, xScale, yPosition, domainColumn) {
+  data.forEach(song => {
+    const xPosition = xScale(song[domainColumn])
+    song.x = xPosition
+    song.y = yPosition
+  })
 }
 
 /**
  * Defines the log scale used to position the center of the circles in X.
  *
  * @param {number} width The width of the graph
- * @param {object} data The data to be used
+ * @param {object[]} data The data to be used
  * @param {string} domainColumn The column used to determine the domain of the scale
  * @returns {*} The logarithmic scale in X
  */
@@ -76,6 +90,32 @@ export function setXScale (width, data, domainColumn) {
   return d3.scaleLog()
     .domain([min, max])
     .range([0, width])
+}
+
+/**
+ * Initializes the simulation used to place the circles
+ *
+ * @param {object[]} data The data to be displayed
+ * @param {*} xScale The scale to be used for the x coordinate
+ * @param {number} yPosition The fixed y position for each data point
+ * @param {string} domainColumn The column used to determine the domain of the scale
+ * @returns {*} The generated simulation
+ */
+export function getSimulation (data, xScale, yPosition, domainColumn) {
+  return d3.forceSimulation(data)
+    .force('collision',
+      d3.forceCollide()
+        .strength(1)
+        .radius(5) // change this based on the radius of each circle
+    )
+    .force('x',
+      d3.forceX(d => xScale(d[domainColumn]))
+        .strength(0) // proximity of points to their true x value
+    )
+    .force('y',
+      d3.forceY(yPosition)
+        .strength(0.01) // proximity of points to the center y value
+    )
 }
 
 /**
@@ -92,14 +132,17 @@ export function drawXAxis (xScale, height) {
 }
 
 /**
- * After the circles have been appended, this function dictates
- * their position along the x axis.
+ * After the circles have been appended, this repositions them.
  *
- * @param {*} xScale The x scale used to position the circles
- * @param {string} domainColumn The column used to determine the domain of the scale
+ * @param {*} simulation The force simulation used for the points
  */
-export function updateCircles (xScale, domainColumn) {
-  d3.select('#songs-graph-g .points')
-    .selectAll('circle')
-    .attr('cx', d => xScale(d[domainColumn]))
+export function updateCircles (simulation) {
+  simulation.on('tick', () => {
+    d3.select('#songs-graph-g .points')
+      .selectAll('circle')
+      .attr('cx', (d) => {
+        return d.x
+      })
+      .attr('cy', (d) => d.y)
+  })
 }

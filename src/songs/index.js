@@ -29,8 +29,6 @@ window.reloadSongs = function () {
         ['musiqueTitre']
       )
 
-      console.log(data)
-
       setSizing()
 
       // legend.initGradient(colorScale)
@@ -70,8 +68,12 @@ window.reloadSongs = function () {
       function build () {
         const xScale = viz.setXScale(graphSize.width, data, 'vuesAverage')
 
+        viz.addCoordinatesToData(data, xScale, graphSize.height / 2, 'vuesAverage')
+
         viz.drawXAxis(xScale, graphSize.height)
-        viz.updateCircles(xScale, 'vuesAverage')
+
+        const simulation = viz.getSimulation(data, xScale, graphSize.height / 2, 'vuesAverage')
+        viz.updateCircles(simulation)
 
         // hover.setRectHandler(
         //   xScale,

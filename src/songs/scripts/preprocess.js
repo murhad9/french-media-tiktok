@@ -226,6 +226,5 @@ export function sumEngagementByColumn (data, target) {
       }
     }
   })
-  console.log(summedEngagementByColumn)
   return summedEngagementByColumn
 }
