@@ -1,3 +1,14 @@
+/************************** GENERAL CSS RULES **************************
+ *
+ * PLEASE DO NOT PUT THE CSS RULES FOR YOUR VIZ HERE!! 
+ *
+ * Make another section like this one and prefix all of the selectors
+ * with the ID if the div element for your tab.
+ *
+ * For an example, refer to the OVERVIEW CSS RULES section of this same
+ * file.
+ */
+
 body {
   font-family: "Roboto Slab", "sans-serif";
   font-size: 16px;
@@ -75,10 +86,6 @@ button:active {
   align-items: center;
 }
 
-.tick line {
-  visibility: hidden;
-}
-
 .info {
   pointer-events: none;
   font-family: "Roboto";
@@ -89,6 +96,18 @@ button:active {
   cursor: default;
 }
 
-.axis path {
+/************************** OVERVIEW CSS RULES **************************
+ *
+ * All of the CSS rules for the "Overview of media outlets" tab.
+ *
+ * Every selector is prefixed by #overview and therefore only applies to
+ * elements within the div associated with the tab.
+ */
+
+#overview .tick line {
+  visibility: hidden;
+}
+
+#overview .axis path {
   opacity: 0;
 }

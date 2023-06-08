@@ -1,115 +1,105 @@
 /**
- * Sets the domain of the color scale
+ * Sets the size of the SVG canvas containing the graph.
  *
- * @param {*} colorScale The color scale used in the heatmap
- * @param {object[]} data The data to be displayed
- * @param {string} targetColumn The column to use as domain
+ * @param {number} width The desired width
+ * @param {number} height The desired height
  */
-export function setColorScaleDomain (colorScale, data, targetColumn) {
-  const averageViews = data.map((entry) => entry[targetColumn])
-  colorScale.domain(d3.extent(averageViews))
+export function setCanvasSize (width, height) {
+  d3.select('#songs-beeswarm-plot')
+    .select('svg')
+    .attr('width', width)
+    .attr('height', height)
 }
 
 /**
- * For each data element, appends a group 'g' to which an SVG rect is appended
+ * Generates the SVG element g which will contain the data visualisation.
+ *
+ * @param {object} margin The desired margins around the graph
+ * @returns {*} The d3 Selection for the created g element
+ */
+export function generateG (margin) {
+  return d3
+    .select('#songs-beeswarm-plot')
+    .select('svg')
+    .append('g')
+    .attr('id', 'songs-graph-g')
+    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+}
+
+/**
+ * Appends an SVG g element which will contain the data points.
+ *
+ * @param {*} g The d3 Selection of the graph's g SVG element
+ */
+export function appendPointG (g) {
+  g.append('g').attr('class', 'points')
+}
+
+/**
+ * Appends an SVG g element which will contain the axes.
+ *
+ * @param {*} g The d3 Selection of the graph's g SVG element
+ */
+export function appendAxis (g) {
+  g.append('g').attr('class', 'x axis')
+}
+
+/**
+ * For each data element, appends an SVG circle to the points' g element
  *
  * @param {object[]} data The data to use for binding
+ * @param {number} position The y position of the circles in the graph
  */
-export function appendRects (data) {
-  // TODO : Append SVG rect elements
-  d3.select('#songs-graph-g')
-    .selectAll('g.cell')
+export function appendCircles (data, position) {
+  d3.select('#songs-graph-g .points')
+    .selectAll('circle')
     .data(data)
     .enter()
-    .append('g')
-    .attr('class', 'cell')
-    .append('rect')
+    .append('circle')
+    .attr('fill', 'black')
+    .attr('r', 5)
+    .attr('stroke', 'white')
+    .attr('cy', position)
 }
 
 /**
- * Updates the domain and range of the scale for the x axis
+ * Defines the log scale used to position the center of the circles in X.
  *
- * @param {*} xScale The scale for the x axis
- * @param {number} width The width of the diagram
+ * @param {number} width The width of the graph
+ * @param {object} data The data to be used
+ * @param {string} domainColumn The column used to determine the domain of the scale
+ * @returns {*} The logarithmic scale in X
  */
-export function updateXScale (xScale, width) {
-  const daysOfWeekDomain = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday'
-  ]
-  xScale.domain(daysOfWeekDomain).range([0, width])
+export function setXScale (width, data, domainColumn) {
+  const min = d3.min(Object.values(data), song => song[domainColumn])
+  const max = d3.max(Object.values(data), song => song[domainColumn])
+  return d3.scaleLog()
+    .domain([min, max])
+    .range([0, width])
 }
 
 /**
- * Updates the domain and range of the scale for the y axis
+ * Draws the X axis at the bottom of the diagram.
  *
- * @param {*} yScale The scale for the y axis
- * @param {object[]} timeBlocks The names of the neighborhoods
- * @param {number} height The height of the diagram
+ * @param {*} xScale The scale to use to draw the axis
+ * @param {number} height The height of the graph
  */
-export function updateYScale (yScale, timeBlocks, height) {
-  const sortedTimeBlocks = timeBlocks.sort()
-  yScale.domain(sortedTimeBlocks).range([0, height])
+export function drawXAxis (xScale, height) {
+  const xAxisGenerator = d3.axisBottom(xScale).tickArguments([5, '~s'])
+  d3.select('#songs-graph-g .x.axis')
+    .attr('transform', 'translate( 0, ' + height + ')')
+    .call(xAxisGenerator)
 }
 
 /**
- *  Draws the X axis at the top of the diagram.
+ * After the circles have been appended, this function dictates
+ * their position along the x axis.
  *
- *  @param {*} xScale The scale to use to draw the axis
+ * @param {*} xScale The x scale used to position the circles
+ * @param {string} domainColumn The column used to determine the domain of the scale
  */
-export function drawXAxis (xScale) {
-  // TODO : Draw X axis
-  const xAxisGenerator = d3.axisTop().scale(xScale)
-  d3.select('#songs-graph-g .x').call(xAxisGenerator)
-}
-
-/**
- * Draws the Y axis to the right of the diagram.
- *
- * @param {*} yScale The scale to use to draw the axis
- * @param {number} width The width of the graphic
- */
-export function drawYAxis (yScale, width) {
-  // TODO : Draw Y axis
-  const yAxisGenerator = d3.axisRight().scale(yScale)
-  d3.select('#songs-graph-g .y')
-    .attr('transform', `translate(${width},0)`)
-    .call(yAxisGenerator)
-}
-
-/**
- * Rotates the ticks on the Y axis 30 degrees towards the left.
- */
-export function rotateYTicks () {
-  // TODO : Rotate Y ticks.
-  d3.selectAll('#songs-graph-g .y .tick').attr('transform', function () {
-    return d3.select(this).attr('transform') + ` rotate(${-30})`
-  })
-}
-
-/**
- * After the rectangles have been appended, this function dictates
- * their position, size and fill color.
- *
- * @param {*} xScale The x scale used to position the rectangles
- * @param {*} yScale The y scale used to position the rectangles
- * @param {*} colorScale The color scale used to set the rectangles' colors
- * @param {string} targetColumn The column to use as domain
- */
-export function updateRects (xScale, yScale, colorScale, targetColumn) {
-  // TODO : Set position, size and fill of rectangles according to bound data
-  d3.selectAll('#songs-graph-g .cell')
-    .attr(
-      'transform',
-      (d) => `translate(${xScale(d.dayOfWeek)},${yScale(d.timeBlock)})`
-    )
-    .select('rect')
-    .attr('width', xScale.bandwidth())
-    .attr('height', yScale.bandwidth())
-    .attr('fill', (d) => colorScale(d[targetColumn]))
+export function updateCircles (xScale, domainColumn) {
+  d3.select('#songs-graph-g .points')
+    .selectAll('circle')
+    .attr('cx', d => xScale(d[domainColumn]))
 }

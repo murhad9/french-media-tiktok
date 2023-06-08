@@ -1,4 +1,18 @@
 /**
+ * Removes rows from the data if the value of the specified column matches the regular expression
+ *
+ * @param {object[]} data The data to from which rows need to be filtered
+ * @param {string} column The column from which values will be matched
+ * @param {RegExp} regex The regular expression to match
+ * @returns {object[]} The data with matched rows filtered out
+ */
+export function filterOutRowsByValue (data, column, regex) {
+  return data.filter(row => {
+    return String(row[column]).search(regex) === -1
+  })
+}
+
+/**
  * Trims the data to only the wanted columns
  *
  * @param {object[]} data The data to analyze
@@ -46,7 +60,6 @@ export function aggregateColumns (data, targets, groupBy) {
     return aggregation
   })
 
-  console.log(aggregatedData)
   return aggregatedData
 }
 
@@ -120,6 +133,7 @@ export function filterDataByDates (data, startDate, endDate) {
 
   return filteredData
 }
+
 /**
  * Adds time block dpending on time of publication
  *
