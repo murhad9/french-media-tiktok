@@ -188,30 +188,31 @@ export function normalizeColumn (data, targetColumn) {
 }
 
 /**
- * Group duplicate songs together
+ * Group duplicate values of a column
  * and sum up their views, likes, shares and comments
  *
  * @param {object[]} data The data to analyze
- * @returns {object[]} Songs with their summed engagements
+ * @param {string} target The column to group the engagement
+ * @returns {object[]} Songs with their summed engagements.
  */
-export function sumEngagementBySong (data) {
-  const summedSongs = {}
+export function sumEngagementByColumn (data, target) {
+  const summedEngagementByColumn = {}
   data.forEach(obj => {
-    const songTitle = obj.musiqueTitre
-    if (summedSongs[songTitle]) {
-      summedSongs[songTitle].views += parseInt(obj.vues)
-      summedSongs[songTitle].likes += parseInt(obj.likes)
-      summedSongs[songTitle].comments += parseInt(obj.commentaires)
-      summedSongs[songTitle].partages += parseInt(obj.partages)
+    const targetColumn = obj[target]
+    if (summedEngagementByColumn[targetColumn]) {
+      summedEngagementByColumn[targetColumn].views += parseInt(obj.vues)
+      summedEngagementByColumn[targetColumn].likes += parseInt(obj.likes)
+      summedEngagementByColumn[targetColumn].comments += parseInt(obj.commentaires)
+      summedEngagementByColumn[targetColumn].shares += parseInt(obj.partages)
     } else {
-      summedSongs[songTitle] = {
+      summedEngagementByColumn[targetColumn] = {
         views: parseInt(obj.vues),
         likes: parseInt(obj.likes),
         comments: parseInt(obj.commentaires),
-        partages: parseInt(obj.partages)
+        shares: parseInt(obj.partages)
       }
     }
   })
-  console.log(summedSongs)
-  return summedSongs
+  console.log(summedEngagementByColumn)
+  return summedEngagementByColumn
 }

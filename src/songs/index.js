@@ -28,13 +28,16 @@ window.reloadSongs = function () {
 
     d3.csv('./data_source.csv', d3.autoType).then(function (data) {
       // These are just examples
-      preproc.sumEngagementBySong(data) // For song analysis
+
+      // For song analysis
+      preproc.sumEngagementByColumn(data, 'musiqueTitre')
+      preproc.sumEngagementByColumn(data, 'musiqueArtiste')
 
       data = preproc.addTimeBlocks(preproc.processDateTime(data))
       data = preproc.aggregateColumns(
         data,
         ['vues', 'likes', 'partages', 'commentaires'],
-        ['dayOfWeek', 'timeBlock', 'musiqueTitre']
+        ['dayOfWeek', 'timeBlock']
       )
       data = preproc.sortByColumns(
         data,
