@@ -28,20 +28,22 @@ window.reloadSongs = function () {
 
     d3.csv('./data_source.csv', d3.autoType).then(function (data) {
       // These are just examples
+      preproc.sumEngagementBySong(data) // For song analysis
+
       data = preproc.addTimeBlocks(preproc.processDateTime(data))
       data = preproc.aggregateColumns(
         data,
         ['vues', 'likes', 'partages', 'commentaires'],
-        ['dayOfWeek', 'timeBlock']
+        ['dayOfWeek', 'timeBlock', 'musiqueTitre']
       )
       data = preproc.sortByColumns(
         data,
         ['averageVues', 'vues', 'likes', 'partages', 'commentaires'],
         true
       )
-      console.log(data)
+      // console.log(data)
       data = preproc.normalizeColumn(data, 'vuesAverage')
-      console.log(data)
+      // console.log(data)
       viz.setColorScaleDomain(colorScale, data, 'vuesAverageNormalized')
 
       legend.initGradient(colorScale)

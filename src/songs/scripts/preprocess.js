@@ -25,7 +25,7 @@ export function trim (data, targets) {
  */
 export function aggregateColumns (data, targets, groupBy) {
   data = trim(data, targets.concat(groupBy))
-  console.log(data)
+  // console.log(data)
   const groupedData = d3.group(data, (d) => {
     return groupBy.map((column) => d[column]).join('-')
   })
@@ -47,6 +47,7 @@ export function aggregateColumns (data, targets, groupBy) {
     return aggregation
   })
 
+  console.log(aggregatedData)
   return aggregatedData
 }
 
@@ -184,4 +185,33 @@ export function normalizeColumn (data, targetColumn) {
   })
 
   return data
+}
+
+/**
+ * Group duplicate songs together
+ * and sum up their views, likes, shares and comments
+ *
+ * @param {object[]} data The data to analyze
+ * @returns {object[]} Songs with their summed engagements
+ */
+export function sumEngagementBySong (data) {
+  const summedSongs = {}
+  data.forEach(obj => {
+    const songTitle = obj.musiqueTitre
+    if (summedSongs[songTitle]) {
+      summedSongs[songTitle].views += parseInt(obj.vues)
+      summedSongs[songTitle].likes += parseInt(obj.likes)
+      summedSongs[songTitle].comments += parseInt(obj.commentaires)
+      summedSongs[songTitle].partages += parseInt(obj.partages)
+    } else {
+      summedSongs[songTitle] = {
+        views: parseInt(obj.vues),
+        likes: parseInt(obj.likes),
+        comments: parseInt(obj.commentaires),
+        partages: parseInt(obj.partages)
+      }
+    }
+  })
+  console.log(summedSongs)
+  return summedSongs
 }
