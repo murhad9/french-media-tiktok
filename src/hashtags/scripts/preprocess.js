@@ -25,7 +25,6 @@ export function trim (data, targets) {
  */
 export function aggregateColumns (data, targets, groupBy) {
   data = trim(data, targets.concat(groupBy))
-  console.log(data)
   const groupedData = d3.group(data, (d) => {
     return groupBy.map((column) => d[column]).join('-')
   })

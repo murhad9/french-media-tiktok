@@ -1,3 +1,14 @@
+/************************** GENERAL CSS RULES **************************
+ *
+ * PLEASE DO NOT PUT THE CSS RULES FOR YOUR VIZ HERE!! 
+ *
+ * Make another section like this one and prefix all of the selectors
+ * with the ID if the div element for your tab.
+ *
+ * For an example, refer to the OVERVIEW CSS RULES section of this same
+ * file.
+ */
+
 body {
   font-family: "Roboto Slab", "sans-serif";
   font-size: 16px;
@@ -5,8 +16,6 @@ body {
   color: #2a2b2e;
   margin: 0;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
   justify-content: space-between;
 }
 
@@ -57,19 +66,36 @@ button:active {
   background-color: #f6f6f6;
 }
 
-.title,
-.axis-text {
-  transform-origin: center;
-  transform-box: fill-box;
-  text-anchor: middle;
-}
-
 .viz-container {
   height: 100%;
   padding: 0 100px;
 }
 
-.graph {
+/************************** OVERVIEW CSS RULES **************************
+ *
+ * All of the CSS rules for the "Overview of media outlets" tab.
+ *
+ * Every selector is prefixed by #overview and therefore only applies to
+ * elements within the div associated with the tab.
+ */
+
+#overview .tick line {
+  visibility: hidden;
+}
+
+#overview .axis path {
+  opacity: 0;
+}
+
+/************************** SONGS CSS RULES **************************
+ *
+ * All of the CSS rules for the "Songs" tab.
+ *
+ * Every selector is prefixed by #songs and therefore only applies to
+ * elements within the div associated with the tab.
+ */
+
+#songs #songs-beeswarm-plot {
   width: 100%;
   height: 100%;
   display: flex;
@@ -77,20 +103,9 @@ button:active {
   align-items: center;
 }
 
-.tick line {
+#songs #songs-panel {
+  width: 300px;
+  border: 1px solid black;
+  padding: 10px;
   visibility: hidden;
-}
-
-.info {
-  pointer-events: none;
-  font-family: "Roboto";
-}
-
-.axis text {
-  font-family: "Roboto";
-  cursor: default;
-}
-
-.axis path {
-  opacity: 0;
 }
