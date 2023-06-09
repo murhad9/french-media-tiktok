@@ -2,10 +2,7 @@
 
 import * as preproc from './scripts/preprocess.js'
 import * as viz from './scripts/viz.js'
-// import * as legend from './scripts/legend.js'
 // import * as hover from './scripts/hover.js'
-
-// import * as d3Chromatic from 'd3-scale-chromatic'
 
 /**
  * @file This file is the entry-point for the the code for the data viz project of team 10
@@ -15,11 +12,15 @@ import * as viz from './scripts/viz.js'
 
 window.reloadSongs = function () {
   (function (d3) {
-    let bounds
     let svgSize
     let graphSize
+    let xScale
+    let radiusScale
+    let simulation
+    let widthBound
 
-    const margin = { top: 35, right: 200, bottom: 35, left: 200 }
+    const margin = { top: 35, right: 100, bottom: 35, left: 100 }
+    const radiusModulator = 2000 // the greater the value, the smaller the circles at the same window width
 
     d3.csv('./data_source.csv', d3.autoType).then(function (data) {
       data = preproc.filterOutRowsByValue(data, 'musiqueTitre', /son original|original sound|sonido original|suono originale|sunet original|som original/)
@@ -29,28 +30,23 @@ window.reloadSongs = function () {
         ['musiqueTitre']
       )
 
-      setSizing()
-
-      // legend.initGradient(colorScale)
-      // legend.initLegendBar()
-      // legend.initLegendAxis()
-
       const g = viz.generateG(margin)
 
       viz.appendPointG(g)
       viz.appendAxis(g)
-      viz.appendCircles(data, graphSize.height / 2)
+      viz.appendCircles(data)
 
+      widthBound = d3.select('#songs-beeswarm-plot').node().getBoundingClientRect().width
+
+      setSizing()
       build()
 
       /**
        *   This function handles the graph's sizing.
        */
       function setSizing () {
-        bounds = d3.select('#songs-beeswarm-plot').node().getBoundingClientRect()
-
         svgSize = {
-          width: bounds.width,
+          width: widthBound,
           height: 550
         }
 
@@ -59,21 +55,38 @@ window.reloadSongs = function () {
           height: svgSize.height - margin.bottom - margin.top
         }
 
+        xScale = viz.setXScale(graphSize.width, data, 'vuesAverage')
+
+        radiusScale = viz.setRadiusScale(data, svgSize.width / radiusModulator)
+
         viz.setCanvasSize(svgSize.width, svgSize.height)
       }
 
       /**
-       *   This function builds the graph.
+       *   This function builds the graph for the first time.
        */
       function build () {
-        const xScale = viz.setXScale(graphSize.width, data, 'vuesAverage')
-
         viz.addCoordinatesToData(data, xScale, graphSize.height / 2, 'vuesAverage')
 
         viz.drawXAxis(xScale, graphSize.height)
 
-        const simulation = viz.getSimulation(data, xScale, graphSize.height / 2, 'vuesAverage')
-        viz.updateCircles(simulation)
+        simulation = viz.getSimulation(data, xScale, graphSize.height / 2, 'vuesAverage', radiusScale)
+
+        viz.updateCircles(simulation, radiusScale)
+      }
+
+      /**
+       *   This function rebuilds the graph after a window resize.
+       */
+      function rebuild () {
+        viz.updateXCoordinateInData(data, xScale, 'vuesAverage')
+
+        viz.drawXAxis(xScale, graphSize.height)
+
+        simulation.stop()
+        simulation = viz.getSimulation(data, xScale, graphSize.height / 2, 'vuesAverage', radiusScale)
+
+        viz.updateCircles(simulation, radiusScale)
 
         // hover.setRectHandler(
         //   xScale,
@@ -83,20 +96,15 @@ window.reloadSongs = function () {
         //   hover.selectTicks,
         //   hover.unselectTicks
         // )
-
-        // legend.draw(
-        //   margin.left / 2,
-        //   margin.top + 5,
-        //   graphSize.height - 10,
-        //   15,
-        //   'url(#gradient)',
-        //   colorScale
-        // )
       }
 
       window.addEventListener('resize', () => {
-        setSizing()
-        build()
+        const newWidth = d3.select('#songs-beeswarm-plot').node().getBoundingClientRect().width
+        if (newWidth !== widthBound) { // mainly to prevent the simulation from rerunning unecessarily when the height changes
+          widthBound = newWidth
+          setSizing()
+          rebuild()
+        }
       })
     })
   })(d3)

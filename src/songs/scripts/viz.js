@@ -56,12 +56,11 @@ export function appendCircles (data) {
     .enter()
     .append('circle')
     .attr('fill', 'black')
-    .attr('r', 5)
     .attr('stroke', 'white')
 }
 
 /**
- * Defines the log scale used to position the center of the circles in X.
+ * Adds the appropriate x and y coordinates to each row of data
  *
  * @param {object[]} data The data to which coordinates must be bound
  * @param {*} xScale The scale to be used for the x coordinate
@@ -73,6 +72,20 @@ export function addCoordinatesToData (data, xScale, yPosition, domainColumn) {
     const xPosition = xScale(song[domainColumn])
     song.x = xPosition
     song.y = yPosition
+  })
+}
+
+/**
+ * Updates the x coordinate for each row of data
+ *
+ * @param {object[]} data The data to which coordinates must be bound
+ * @param {*} xScale The scale to be used for the x coordinate
+ * @param {string} domainColumn The column used to determine the domain of the scale
+ */
+export function updateXCoordinateInData (data, xScale, domainColumn) {
+  data.forEach(song => {
+    const xPosition = xScale(song[domainColumn])
+    song.x = xPosition
   })
 }
 
@@ -93,20 +106,40 @@ export function setXScale (width, data, domainColumn) {
 }
 
 /**
+ * Defines the scale to use for the data points' radius.
+ *
+ * The area of the circle is proportional to the number of videos, which means that the
+ * radius is proportional to the square root of the number of videos.
+ *
+ * @param {object} data The data to be displayed
+ * @param {number} factor A factor to use for rescaling the circles
+ * @returns {*} The square root scale used to determine the radius
+ */
+export function setRadiusScale (data, factor) {
+  const minCount = d3.min(Object.values(data), song => song.count)
+  const maxCount = d3.max(Object.values(data), song => song.count)
+  return d3.scalePow()
+    .exponent(-1)
+    .domain([minCount, maxCount])
+    .range([4 * factor, 10 * factor])
+}
+
+/**
  * Initializes the simulation used to place the circles
  *
  * @param {object[]} data The data to be displayed
  * @param {*} xScale The scale to be used for the x coordinate
  * @param {number} yPosition The fixed y position for each data point
  * @param {string} domainColumn The column used to determine the domain of the scale
+ * @param {*} radiusScale The scale used to calculate the radius of each point
  * @returns {*} The generated simulation
  */
-export function getSimulation (data, xScale, yPosition, domainColumn) {
+export function getSimulation (data, xScale, yPosition, domainColumn, radiusScale) {
   return d3.forceSimulation(data)
     .force('collision',
       d3.forceCollide()
         .strength(1)
-        .radius(5) // change this based on the radius of each circle
+        .radius(d => radiusScale(d.count)) // change this based on the radius of each circle
     )
     .force('x',
       d3.forceX(d => xScale(d[domainColumn]))
@@ -132,11 +165,16 @@ export function drawXAxis (xScale, height) {
 }
 
 /**
- * After the circles have been appended, this repositions them.
+ * After the circles have been appended, this repositions and resizes them.
  *
  * @param {*} simulation The force simulation used for the points
+ * @param {*} radiusScale The scale used to calculate the radius of each point
  */
-export function updateCircles (simulation) {
+export function updateCircles (simulation, radiusScale) {
+  d3.select('#songs-graph-g .points')
+    .selectAll('circle')
+    .attr('r', d => radiusScale(d.count))
+
   simulation.on('tick', () => {
     d3.select('#songs-graph-g .points')
       .selectAll('circle')
