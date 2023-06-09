@@ -25,10 +25,9 @@ export function load (d3) {
 
     data = preproc.aggregateColumns(data,
       ['vues', 'likes', 'partages', 'commentaires'],
+      ['média'],
       ['musiqueTitre', 'musiqueArtiste']
     )
-
-    console.log(data.filter(d => d.musiqueTitre === 'Paris'))
 
     const g = viz.generateG(margin)
 

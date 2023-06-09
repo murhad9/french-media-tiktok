@@ -33,6 +33,7 @@ export function display (d) {
     .style('font-weight', 'bold')
     .text(d.musiqueTitre)
 
+  // Song artist
   panel.append('div')
     .style('font-family', 'Roboto')
     .style('font-size', '18px')
@@ -72,4 +73,17 @@ export function display (d) {
     .style('font-size', '16px')
     .style('padding-top', '3px')
     .text(`Average shares: ${d.partagesAverage}`)
+
+  // Media outlets
+  const mediaDiv = panel.append('div')
+    .style('font-family', 'Roboto')
+    .style('font-size', '16px')
+
+  mediaDiv.append('div')
+    .style('padding-top', '20px')
+    .style('font-weight', 'bold')
+    .text(`Media outlets (${d.médiaList.length})`)
+
+  mediaDiv.append('div')
+    .text(`${d.médiaList.join(', ')}`) // currently in our data, this list can have up to 19 elements
 }
