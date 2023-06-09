@@ -13,7 +13,6 @@ export function initPanelDiv () {
  * @param {object} d The data bound to the clicked marker
  */
 export function display (d) {
-  console.log(d)
   const panel = d3.select('#songs-panel').style('visibility', 'visible')
 
   panel.selectAll('*').remove()
