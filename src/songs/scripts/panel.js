@@ -23,7 +23,7 @@ export function display (d) {
     .style('font-family', 'Roboto')
     .style('font-size', '12px')
     .style('cursor', 'pointer')
-    .text('FERMER')
+    .text('CLOSE')
     .on('click', () => panel.style('visibility', 'hidden'))
 
   // Song title
@@ -59,12 +59,12 @@ export function display (d) {
     .style('font-family', 'Roboto')
     .style('font-size', '16px')
     .style('padding-top', '3px')
-    .text(`Average views: ${d.commentairesAverage}`)
+    .text(`Average comments: ${d.commentairesAverage}`)
 
   // Average shares
   panel.append('div')
     .style('font-family', 'Roboto')
     .style('font-size', '16px')
     .style('padding-top', '3px')
-    .text(`Average views: ${d.partagesAverage}`)
+    .text(`Average shares: ${d.partagesAverage}`)
 }
