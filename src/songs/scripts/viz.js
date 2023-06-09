@@ -45,6 +45,17 @@ export function appendAxis (g) {
 }
 
 /**
+ * Appends the label for the the x axis.
+ *
+ * @param {*} g The d3 Selection of the graph's g SVG element
+ */
+export function appendGraphLabel (g) {
+  g.append('text')
+    .attr('class', 'x axis-text')
+    .attr('font-size', 12)
+}
+
+/**
  * For each data element, appends an SVG circle to the points' g element
  *
  * @param {object[]} data The data to use for binding
@@ -100,7 +111,10 @@ export function updateXCoordinateInData (data, xScale, domainColumn) {
 export function setXScale (width, data, domainColumn) {
   const min = d3.min(Object.values(data), song => song[domainColumn])
   const max = d3.max(Object.values(data), song => song[domainColumn])
-  return d3.scaleLog()
+
+  const scale = min === 0 ? d3.scaleSymlog() : d3.scaleLog()
+
+  return scale
     .domain([min, max])
     .range([0, width])
 }
@@ -155,13 +169,19 @@ export function getSimulation (data, xScale, yPosition, domainColumn, radiusScal
  * Draws the X axis at the bottom of the diagram.
  *
  * @param {*} xScale The scale to use to draw the axis
+ * @param {number} width The width of the graph
  * @param {number} height The height of the graph
+ * @param {string} xColumn The name of the data column used for the x axis
  */
-export function drawXAxis (xScale, height) {
+export function drawXAxis (xScale, width, height, xColumn) {
   const xAxisGenerator = d3.axisBottom(xScale).tickArguments([5, '~s'])
   d3.select('#songs-graph-g .x.axis')
     .attr('transform', 'translate( 0, ' + height + ')')
     .call(xAxisGenerator)
+  d3.select('#songs-graph-g .x.axis-text')
+    .attr('x', width / 2)
+    .attr('y', height + 30)
+    .text(`${xColumn}`)
 }
 
 /**
@@ -169,9 +189,9 @@ export function drawXAxis (xScale, height) {
  *
  * @param {*} simulation The force simulation used for the points
  * @param {*} radiusScale The scale used to calculate the radius of each point
- * @param {*} panel The display panel, which should be dislayed when a circle is clicked
+ * @param {Function} displayPanel The function that displays the panel when a circle is clicked
  */
-export function updateCircles (simulation, radiusScale, panel) {
+export function updateCircles (simulation, radiusScale, displayPanel) {
   d3.select('#songs-graph-g .points')
     .selectAll('circle')
     .attr('r', d => radiusScale(d.count))
@@ -183,7 +203,7 @@ export function updateCircles (simulation, radiusScale, panel) {
     .on('mouseout', function () {
       d3.select(this).attr('r', d => radiusScale(d.count))
     })
-    .on('click', (event, d) => panel.display(d))
+    .on('click', (event, d) => displayPanel(d))
 
   simulation.on('tick', () => {
     d3.select('#songs-graph-g .points')

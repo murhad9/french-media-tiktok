@@ -109,3 +109,23 @@ button:active {
   padding: 10px;
   visibility: hidden;
 }
+
+#songs .axis-text {
+  transform-origin: center;
+  transform-box: fill-box;
+  text-anchor: middle;
+}
+
+#songs #songs-sidebar-buttons {
+  display: flex;
+  justify-content: center;
+  padding-right: 300px;
+}
+
+#songs .songs-button {
+  width: 100px;
+  margin: 20px 5px;
+  padding: 6px;
+  font-family: "Roboto";
+  font-size: 14px;
+}
