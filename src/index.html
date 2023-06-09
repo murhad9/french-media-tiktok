@@ -8,15 +8,18 @@
 
     <link rel="stylesheet" href="assets/style.css">
     <link rel="stylesheet" href="assets/typography.css">
+
+    <script src="https://d3js.org/d3.v7.js"></script>
+    <script type="module" src="index.js"></script>
   </head>
 
   <body>
     <div class="tab-container">
-      <button class="tab-link" onclick="openPage('overview')" id="default-page">Overview of media outlets</button>
-      <button class="tab-link" onclick="openPage('hashtags')">Hashtags</button>
-      <button class="tab-link" onclick="openPage('video-length')">Video Length</button>
-      <button class="tab-link" onclick="openPage('songs')">Songs</button>
-      <button class="tab-link" onclick="openPage('video-posting')">Video Posting</button>
+      <button id="overview-tab" class="tab-link">Overview of media outlets</button>
+      <button id="hashtags-tab" class="tab-link">Hashtags</button>
+      <button id="video-length-tab" class="tab-link">Video Length</button>
+      <button id="songs-tab" class="tab-link">Songs</button>
+      <button id="video-posting-tab" class="tab-link">Video Posting</button>
     </div>
 
     <div id="overview" class="tab-content">
@@ -105,31 +108,5 @@
         </div>
       </main>
     </div>
-
-    <script type="module" src="video-posting/index.js" id="video-posting-script"></script>
-    <script type="module" src="hashtags/index.js" id="hashtags-script"></script>
-    <script type="module" src="video-length/index.js" id="video-length-script"></script>
-    <script type="module" src="songs/index.js" id="songs-script"></script>
-    <script type="module" src="overview/index.js" id="overview-script"></script>
-
-    <script src="https://d3js.org/d3.v7.js"></script>
-
-    <script>
-      function openPage(pageName) {
-        let tabcontent = document.getElementsByClassName("tab-content");
-        // hide all tab contents by default
-        for (let i = 0; i < tabcontent.length; i++) {
-          tabcontent[i].style.display = "none";
-        }
-        document.getElementById(pageName).style.display = "block";
-
-        reloadVideoPosting();
-        reloadHashtags();
-        reloadVideoLength();
-        reloadSongs();
-      }
-
-      document.getElementById("default-page").click();
-    </script>
   </body>
 </html>

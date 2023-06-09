@@ -6,15 +6,14 @@ import * as viz from './scripts/heatmap_viz.js'
 import * as legend from './scripts/legend.js'
 import * as hover from './scripts/hover.js'
 
-import * as d3Chromatic from 'd3-scale-chromatic';
+import * as d3Chromatic from 'd3-scale-chromatic'
 
 /**
- * @file This file is the entry-point for the the code for the data viz project of team 10
- * @author Team 10
- * @version v1.0.0
+ * Loads the overview tab.
+ *
+ * @param {*} d3 The d3 library
  */
-
-(function (d3) {
+export function load (d3) {
   let bounds
   let svgSize
   let graphSize
@@ -114,4 +113,4 @@ import * as d3Chromatic from 'd3-scale-chromatic';
       build()
     })
   })
-})(d3)
+}
