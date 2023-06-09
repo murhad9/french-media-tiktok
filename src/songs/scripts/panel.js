@@ -33,6 +33,11 @@ export function display (d) {
     .style('font-weight', 'bold')
     .text(d.musiqueTitre)
 
+  panel.append('div')
+    .style('font-family', 'Roboto')
+    .style('font-size', '18px')
+    .text(d.musiqueArtiste)
+
   // Number of videos
   panel.append('div')
     .style('font-family', 'Roboto')

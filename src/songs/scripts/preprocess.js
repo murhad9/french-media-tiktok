@@ -199,32 +199,3 @@ export function normalizeColumn (data, targetColumn) {
 
   return data
 }
-
-/**
- * Group duplicate values of a column
- * and sum up their views, likes, shares and comments
- *
- * @param {object[]} data The data to analyze
- * @param {string} target The column to group the engagement
- * @returns {object[]} Songs with their summed engagements.
- */
-export function sumEngagementByColumn (data, target) {
-  const summedEngagementByColumn = {}
-  data.forEach(obj => {
-    const targetColumn = obj[target]
-    if (summedEngagementByColumn[targetColumn]) {
-      summedEngagementByColumn[targetColumn].views += parseInt(obj.vues)
-      summedEngagementByColumn[targetColumn].likes += parseInt(obj.likes)
-      summedEngagementByColumn[targetColumn].comments += parseInt(obj.commentaires)
-      summedEngagementByColumn[targetColumn].shares += parseInt(obj.partages)
-    } else {
-      summedEngagementByColumn[targetColumn] = {
-        views: parseInt(obj.vues),
-        likes: parseInt(obj.likes),
-        comments: parseInt(obj.commentaires),
-        shares: parseInt(obj.partages)
-      }
-    }
-  })
-  return summedEngagementByColumn
-}
