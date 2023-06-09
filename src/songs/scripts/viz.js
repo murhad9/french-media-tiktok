@@ -119,7 +119,7 @@ export function setRadiusScale (data, factor) {
   const minCount = d3.min(Object.values(data), song => song.count)
   const maxCount = d3.max(Object.values(data), song => song.count)
   return d3.scalePow()
-    .exponent(-1)
+    .exponent(0.5)
     .domain([minCount, maxCount])
     .range([4 * factor, 10 * factor])
 }
@@ -169,11 +169,21 @@ export function drawXAxis (xScale, height) {
  *
  * @param {*} simulation The force simulation used for the points
  * @param {*} radiusScale The scale used to calculate the radius of each point
+ * @param {*} panel The display panel, which should be dislayed when a circle is clicked
  */
-export function updateCircles (simulation, radiusScale) {
+export function updateCircles (simulation, radiusScale, panel) {
   d3.select('#songs-graph-g .points')
     .selectAll('circle')
     .attr('r', d => radiusScale(d.count))
+    .on('mouseover', function () {
+      const element = d3.select(this)
+      element.attr('r', d => radiusScale(d.count) * 1.5)
+      element.node().parentElement.append(this)
+    })
+    .on('mouseout', function () {
+      d3.select(this).attr('r', d => radiusScale(d.count))
+    })
+    .on('click', (event, d) => panel.display(d))
 
   simulation.on('tick', () => {
     d3.select('#songs-graph-g .points')

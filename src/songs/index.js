@@ -2,7 +2,7 @@
 
 import * as preproc from './scripts/preprocess.js'
 import * as viz from './scripts/viz.js'
-// import * as hover from './scripts/hover.js'
+import * as panel from './scripts/panel.js'
 
 /**
  * @file This file is the entry-point for the the code for the data viz project of team 10
@@ -19,8 +19,8 @@ window.reloadSongs = function () {
     let simulation
     let widthBound
 
-    const margin = { top: 35, right: 100, bottom: 35, left: 100 }
-    const radiusModulator = 2000 // the greater the value, the smaller the circles at the same window width
+    const margin = { top: 35, right: 300, bottom: 35, left: 50 }
+    const radiusModulator = 1600 // the greater the value, the smaller the circles at the same window width
 
     d3.csv('./data_source.csv', d3.autoType).then(function (data) {
       data = preproc.filterOutRowsByValue(data, 'musiqueTitre', /son original|original sound|sonido original|suono originale|sunet original|som original/)
@@ -38,6 +38,8 @@ window.reloadSongs = function () {
 
       widthBound = d3.select('#songs-beeswarm-plot').node().getBoundingClientRect().width
 
+      panel.initPanelDiv()
+
       setSizing()
       build()
 
@@ -47,7 +49,7 @@ window.reloadSongs = function () {
       function setSizing () {
         svgSize = {
           width: widthBound,
-          height: 550
+          height: 400
         }
 
         graphSize = {
@@ -72,7 +74,7 @@ window.reloadSongs = function () {
 
         simulation = viz.getSimulation(data, xScale, graphSize.height / 2, 'vuesAverage', radiusScale)
 
-        viz.updateCircles(simulation, radiusScale)
+        viz.updateCircles(simulation, radiusScale, panel)
       }
 
       /**
@@ -86,16 +88,7 @@ window.reloadSongs = function () {
         simulation.stop()
         simulation = viz.getSimulation(data, xScale, graphSize.height / 2, 'vuesAverage', radiusScale)
 
-        viz.updateCircles(simulation, radiusScale)
-
-        // hover.setRectHandler(
-        //   xScale,
-        //   yScale,
-        //   hover.rectSelected,
-        //   hover.rectUnselected,
-        //   hover.selectTicks,
-        //   hover.unselectTicks
-        // )
+        viz.updateCircles(simulation, radiusScale, panel)
       }
 
       window.addEventListener('resize', () => {

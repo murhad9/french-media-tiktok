@@ -66,34 +66,9 @@ button:active {
   background-color: #f6f6f6;
 }
 
-.title,
-.axis-text {
-  transform-origin: center;
-  transform-box: fill-box;
-  text-anchor: middle;
-}
-
 .viz-container {
   height: 100%;
   padding: 0 100px;
-}
-
-.graph {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.info {
-  pointer-events: none;
-  font-family: "Roboto";
-}
-
-.axis text {
-  font-family: "Roboto";
-  cursor: default;
 }
 
 /************************** OVERVIEW CSS RULES **************************
@@ -110,4 +85,27 @@ button:active {
 
 #overview .axis path {
   opacity: 0;
+}
+
+/************************** SONGS CSS RULES **************************
+ *
+ * All of the CSS rules for the "Songs" tab.
+ *
+ * Every selector is prefixed by #songs and therefore only applies to
+ * elements within the div associated with the tab.
+ */
+
+#songs #songs-beeswarm-plot {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#songs #songs-panel {
+  width: 300px;
+  border: 1px solid black;
+  padding: 10px;
+  visibility: hidden;
 }
