@@ -129,3 +129,7 @@ button:active {
   font-family: "Roboto";
   font-size: 14px;
 }
+
+#songs .points .selected {
+  fill: red;
+}

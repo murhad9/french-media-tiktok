@@ -55,7 +55,10 @@ export function displayPanel (d) {
     .style('font-size', '12px')
     .style('cursor', 'pointer')
     .text('CLOSE')
-    .on('click', () => panel.style('visibility', 'hidden'))
+    .on('click', () => {
+      panel.style('visibility', 'hidden')
+      d3.select('#songs-graph-g .points .selected').classed('selected', false)
+    })
 
   // Song title
   panel.append('div')

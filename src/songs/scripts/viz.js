@@ -221,7 +221,11 @@ export function updateCircles (simulation, radiusScale, displayPanel) {
     .on('mouseout', function () {
       d3.select(this).attr('r', d => radiusScale(d.count))
     })
-    .on('click', (event, d) => displayPanel(d))
+    .on('click', (event, d) => {
+      d3.select('#songs-graph-g .points .selected').classed('selected', false)
+      d3.select(event.target).classed('selected', true)
+      displayPanel(d)
+    })
 
   simulation.on('tick', () => {
     d3.select('#songs-graph-g .points')
