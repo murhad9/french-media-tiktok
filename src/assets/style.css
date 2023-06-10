@@ -5,7 +5,7 @@
  * Make another section like this one and prefix all of the selectors
  * with the ID if the div element for your tab.
  *
- * For an example, refer to the OVERVIEW CSS RULES section of this same
+ * For an example, refer to the SONGS CSS RULES section of this same
  * file.
  */
 
@@ -71,22 +71,6 @@ button:active {
   padding: 0 100px;
 }
 
-/************************** OVERVIEW CSS RULES **************************
- *
- * All of the CSS rules for the "Overview of media outlets" tab.
- *
- * Every selector is prefixed by #overview and therefore only applies to
- * elements within the div associated with the tab.
- */
-
-#overview .tick line {
-  visibility: hidden;
-}
-
-#overview .axis path {
-  opacity: 0;
-}
-
 /************************** SONGS CSS RULES **************************
  *
  * All of the CSS rules for the "Songs" tab.
@@ -108,4 +92,20 @@ button:active {
   border: 1px solid black;
   padding: 10px;
   visibility: hidden;
+}
+
+/************************** VIDEO POSTING CSS RULES **************************
+ *
+ * All of the CSS rules for the "Overview of media outlets" tab.
+ *
+ * Every selector is prefixed by #overview and therefore only applies to
+ * elements within the div associated with the tab.
+ */
+
+#video-posting .tick line {
+  visibility: hidden;
+}
+
+#video-posting .axis path {
+  opacity: 0;
 }
