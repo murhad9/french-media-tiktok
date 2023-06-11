@@ -16,29 +16,33 @@ import * as d3Chromatic from 'd3-scale-chromatic'
 export function load (d3) {
   let bounds
   let svgSize
+  // eslint-disable-next-line no-unused-vars
   let graphSize
 
   const margin = { top: 35, right: 200, bottom: 35, left: 200 }
   // TODO: Use this file for welcom vizs
-  const xScale = d3.scaleBand().padding(0.05)
-  const yScale = d3.scaleBand().padding(0.2)
+  // const xScale = d3.scaleBand().padding(0.05)
+  // const yScale = d3.scaleBand().padding(0.2)
   const colorScale = d3.scaleSequential(d3Chromatic.interpolateBuPu)
 
   d3.csv('./data_source.csv', d3.autoType).then(function (data) {
     // These are just examples
-    data = preproc.addTimeBlocks(preproc.processDateTime(data))
-    data = preproc.aggregateColumns(
-      data,
-      ['vues', 'likes', 'partages', 'commentaires'],
-      ['dayOfWeek', 'timeBlock']
-    )
-    data = preproc.sortByColumns(
-      data,
-      ['averageVues', 'vues', 'likes', 'partages', 'commentaires'],
-      true
-    )
-    data = preproc.normalizeColumn(data, 'vuesAverage')
-    viz.setColorScaleDomain(colorScale, data, 'vuesAverageNormalized')
+    // data = preproc.addTimeBlocks(preproc.processDateTime(data))
+    // data = preproc.aggregateColumns(
+    //   data,
+    //   ['vues', 'likes', 'partages', 'commentaires'],
+    //   ['dayOfWeek', 'timeBlock']
+    // )
+    // data = preproc.sortByColumns(
+    //   data,
+    //   ['averageVues', 'vues', 'likes', 'partages', 'commentaires'],
+    //   true
+    // )
+    // data = preproc.normalizeColumn(data, 'vuesAverage')
+    // viz.setColorScaleDomain(colorScale, data, 'vuesAverageNormalized')
+
+
+    data = preproc.topTenIdealVideo(data)
 
     legend.initGradient(colorScale)
     legend.initLegendBar()
@@ -47,9 +51,10 @@ export function load (d3) {
     const g = helper.generateG(margin)
 
     helper.appendAxes(g)
-    viz.appendRects(data)
+   
 
     setSizing()
+    viz.appendRects(data, 950, svgSize.height)
     build()
 
     /**
@@ -78,37 +83,37 @@ export function load (d3) {
      *   This function builds the graph.
      */
     function build () {
-      viz.updateXScale(xScale, graphSize.width)
-      viz.updateYScale(
-        yScale,
-        preproc.getUniqueTimeBlocks(data),
-        graphSize.height
-      )
+      // viz.updateXScale(xScale, graphSize.width)
+      // viz.updateYScale(
+      //   yScale,
+      //   preproc.getUniqueTimeBlocks(data),
+      //   graphSize.height
+      // )
 
-      viz.drawXAxis(xScale)
-      viz.drawYAxis(yScale, graphSize.width)
+      // viz.drawXAxis(xScale)
+      // viz.drawYAxis(yScale, graphSize.width)
 
-      viz.rotateYTicks()
+      // viz.rotateYTicks()
 
-      viz.updateRects(xScale, yScale, colorScale)
+      // viz.updateRects(xScale, yScale, colorScale)
 
-      hover.setRectHandler(
-        xScale,
-        yScale,
-        hover.rectSelected,
-        hover.rectUnselected,
-        hover.selectTicks,
-        hover.unselectTicks
-      )
+      // hover.setRectHandler(
+      //   xScale,
+      //   yScale,
+      //   hover.rectSelected,
+      //   hover.rectUnselected,
+      //   hover.selectTicks,
+      //   hover.unselectTicks
+      // )
 
-      legend.draw(
-        margin.left / 2,
-        margin.top + 5,
-        graphSize.height - 10,
-        15,
-        'url(#gradient)',
-        colorScale
-      )
+      // legend.draw(
+      //   margin.left / 2,
+      //   margin.top + 5,
+      //   graphSize.height - 10,
+      //   15,
+      //   'url(#gradient)',
+      //   colorScale
+      // )
     }
 
     window.addEventListener('resize', () => {

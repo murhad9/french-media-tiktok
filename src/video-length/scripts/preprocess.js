@@ -184,3 +184,118 @@ export function normalizeColumn (data, targetColumn) {
 
   return data
 }
+
+export function weightFeatures(data) {
+  let numberOfLikes = 0
+  let numberOfShares = 0
+  let numberOfComments = 0
+  let numberOfViews = 0
+
+  for (let i = 0; i < data.length ; i++) {
+    numberOfLikes += data[i].likes
+    numberOfShares += data[i].partages
+    numberOfComments += data[i].commentaires
+    numberOfViews += data[i].vues
+  }
+
+  const numberOfEngagementsData = numberOfLikes + numberOfShares + numberOfComments + numberOfViews
+
+  return [numberOfLikes / numberOfEngagementsData, numberOfShares/numberOfEngagementsData, numberOfComments/numberOfEngagementsData, numberOfViews/numberOfEngagementsData]
+}
+
+export function regrouperParDuree(data) {
+  const groupes = {}
+
+  data.forEach((objet) => {
+    const duréeSecondes = objet.duréeSecondes
+    const likes = objet.likes
+    const partages = objet.partages
+    const commentaires = objet.commentaires
+    const vues = objet.vues
+
+    if (groupes[duréeSecondes]) {
+      groupes[duréeSecondes].likes += likes
+      groupes[duréeSecondes].partages += partages
+      groupes[duréeSecondes].commentaires += commentaires
+      groupes[duréeSecondes].vues += vues
+      groupes[duréeSecondes].count++
+    } else {
+      groupes[duréeSecondes] = {
+        duréeSecondes: duréeSecondes,
+        likes: likes,
+        partages: partages,
+        commentaires: commentaires,
+        vues: vues,
+        count: 1
+      }
+    }
+  })
+
+  const nouveauTableau = Object.values(groupes).map((groupe) => {
+    const moyenneLikes = groupe.likes / groupe.count
+    const moyennePartages = groupe.partages / groupe.count
+    const moyenneCommentaires = groupe.commentaires / groupe.count
+    const moyenneVues = groupe.vues / groupe.count
+    return {
+      duréeSecondes: groupe.duréeSecondes,
+      likes: moyenneLikes,
+      partages: moyennePartages,
+      commentaires: moyenneCommentaires,
+      vues: moyenneVues
+    }
+  })
+
+  return nouveauTableau
+}
+
+export function topTenIdealVideo(data) {
+  const newData = regrouperParDuree(data)
+  const allWeight = weightFeatures(newData)
+
+
+  const tableau = {}
+  newData.forEach((objet) => { 
+    tableau[objet.duréeSecondes] = {
+      duréeSecondes: objet.duréeSecondes,
+      likes: objet.likes,
+      partages: objet.partages,
+      commentaires: objet.commentaires,
+      vues: objet.vues,
+      engament : allWeight[0] * objet.likes + allWeight[1] * objet.partages + allWeight[2] * objet.commentaires + allWeight[3] * objet.vues
+      
+    }
+  }
+  
+  )
+  // Convertir le dictionnaire en tableau d'objets clé-valeur
+  const entries = Object.entries(tableau)
+
+  // Trier le tableau par valeur décroissante
+  entries.sort((a, b) => b[1].engament - a[1].engament)
+
+ 
+  const finalData = []
+  for (const el of entries.slice(0, 10)) {
+    const x = {
+      duréeSecondes: el[1].duréeSecondes,
+      likes: el[1].likes,
+      partages: el[1].partages,
+      commentaires: el[1].commentaires,
+      vues: el[1].vues,
+      engament : el[1].engament
+    }
+    finalData.push(x)
+  }
+
+  console.log(finalData)
+  return finalData
+}
+
+// const tableau = [
+//   { duree: 10, age: 30 },
+//   { duree: 10, age: 25 },
+//   { duree: 5, age: 35 }
+// ];
+
+// const nouveauTableau = regrouperParDuree(tableau);
+// console.log(nouveauTableau);

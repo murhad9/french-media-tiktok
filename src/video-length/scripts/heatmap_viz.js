@@ -5,26 +5,26 @@
  * @param {object[]} data The data to be displayed
  * @param {string} targetColumn The column to use as domain
  */
-export function setColorScaleDomain (colorScale, data, targetColumn) {
-  const averageViews = data.map((entry) => entry[targetColumn])
-  colorScale.domain(d3.extent(averageViews))
-}
+// export function setColorScaleDomain (colorScale, data, targetColumn) {
+//   const averageViews = data.map((entry) => entry[targetColumn])
+//   colorScale.domain(d3.extent(averageViews))
+// }
 
 /**
  * For each data element, appends a group 'g' to which an SVG rect is appended
  *
  * @param {object[]} data The data to use for binding
  */
-export function appendRects (data) {
-  // TODO : Append SVG rect elements
-  d3.select('#video-length-graph-g')
-    .selectAll('g.cell')
-    .data(data)
-    .enter()
-    .append('g')
-    .attr('class', 'cell')
-    .append('rect')
-}
+// export function appendRects (data) {
+//   // TODO : Append SVG rect elements
+//   d3.select('#video-length-graph-g')
+//     .selectAll('g.cell')
+//     .data(data)
+//     .enter()
+//     .append('g')
+//     .attr('class', 'cell')
+//     .append('rect')
+// }
 
 /**
  * Updates the domain and range of the scale for the x axis
@@ -32,18 +32,18 @@ export function appendRects (data) {
  * @param {*} xScale The scale for the x axis
  * @param {number} width The width of the diagram
  */
-export function updateXScale (xScale, width) {
-  const daysOfWeekDomain = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday'
-  ]
-  xScale.domain(daysOfWeekDomain).range([0, width])
-}
+// export function updateXScale (xScale, width) {
+//   const daysOfWeekDomain = [
+//     'Sunday',
+//     'Monday',
+//     'Tuesday',
+//     'Wednesday',
+//     'Thursday',
+//     'Friday',
+//     'Saturday'
+//   ]
+//   xScale.domain(daysOfWeekDomain).range([0, width])
+// }
 
 /**
  * Updates the domain and range of the scale for the y axis
@@ -52,21 +52,21 @@ export function updateXScale (xScale, width) {
  * @param {object[]} timeBlocks The names of the neighborhoods
  * @param {number} height The height of the diagram
  */
-export function updateYScale (yScale, timeBlocks, height) {
-  const sortedTimeBlocks = timeBlocks.sort()
-  yScale.domain(sortedTimeBlocks).range([0, height])
-}
+// export function updateYScale (yScale, timeBlocks, height) {
+//   const sortedTimeBlocks = timeBlocks.sort()
+//   yScale.domain(sortedTimeBlocks).range([0, height])
+// }
 
 /**
  *  Draws the X axis at the top of the diagram.
  *
  *  @param {*} xScale The scale to use to draw the axis
  */
-export function drawXAxis (xScale) {
-  // TODO : Draw X axis
-  const xAxisGenerator = d3.axisTop().scale(xScale)
-  d3.select('#video-length-graph-g .x').call(xAxisGenerator)
-}
+// export function drawXAxis (xScale) {
+//   // TODO : Draw X axis
+//   const xAxisGenerator = d3.axisTop().scale(xScale)
+//   d3.select('#video-length-graph-g .x').call(xAxisGenerator)
+// }
 
 /**
  * Draws the Y axis to the right of the diagram.
@@ -74,42 +74,78 @@ export function drawXAxis (xScale) {
  * @param {*} yScale The scale to use to draw the axis
  * @param {number} width The width of the graphic
  */
-export function drawYAxis (yScale, width) {
-  // TODO : Draw Y axis
-  const yAxisGenerator = d3.axisRight().scale(yScale)
-  d3.select('#video-length-graph-g .y')
-    .attr('transform', `translate(${width},0)`)
-    .call(yAxisGenerator)
-}
+// export function drawYAxis (yScale, width) {
+//   // TODO : Draw Y axis
+//   const yAxisGenerator = d3.axisRight().scale(yScale)
+//   d3.select('#video-length-graph-g .y')
+//     .attr('transform', `translate(${width},0)`)
+//     .call(yAxisGenerator)
+// }
 
 /**
  * Rotates the ticks on the Y axis 30 degrees towards the left.
  */
-export function rotateYTicks () {
-  // TODO : Rotate Y ticks.
-  d3.selectAll('#video-length-graph-g .y .tick').attr('transform', function () {
-    return d3.select(this).attr('transform') + ` rotate(${-30})`
-  })
-}
+// export function rotateYTicks () {
+//   // TODO : Rotate Y ticks.
+//   d3.selectAll('#video-length-graph-g .y .tick').attr('transform', function () {
+//     return d3.select(this).attr('transform') + ` rotate(${-30})`
+//   })
+// }
 
 /**
  * After the rectangles have been appended, this function dictates
  * their position, size and fill color.
- *
  * @param {*} xScale The x scale used to position the rectangles
  * @param {*} yScale The y scale used to position the rectangles
  * @param {*} colorScale The color scale used to set the rectangles' colors
  * @param {string} targetColumn The column to use as domain
+ * @param data
  */
-export function updateRects (xScale, yScale, colorScale, targetColumn) {
-  // TODO : Set position, size and fill of rectangles according to bound data
-  d3.selectAll('#video-length-graph-g .cell')
-    .attr(
-      'transform',
-      (d) => `translate(${xScale(d.dayOfWeek)},${yScale(d.timeBlock)})`
-    )
-    .select('rect')
-    .attr('width', xScale.bandwidth())
-    .attr('height', yScale.bandwidth())
-    .attr('fill', (d) => colorScale(d[targetColumn]))
+// export function updateRects (xScale, yScale, colorScale, targetColumn) {
+//   // TODO : Set position, size and fill of rectangles according to bound data
+//   d3.selectAll('#video-length-graph-g .cell')
+//     .attr(
+//       'transform',
+//       (d) => `translate(${xScale(d.dayOfWeek)},${yScale(d.timeBlock)})`
+//     )
+//     .select('rect')
+//     .attr('width', xScale.bandwidth())
+//     .attr('height', yScale.bandwidth())
+//     .attr('fill', (d) => colorScale(d[targetColumn]))
+// }
+
+export function appendRects (data, width, height) {
+  const svg = d3.select('#video-length-graph-g')
+  const x = d3
+    .scaleBand()
+    .domain(data.map(d => d.duréeSecondes))
+    .padding(0.2)
+    .range([0, 1000])
+
+  svg.append('g')
+    .call(d3.axisBottom(x))
+    .selectAll('text')
+    .attr('transform', 'translate(-10, 0) rotate(-45)')
+    .style('text-anchor', 'end')
+
+  // Add Y axis
+  const y = d3
+    .scaleLinear()
+    .domain([0, d3.max(data, d => d.engament)]) // Utilisation de d3.max pour obtenir la valeur maximale des étoiles
+    .range([height, 0])
+
+  svg.append('g').call(d3.axisLeft(y))
+
+  // Create and fill the bars
+  svg
+    .selectAll('.bar') // Utilisation de la classe ".bar" pour sélectionner les barres
+    .data(data)
+    .enter()
+    .append('rect')
+    .attr('class', 'bar') // Ajout de la classe "bar" pour les éléments <rect>
+    .attr('x', d => x(d.duréeSecondes))
+    .attr('y', d => y(d.engament))
+    .attr('width', x.bandwidth())
+    .attr('height', d => height - y(d.engament))
+    .attr('fill', '#d04a35')
 }
