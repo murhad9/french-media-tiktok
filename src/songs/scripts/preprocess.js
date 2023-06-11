@@ -33,12 +33,13 @@ export function trim (data, targets) {
  * Aggregates specific columns
  *
  * @param {object[]} data The data to analyze
- * @param {string} targets The columns to aggregate
+ * @param {string[]} sumCols The columns to aggregate into a sum
+ * @param {string[]} listCols The columns to aggregate into a list
  * @param {string[]} groupBy The columns to group by when aggregating
  * @returns {object[]} The data with the groupBy columns and the aggregated column
  */
-export function aggregateColumns (data, targets, groupBy) {
-  data = trim(data, targets.concat(groupBy))
+export function aggregateColumns (data, sumCols, listCols, groupBy) {
+  data = trim(data, sumCols.concat(groupBy).concat(listCols))
   const groupedData = d3.group(data, (d) => {
     return groupBy.map((column) => d[column]).join('-')
   })
@@ -48,11 +49,14 @@ export function aggregateColumns (data, targets, groupBy) {
       ...values[0],
       count: values.length
     }
-    targets.forEach((target) => {
+    sumCols.forEach((target) => {
       const sum = d3.sum(values, (d) => d[target])
       const average = sum / values.length
       aggregation[target] = sum
       aggregation[`${target}Average`] = Math.floor(average)
+    })
+    listCols.forEach((column) => {
+      aggregation[`${column}List`] = Array.from(new Set(values.map((value) => value[column])))
     })
     groupBy.forEach((column, index) => {
       aggregation[column] = key.split('-')[index]
@@ -198,33 +202,4 @@ export function normalizeColumn (data, targetColumn) {
   })
 
   return data
-}
-
-/**
- * Group duplicate values of a column
- * and sum up their views, likes, shares and comments
- *
- * @param {object[]} data The data to analyze
- * @param {string} target The column to group the engagement
- * @returns {object[]} Songs with their summed engagements.
- */
-export function sumEngagementByColumn (data, target) {
-  const summedEngagementByColumn = {}
-  data.forEach(obj => {
-    const targetColumn = obj[target]
-    if (summedEngagementByColumn[targetColumn]) {
-      summedEngagementByColumn[targetColumn].views += parseInt(obj.vues)
-      summedEngagementByColumn[targetColumn].likes += parseInt(obj.likes)
-      summedEngagementByColumn[targetColumn].comments += parseInt(obj.commentaires)
-      summedEngagementByColumn[targetColumn].shares += parseInt(obj.partages)
-    } else {
-      summedEngagementByColumn[targetColumn] = {
-        views: parseInt(obj.vues),
-        likes: parseInt(obj.likes),
-        comments: parseInt(obj.commentaires),
-        shares: parseInt(obj.partages)
-      }
-    }
-  })
-  return summedEngagementByColumn
 }

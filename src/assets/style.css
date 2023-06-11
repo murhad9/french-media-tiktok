@@ -94,11 +94,35 @@ button:active {
   visibility: hidden;
 }
 
+#songs .axis-text {
+  transform-origin: center;
+  transform-box: fill-box;
+  text-anchor: middle;
+}
+
+#songs #songs-sidebar-buttons {
+  display: flex;
+  justify-content: center;
+  padding-right: 300px;
+}
+
+#songs .songs-button {
+  width: 100px;
+  margin: 20px 5px;
+  padding: 6px;
+  font-family: "Roboto";
+  font-size: 14px;
+}
+
+#songs .points .selected {
+  fill: red;
+}
+
 /************************** VIDEO POSTING CSS RULES **************************
  *
- * All of the CSS rules for the "Overview of media outlets" tab.
+ * All of the CSS rules for the "Video posting" tab.
  *
- * Every selector is prefixed by #overview and therefore only applies to
+ * Every selector is prefixed by #video-posting and therefore only applies to
  * elements within the div associated with the tab.
  */
 
