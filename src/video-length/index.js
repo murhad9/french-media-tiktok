@@ -20,7 +20,7 @@ export function load (d3) {
   // eslint-disable-next-line no-unused-vars
   let graphSize
 
-  const margin = { top: 35, right: 200, bottom: 35, left: 200 }
+  const margin = { top: 35, right: 200, bottom: 50, left: 200 }
   // TODO: Use this file for welcom vizs
   // const xScale = d3.scaleBand().padding(0.05)
   // const yScale = d3.scaleBand().padding(0.2)
@@ -56,8 +56,6 @@ export function load (d3) {
    
 
     setSizing()
-    console.log(data)
-    viz.appendRects(data, 1500, svgSize.height, engagementCategory)
     build()
 
     /**
@@ -71,7 +69,7 @@ export function load (d3) {
 
       svgSize = {
         width: bounds.width,
-        height: 550
+        height: 500
       }
 
       graphSize = {
@@ -90,8 +88,8 @@ export function load (d3) {
       helper.initButtons()
 
       setSizing()
-      console.log(data)
-      viz.appendRects(data, 1500, svgSize.height, engagementCategory)
+      // console.log(data)
+      // viz.appendRects(data, graphSize.width, graphSize.height, engagementCategory)
       build()
     }
 
@@ -99,6 +97,7 @@ export function load (d3) {
      *   This function builds the graph.
      */
     function build () {
+      viz.appendRects(data, graphSize.width, graphSize.height, engagementCategory)
       // viz.updateXScale(xScale, graphSize.width)
       // viz.updateYScale(
       //   yScale,

@@ -115,6 +115,8 @@
 // }
 
 export function appendRects (data, width, height, engagementCategory) {
+  engagementCategory = 'likes' // temporaire
+
   const svg = d3.select('#video-length-graph-g')
   const x = d3
     .scaleBand()
@@ -124,12 +126,11 @@ export function appendRects (data, width, height, engagementCategory) {
     .padding(0.2)
     .range([0, width])
 
-  svg.append('g')
-    .attr('transform', `translate(0,${512})`)
+  d3.select('#video-length-graph-g .x.axis')
+    .attr('transform', `translate(0,${height})`)
     .call(d3.axisBottom(x))
     .selectAll('text')
-    
-    .attr('transform', 'translate(-10, -550) rotate(-45)')
+    .attr('transform', 'rotate(-45)')
     .style('text-anchor', 'end')
 
   // Add Y axis
@@ -140,91 +141,90 @@ export function appendRects (data, width, height, engagementCategory) {
     .domain([0, d3.max(data, d => d.likes)]) // Utilisation de d3.max pour obtenir la valeur maximale des étoiles
     .range([height, 0])
 
-  svg.append('g').call(d3.axisLeft(y))
+    d3.select('#video-length-graph-g .y.axis').call(d3.axisLeft(y))
 
-  // Create and fill the bars
-  svg
-    .selectAll('.bar') // Utilisation de la classe ".bar" pour sélectionner les barres
-    .data(data)
-    .enter()
-    .append('rect')
-    .attr('class', 'bar') // Ajout de la classe "bar" pour les éléments <rect>
-    .attr('x', d => x(d.intervalle1 + 's - ' +  d.intervalle2 + 's'))
-   
-    .attr('y', d => y(d.likes))
-    .attr('width', x.bandwidth())
-    .attr('height', d => height - y(d.likes))
-    .attr('fill', '#d04a35')
+    // Create and fill the bars
+    svg
+      .selectAll('.bar') // Utilisation de la classe ".bar" pour sélectionner les barres
+      .data(data)
+      .join('rect')
+      .attr('class', 'bar') // Ajout de la classe "bar" pour les éléments <rect>
+      .attr('x', d => x(d.intervalle1 + 's - ' +  d.intervalle2 + 's'))
+    
+      .attr('y', d => y(d.likes))
+      .attr('width', x.bandwidth())
+      .attr('height', d => height - y(d.likes))
+      .attr('fill', '#d04a35')
   } 
  
 
-  else if (engagementCategory === 'partages') {
-    const y = d3
-    .scaleLinear()
-    .domain([0, d3.max(data, d => d.partages)]) // Utilisation de d3.max pour obtenir la valeur maximale des étoiles
-    .range([height, 0])
+  // else if (engagementCategory === 'partages') {
+  //   const y = d3
+  //   .scaleLinear()
+  //   .domain([0, d3.max(data, d => d.partages)]) // Utilisation de d3.max pour obtenir la valeur maximale des étoiles
+  //   .range([height, 0])
 
-  svg.append('g').call(d3.axisLeft(y))
+  //   d3.select('#video-length-graph-g .y.axis').call(d3.axisLeft(y))
 
-  // Create and fill the bars
-  svg
-    .selectAll('.bar') // Utilisation de la classe ".bar" pour sélectionner les barres
-    .data(data)
-    .enter()
-    .append('rect')
-    .attr('class', 'bar') // Ajout de la classe "bar" pour les éléments <rect>
-    .attr('x', d => x(d.intervalle1 + 's - ' +  d.intervalle2 + 's'))
-   
-    .attr('y', d => y(d.partages))
-    .attr('width', x.bandwidth())
-    .attr('height', d => height - y(d.partages))
-    .attr('fill', '#d04a35')
-  } 
+  //   // Create and fill the bars
+  //   svg
+  //     .selectAll('.bar') // Utilisation de la classe ".bar" pour sélectionner les barres
+  //     .data(data)
+  //     .enter()
+  //     .append('rect')
+  //     .attr('class', 'bar') // Ajout de la classe "bar" pour les éléments <rect>
+  //     .attr('x', d => x(d.intervalle1 + 's - ' +  d.intervalle2 + 's'))
+    
+  //     .attr('y', d => y(d.partages))
+  //     .attr('width', x.bandwidth())
+  //     .attr('height', d => height - y(d.partages))
+  //     .attr('fill', '#d04a35')
+  // } 
 
-  else if (engagementCategory === 'commentaires') {
-    const y = d3
-    .scaleLinear()
-    .domain([0, d3.max(data, d => d.commentaires)]) // Utilisation de d3.max pour obtenir la valeur maximale des étoiles
-    .range([height, 0])
+  // else if (engagementCategory === 'commentaires') {
+  //   const y = d3
+  //   .scaleLinear()
+  //   .domain([0, d3.max(data, d => d.commentaires)]) // Utilisation de d3.max pour obtenir la valeur maximale des étoiles
+  //   .range([height, 0])
 
-  svg.append('g').call(d3.axisLeft(y))
+  //   d3.select('#video-length-graph-g .y.axis').call(d3.axisLeft(y))
 
-  // Create and fill the bars
-  svg
-    .selectAll('.bar') // Utilisation de la classe ".bar" pour sélectionner les barres
-    .data(data)
-    .enter()
-    .append('rect')
-    .attr('class', 'bar') // Ajout de la classe "bar" pour les éléments <rect>
-    .attr('x', d => x(d.intervalle1 + 's - ' +  d.intervalle2 + 's'))
-   
-    .attr('y', d => y(d.commentaires))
-    .attr('width', x.bandwidth())
-    .attr('height', d => height - y(d.commentaires))
-    .attr('fill', '#d04a35')
-  } 
+  //   // Create and fill the bars
+  //   svg
+  //     .selectAll('.bar') // Utilisation de la classe ".bar" pour sélectionner les barres
+  //     .data(data)
+  //     .enter()
+  //     .append('rect')
+  //     .attr('class', 'bar') // Ajout de la classe "bar" pour les éléments <rect>
+  //     .attr('x', d => x(d.intervalle1 + 's - ' +  d.intervalle2 + 's'))
+    
+  //     .attr('y', d => y(d.commentaires))
+  //     .attr('width', x.bandwidth())
+  //     .attr('height', d => height - y(d.commentaires))
+  //     .attr('fill', '#d04a35')
+  // } 
 
-  else if (engagementCategory === 'vues') {
-    const y = d3
-    .scaleLinear()
-    .domain([0, d3.max(data, d => d.vues)]) // Utilisation de d3.max pour obtenir la valeur maximale des étoiles
-    .range([height, 0])
+  // else if (engagementCategory === 'vues') {
+  //   const y = d3
+  //   .scaleLinear()
+  //   .domain([0, d3.max(data, d => d.vues)]) // Utilisation de d3.max pour obtenir la valeur maximale des étoiles
+  //   .range([height, 0])
 
-  svg.append('g').call(d3.axisLeft(y))
+  //   d3.select('#video-length-graph-g .y.axis').call(d3.axisLeft(y))
 
-  // Create and fill the bars
-  svg
-    .selectAll('.bar') // Utilisation de la classe ".bar" pour sélectionner les barres
-    .data(data)
-    .enter()
-    .append('rect')
-    .attr('class', 'bar') // Ajout de la classe "bar" pour les éléments <rect>
-    .attr('x', d => x(d.intervalle1 + 's - ' +  d.intervalle2 + 's'))
-   
-    .attr('y', d => y(d.vues))
-    .attr('width', x.bandwidth())
-    .attr('height', d => height - y(d.vues))
-    .attr('fill', '#d04a35')
-  } 
+  //   // Create and fill the bars
+  //   svg
+  //     .selectAll('.bar') // Utilisation de la classe ".bar" pour sélectionner les barres
+  //     .data(data)
+  //     .enter()
+  //     .append('rect')
+  //     .attr('class', 'bar') // Ajout de la classe "bar" pour les éléments <rect>
+  //     .attr('x', d => x(d.intervalle1 + 's - ' +  d.intervalle2 + 's'))
+    
+  //     .attr('y', d => y(d.vues))
+  //     .attr('width', x.bandwidth())
+  //     .attr('height', d => height - y(d.vues))
+  //     .attr('fill', '#d04a35')
+  // } 
   
 }

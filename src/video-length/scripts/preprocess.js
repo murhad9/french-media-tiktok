@@ -307,7 +307,7 @@ export function topTenIdealVideo (data) {
   //   finalData.push(x)
   // }
 
-  console.log(tab)
+  // console.log(tab)
   return tab
 }
 
