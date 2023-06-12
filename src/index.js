@@ -20,7 +20,7 @@ import * as videoPosting from './video-posting/index.js'
 
   overview.load(d3)
   hashtags.load(d3)
-  videoLength.load(d3,'likes' )
+  videoLength.load(d3)
   songs.load(d3)
   videoPosting.load(d3)
 
@@ -45,19 +45,4 @@ import * as videoPosting from './video-posting/index.js'
     document.getElementById(id).style.display = 'block'
     window.dispatchEvent(new Event('resize'))
   }
-
-
-  /**
-   * Videos lentgh functions
-   */
-  document.getElementById('likes').addEventListener('click', () => displayVideoByCategory('likes'))
-  document.getElementById('partages').addEventListener('click', () => displayVideoByCategory('partages'))
-  document.getElementById('vues').addEventListener('click', () => displayVideoByCategory('vues'))
-  document.getElementById('commentaires').addEventListener('click', () => displayVideoByCategory('commentaires'))
-
-  function displayVideoByCategory (category) {
-    videoLength.load(d3, category)
-    window.dispatchEvent(new Event('resize'))
-  }
-
 })(d3)

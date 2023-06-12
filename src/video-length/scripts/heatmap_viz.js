@@ -134,7 +134,7 @@ export function appendRects (data, width, height, engagementCategory) {
 
   // Add Y axis
 
-  if (engagementCategory = 'likes') {
+  if (engagementCategory === 'likes') {
     const y = d3
     .scaleLinear()
     .domain([0, d3.max(data, d => d.likes)]) // Utilisation de d3.max pour obtenir la valeur maximale des étoiles
@@ -158,7 +158,7 @@ export function appendRects (data, width, height, engagementCategory) {
   } 
  
 
-  if (engagementCategory = 'partages') {
+  else if (engagementCategory === 'partages') {
     const y = d3
     .scaleLinear()
     .domain([0, d3.max(data, d => d.partages)]) // Utilisation de d3.max pour obtenir la valeur maximale des étoiles
@@ -181,7 +181,7 @@ export function appendRects (data, width, height, engagementCategory) {
     .attr('fill', '#d04a35')
   } 
 
-  if (engagementCategory = 'commentaires') {
+  else if (engagementCategory === 'commentaires') {
     const y = d3
     .scaleLinear()
     .domain([0, d3.max(data, d => d.commentaires)]) // Utilisation de d3.max pour obtenir la valeur maximale des étoiles
@@ -204,7 +204,7 @@ export function appendRects (data, width, height, engagementCategory) {
     .attr('fill', '#d04a35')
   } 
 
-  if (engagementCategory = 'vues') {
+  else if (engagementCategory === 'vues') {
     const y = d3
     .scaleLinear()
     .domain([0, d3.max(data, d => d.vues)]) // Utilisation de d3.max pour obtenir la valeur maximale des étoiles

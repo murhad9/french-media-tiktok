@@ -13,9 +13,10 @@ import * as d3Chromatic from 'd3-scale-chromatic'
  *
  * @param {*} d3 The d3 library
  */
-export function load (d3, engagementCategory) {
+export function load (d3) {
   let bounds
   let svgSize
+  let engagementCategory = 'likes'
   // eslint-disable-next-line no-unused-vars
   let graphSize
 
@@ -51,6 +52,7 @@ export function load (d3, engagementCategory) {
     const g = helper.generateG(margin)
 
     helper.appendAxes(g)
+    helper.initButtons(switchAxis)
    
 
     setSizing()
@@ -78,6 +80,19 @@ export function load (d3, engagementCategory) {
       }
 
       helper.setCanvasSize(svgSize.width, svgSize.height)
+    }
+
+    function switchAxis (category) {
+      engagementCategory = category
+      const g = helper.generateG(margin)
+
+      helper.appendAxes(g)
+      helper.initButtons()
+
+      setSizing()
+      console.log(data)
+      viz.appendRects(data, 1500, svgSize.height, engagementCategory)
+      build()
     }
 
     /**

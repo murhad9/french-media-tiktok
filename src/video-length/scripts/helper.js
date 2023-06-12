@@ -1,3 +1,4 @@
+
 /**
  * Generates the SVG element g which will contain the data visualisation.
  *
@@ -35,4 +36,30 @@ export function appendAxes (g) {
   g.append('g').attr('class', 'x axis')
 
   g.append('g').attr('class', 'y axis')
+}
+
+export function initButtons (switchAxis) {
+  const buttonDiv = d3.select('.video-viz-container')
+    .append('div')
+    
+
+  buttonDiv.append('button')
+    
+    .text('likes')
+    .on('click', () => switchAxis('vuesAverage'))
+
+  buttonDiv.append('button')
+    
+    .text('commentaires')
+    .on('click', () => switchAxis('likesAverage'))
+
+  buttonDiv.append('button')
+    
+    .text('partages')
+    .on('click', () => switchAxis('commentairesAverage'))
+
+  buttonDiv.append('button')
+  
+    .text('vues')
+    .on('click', () => switchAxis('partagesAverage'))
 }
