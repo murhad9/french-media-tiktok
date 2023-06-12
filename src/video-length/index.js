@@ -13,7 +13,7 @@ import * as d3Chromatic from 'd3-scale-chromatic'
  *
  * @param {*} d3 The d3 library
  */
-export function load (d3) {
+export function load (d3, engagementCategory) {
   let bounds
   let svgSize
   // eslint-disable-next-line no-unused-vars
@@ -44,9 +44,9 @@ export function load (d3) {
 
     data = preproc.topTenIdealVideo(data)
 
-    legend.initGradient(colorScale)
-    legend.initLegendBar()
-    legend.initLegendAxis()
+    // legend.initGradient(colorScale)
+    // legend.initLegendBar()
+    // legend.initLegendAxis()
 
     const g = helper.generateG(margin)
 
@@ -54,7 +54,8 @@ export function load (d3) {
    
 
     setSizing()
-    viz.appendRects(data, 950, svgSize.height)
+    console.log(data)
+    viz.appendRects(data, 1500, svgSize.height, engagementCategory)
     build()
 
     /**

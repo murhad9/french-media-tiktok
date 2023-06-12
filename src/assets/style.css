@@ -109,3 +109,7 @@ button:active {
 #video-posting .axis path {
   opacity: 0;
 }
+
+.categories {
+  margin-left: 50px;
+}
