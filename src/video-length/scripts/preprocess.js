@@ -200,7 +200,7 @@ export function weightFeatures(data) {
 
   const numberOfEngagementsData = numberOfLikes + numberOfShares + numberOfComments + numberOfViews
 
-  return [numberOfLikes / numberOfEngagementsData, numberOfShares/numberOfEngagementsData, numberOfComments/numberOfEngagementsData, numberOfViews/numberOfEngagementsData]
+  return [numberOfLikes / numberOfEngagementsData, numberOfShares / numberOfEngagementsData, numberOfComments / numberOfEngagementsData, numberOfViews / numberOfEngagementsData]
 }
 
 export function regrouperParDuree(data) {
@@ -248,48 +248,69 @@ export function regrouperParDuree(data) {
   return nouveauTableau
 }
 
-export function topTenIdealVideo(data) {
-  const newData = regrouperParDuree(data)
-  const allWeight = weightFeatures(newData)
-
-
-  const tableau = {}
-  newData.forEach((objet) => { 
-    tableau[objet.duréeSecondes] = {
-      duréeSecondes: objet.duréeSecondes,
-      likes: objet.likes,
-      partages: objet.partages,
-      commentaires: objet.commentaires,
-      vues: objet.vues,
-      engament : allWeight[0] * objet.likes + allWeight[1] * objet.partages + allWeight[2] * objet.commentaires + allWeight[3] * objet.vues
-      
+export function topTenIdealVideo (data) {
+  const tab = []
+  let init = 0
+  for (let index = 0; index < 25; index++) {
+    const temp = {
+      intervalle1: init,
+      intervalle2: init + 25,
+      likes: 0,
+      partages: 0,
+      commentaires: 0,
+      vues: 0,
+      count: 0
     }
+    init += 25
+    tab.push(temp)
   }
-  
-  )
-  // Convertir le dictionnaire en tableau d'objets clé-valeur
-  const entries = Object.entries(tableau)
 
-  // Trier le tableau par valeur décroissante
-  entries.sort((a, b) => b[1].engament - a[1].engament)
+
+
+  const newData = regrouperParDuree(data)
+
+  newData.forEach((objet) => {
+    for (const el of tab) {
+      if (el.intervalle1 <= objet.duréeSecondes && el.intervalle2 > objet.duréeSecondes) {
+        el.likes += objet.likes
+        el.partages += objet.partages
+        el.commentaires += objet.commentaires
+        el.vues += objet.vues
+        el.count++
+      }
+    }
+  })
+
+  tab.forEach((objet) => { 
+    objet.likes = objet.likes / objet.count
+    objet.partages = objet.partages / objet.count
+    objet.commentaires = objet.commentaires / objet.count
+    objet.vues = objet.vues / objet.count
+  })
+  // // Convertir le dictionnaire en tableau d'objets clé-valeur
+  // const entries = Object.entries(tableau)
+
+  // // Trier le tableau par valeur décroissante
+  // entries.sort((a, b) => b[1].engament - a[1].engament)
 
  
-  const finalData = []
-  for (const el of entries.slice(0, 10)) {
-    const x = {
-      duréeSecondes: el[1].duréeSecondes,
-      likes: el[1].likes,
-      partages: el[1].partages,
-      commentaires: el[1].commentaires,
-      vues: el[1].vues,
-      engament : el[1].engament
-    }
-    finalData.push(x)
-  }
+  // const finalData = []
+  // for (const el of entries) {
+  //   const x = {
+  //     duréeSecondes: el[1].duréeSecondes,
+  //     likes: el[1].likes,
+  //     partages: el[1].partages,
+  //     commentaires: el[1].commentaires,
+  //     vues: el[1].vues,
+  //     engament : el[1].engament
+  //   }
+  //   finalData.push(x)
+  // }
 
-  console.log(finalData)
-  return finalData
+  console.log(tab)
+  return tab
 }
+
 
 // const tableau = [
 //   { duree: 10, age: 30 },

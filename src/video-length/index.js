@@ -16,6 +16,7 @@ import * as d3Chromatic from 'd3-scale-chromatic'
 export function load (d3) {
   let bounds
   let svgSize
+  let engagementCategory = 'likes'
   // eslint-disable-next-line no-unused-vars
   let graphSize
 
@@ -44,17 +45,19 @@ export function load (d3) {
 
     data = preproc.topTenIdealVideo(data)
 
-    legend.initGradient(colorScale)
-    legend.initLegendBar()
-    legend.initLegendAxis()
+    // legend.initGradient(colorScale)
+    // legend.initLegendBar()
+    // legend.initLegendAxis()
 
     const g = helper.generateG(margin)
 
     helper.appendAxes(g)
+    helper.initButtons(switchAxis)
    
 
     setSizing()
-    viz.appendRects(data, 950, svgSize.height)
+    console.log(data)
+    viz.appendRects(data, 1500, svgSize.height, engagementCategory)
     build()
 
     /**
@@ -77,6 +80,19 @@ export function load (d3) {
       }
 
       helper.setCanvasSize(svgSize.width, svgSize.height)
+    }
+
+    function switchAxis (category) {
+      engagementCategory = category
+      const g = helper.generateG(margin)
+
+      helper.appendAxes(g)
+      helper.initButtons()
+
+      setSizing()
+      console.log(data)
+      viz.appendRects(data, 1500, svgSize.height, engagementCategory)
+      build()
     }
 
     /**
