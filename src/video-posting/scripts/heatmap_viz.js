@@ -16,7 +16,6 @@ export function setColorScaleDomain (colorScale, data, targetColumn) {
  * @param {object[]} data The data to use for binding
  */
 export function appendRects (data) {
-  // TODO : Append SVG rect elements
   d3.select('#video-posting-graph-g')
     .selectAll('g.cell')
     .data(data)
@@ -34,13 +33,13 @@ export function appendRects (data) {
  */
 export function updateXScale (xScale, width) {
   const daysOfWeekDomain = [
-    'Sunday',
     'Monday',
     'Tuesday',
     'Wednesday',
     'Thursday',
     'Friday',
-    'Saturday'
+    'Saturday',
+    'Sunday'
   ]
   xScale.domain(daysOfWeekDomain).range([0, width])
 }

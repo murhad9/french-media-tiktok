@@ -37,8 +37,7 @@ export function load (d3) {
       ['averageVues', 'vues', 'likes', 'partages', 'commentaires'],
       true
     )
-    data = preproc.normalizeColumn(data, 'vuesAverage')
-    viz.setColorScaleDomain(colorScale, data, 'vuesAverageNormalized')
+    viz.setColorScaleDomain(colorScale, data, 'vuesAverage')
 
     legend.initGradient(colorScale)
     legend.initLegendBar()
@@ -90,7 +89,7 @@ export function load (d3) {
 
       viz.rotateYTicks()
 
-      viz.updateRects(xScale, yScale, colorScale)
+      viz.updateRects(xScale, yScale, colorScale, 'vuesAverage')
 
       hover.setRectHandler(
         xScale,
