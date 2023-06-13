@@ -8,11 +8,16 @@ import * as hover from './scripts/hover.js'
 
 import * as d3Chromatic from 'd3-scale-chromatic'
 
+import d3Tip from 'd3-tip'
+
 /**
  * Loads the video length tab.
  *
  * @param {*} d3 The d3 library
  */
+
+
+
 export function load (d3) {
   let bounds
   let svgSize
@@ -20,11 +25,16 @@ export function load (d3) {
   // eslint-disable-next-line no-unused-vars
   let graphSize
 
-  const margin = { top: 35, right: 200, bottom: 35, left: 200 }
+  const tip = d3Tip().attr('class', 'd3-tip').html(function (d) { 
+    return helper.getContents(d, engagementCategory)  
+  })
+  d3.select('.video-length-heatmap-svg').call(tip)
+
+  const margin = { top: 35, right: 200, bottom: 50, left: 50 }
   // TODO: Use this file for welcom vizs
   // const xScale = d3.scaleBand().padding(0.05)
   // const yScale = d3.scaleBand().padding(0.2)
-  const colorScale = d3.scaleSequential(d3Chromatic.interpolateBuPu)
+  // const colorScale = d3.scaleSequential(d3Chromatic.interpolateBuPu)
 
   d3.csv('./data_source.csv', d3.autoType).then(function (data) {
     // These are just examples
@@ -56,8 +66,6 @@ export function load (d3) {
    
 
     setSizing()
-    console.log(data)
-    viz.appendRects(data, 1500, svgSize.height, engagementCategory)
     build()
 
     /**
@@ -71,7 +79,7 @@ export function load (d3) {
 
       svgSize = {
         width: bounds.width,
-        height: 550
+        height: 500
       }
 
       graphSize = {
@@ -87,11 +95,11 @@ export function load (d3) {
       const g = helper.generateG(margin)
 
       helper.appendAxes(g)
-      helper.initButtons()
+      // helper.initButtons()
 
       setSizing()
-      console.log(data)
-      viz.appendRects(data, 1500, svgSize.height, engagementCategory)
+       console.log(engagementCategory)
+       viz.appendRects(data, graphSize.width, graphSize.height, engagementCategory, tip)
       build()
     }
 
@@ -99,6 +107,7 @@ export function load (d3) {
      *   This function builds the graph.
      */
     function build () {
+      viz.appendRects(data, graphSize.width, graphSize.height, engagementCategory, tip)
       // viz.updateXScale(xScale, graphSize.width)
       // viz.updateYScale(
       //   yScale,

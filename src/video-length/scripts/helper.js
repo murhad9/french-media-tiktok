@@ -46,20 +46,81 @@ export function initButtons (switchAxis) {
   buttonDiv.append('button')
     
     .text('likes')
-    .on('click', () => switchAxis('vuesAverage'))
+    .on('click', () => switchAxis('likes'))
 
   buttonDiv.append('button')
     
     .text('commentaires')
-    .on('click', () => switchAxis('likesAverage'))
+    .on('click', () => switchAxis('commentaires'))
 
   buttonDiv.append('button')
     
     .text('partages')
-    .on('click', () => switchAxis('commentairesAverage'))
+    .on('click', () => switchAxis('partages'))
 
   buttonDiv.append('button')
   
     .text('vues')
-    .on('click', () => switchAxis('partagesAverage'))
+    .on('click', () => switchAxis('vues'))
+}
+
+export function getContents (d, engagementCategory) {
+  /* TODO : Define and return the tooltip contents including :
+      + A title stating the hovered element's group, with:
+        
+Font family: Grenze Gotish
+Font size: 24px
+Font weigth: normal+ A bold label for the player name followed
+  by the hovered elements's player's name+ A bold label for the player's line count
+  followed by the number of lines
+*/
+
+const target = d3.select(d.target)
+
+
+if(engagementCategory === 'likes') {
+  return  `<div class='tooltip'>
+<span class='tooltiptext'>${target.data()[0].count} </br>videos</br> posted
+</br>
+</br>
+Average likes: ${Math.round(target.data()[0].likes)}
+</span>
+</div>
+
+`
+}
+else if(engagementCategory === 'partages') {
+  return  `<div class='tooltip'>
+<span class='tooltiptext'>${target.data()[0].count} </br>videos</br> posted
+</br>
+</br>
+Average shares: ${Math.round(target.data()[0].partages)}
+</span>
+</div>
+`
+}
+else if(engagementCategory === 'vues') {
+  return  `<div class='tooltip'>
+<span class='tooltiptext'>${target.data()[0].count} </br>videos</br> posted
+</br>
+</br>
+Average views: ${Math.round(target.data()[0].vues)}
+</span>
+</div>
+
+`
+}
+else if(engagementCategory === 'commentaires') {
+  return  `<div class='tooltip'>
+<span class='tooltiptext'>${target.data()[0].count} </br>videos</br> posted
+</br>
+</br>
+Average comments: ${Math.round(target.data()[0].commentaires)}
+
+</span>
+</div>
+
+`
+  }
+
 }
