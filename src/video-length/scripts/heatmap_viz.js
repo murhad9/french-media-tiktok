@@ -153,7 +153,7 @@ export function appendRects (data, width, height, engagementCategory, tip) {
   const x = d3
     .scaleBand()
     .domain(data.map(function(d) {
-      return d.intervalle1 + 's - ' +  d.intervalle2 + 's';
+      return d.intervalle1 + 's - ' + d.intervalle2 + 's'
     }))
     .padding(0.2)
     .range([0, width])
