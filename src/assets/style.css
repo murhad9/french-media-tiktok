@@ -12,7 +12,7 @@
 body {
   font-family: "Roboto Slab", "sans-serif";
   font-size: 16px;
-  background-color: #fff;
+  background-color: #151515;
   color: #2a2b2e;
   margin: 0;
   height: 100vh;
@@ -20,7 +20,7 @@ body {
 }
 
 header {
-  background-color: #fff;
+  background-color: #292929;
   padding: 25px 100px;
   border-bottom: 2px solid #97939a;
 }
@@ -31,7 +31,7 @@ main {
 }
 
 h1 {
-  color: #2a2b2e;
+  color: #f5f5f5;
   font-family: "Roboto Slab", "serif";
   font-size: 56px;
   margin: 0;
@@ -39,13 +39,13 @@ h1 {
 }
 
 h2 {
-  color: #2a2b2e;
+  color: #e5e7ec;
   font-family: "Roboto Slab", "serif";
   font-weight: normal;
 }
 
 svg {
-  background-color: #ffffff;
+  background-color: #292929;
 }
 
 button {
@@ -132,4 +132,7 @@ button:active {
 
 #video-posting .axis path {
   opacity: 0;
+}
+.video-posting-graph {
+  color: #FFFFFF;
 }
