@@ -105,7 +105,7 @@ export function load (d3) {
         margin.top + 5,
         graphSize.height - 10,
         15,
-        'url(#gradient)',
+        'url(#video-posting-gradient)',
         colorScale
       )
     }

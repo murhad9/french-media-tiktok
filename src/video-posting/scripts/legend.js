@@ -11,7 +11,7 @@ export function initGradient (colorScale) {
 
   const linearGradient = defs
     .append('linearGradient')
-    .attr('id', 'gradient')
+    .attr('id', 'video-posting-gradient')
     .attr('x1', 0)
     .attr('y1', 1)
     .attr('x2', 0)
@@ -58,7 +58,7 @@ export function initLegendAxis () {
  */
 export function draw (x, y, height, width, fill, colorScale) {
   console.log('drawing legend')
-  d3.select('.legend.bar')
+  d3.select('.video-posting-heatmap-svg .legend.bar')
     .attr('x', x)
     .attr('y', y)
     .attr('width', width)
@@ -66,7 +66,7 @@ export function draw (x, y, height, width, fill, colorScale) {
     .attr('fill', fill)
 
   const ticks = colorScale.ticks()
-  d3.select('.legend.axis')
+  d3.select('.video-posting-heatmap-svg .legend.axis')
     .selectAll('text')
     .data(ticks)
     .enter()
