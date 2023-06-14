@@ -30,8 +30,6 @@ export function load (d3) {
       ['musiqueTitre', 'musiqueArtiste']
     )
 
-    console.log(data)
-
     const g = viz.generateG(margin)
 
     viz.appendPointG(g)
