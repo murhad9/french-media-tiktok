@@ -32,10 +32,19 @@
         </h2>
       </header>
       <main>
-        <div class="viz-container">
+        <div class="viz-container" id="#overview-viz-container">
           <div id="overview-viz-wrapper">
-            <div class="overview-graph" id="overview-heatmap">
-              <svg class="overview-heatmap-svg"></svg>
+            <div id="overview-panel"></div>
+            <div class="overview-graph-and-controls">
+              <div class="overview-graph" id="overview-heatmap">
+                <svg class="overview-heatmap-svg"></svg>
+              </div>
+              <div id="overview-controls"></div>
+            </div>
+            <div id="overview-media-selection">
+              <h3>Media Selection</h3>
+              <p class="overview-title-label">Select which media to show on the graph</p>
+              <select id="overview-add-media-select"></select>
             </div>
           </div>
         </div>

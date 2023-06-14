@@ -6,6 +6,7 @@ import * as viz from "./scripts/heatmap_viz.js";
 import * as legend from "./scripts/legend.js";
 import * as hover from "./scripts/hover.js";
 import * as addons from "./scripts/viz-addons.js";
+import * as mediaSelection from "./scripts/media_selection.js";
 
 import * as d3Chromatic from "d3-scale-chromatic";
 
@@ -20,8 +21,9 @@ export function load(d3) {
   let graphSize;
 
   let domainColumn = "vues";
+  let selectedMediaList = ["hugodecrypte", "lefigarofr"];
 
-  const margin = { top: 35, right: 200, bottom: 35, left: 200 };
+  const margin = { top: 10, right: 20, bottom: 35, left: 50 };
   // TODO: Use this file for welcom vizs
   const xScale = d3.scaleTime();
   const yScale = d3.scaleLog();
@@ -29,10 +31,10 @@ export function load(d3) {
 
   d3.csv("./data_source.csv", d3.autoType).then(function (data) {
     console.log("INITIAL DATA");
-    console.log(data);
     // removes video in april 2023 because the month is not entirely covered in input data
     data = preproc.removeAfter(data, new Date("2023-03-30"));
     data = preproc.setYear(data);
+    const mediaList = preproc.getMediaList(data);
     data = data.map((row) => {
       return {
         ...row,
@@ -58,7 +60,13 @@ export function load(d3) {
     helper.appendAxes(g);
     viz.appendLines(data);
 
+    // addons.initPanelDiv();
     addons.initButtons(updateDomainColumn);
+    mediaSelection.initMediaSelection(
+      updateSelectedMedia,
+      selectedMediaList,
+      mediaList
+    );
 
     setSizing();
     build();
@@ -92,6 +100,12 @@ export function load(d3) {
       build();
     }
 
+    // function updateSelectedMedia(mediaList)
+    function updateSelectedMedia(mediaList) {
+      selectedMediaList = mediaList;
+      build();
+    }
+
     /**
      *   This function builds the graph.
      */
@@ -110,7 +124,15 @@ export function load(d3) {
 
       viz.rotateYTicks();
 
-      viz.updateLines(xScale, yScale, colorScale, data, domainColumn);
+      viz.updateLines(
+        xScale,
+        yScale,
+        colorScale,
+        data,
+        domainColumn,
+        addons.displayPanel,
+        selectedMediaList
+      );
 
       hover.setRectHandler(
         xScale,
@@ -119,6 +141,12 @@ export function load(d3) {
         hover.rectUnselected,
         hover.selectTicks,
         hover.unselectTicks
+      );
+
+      mediaSelection.initMediaSelection(
+        updateSelectedMedia,
+        selectedMediaList,
+        mediaList
       );
 
       legend.draw(

@@ -31,6 +31,16 @@ export function setYear(data) {
   });
 }
 
+export function getMediaList(data) {
+  return [
+    ...new Set(
+      data.map((row) => {
+        return row["média"];
+      })
+    ),
+  ];
+}
+
 /**
  * Aggregates specific columns
  *
