@@ -41,7 +41,7 @@ export function load (d3) {
 
     const g = helper.generateG(margin)
 
-    const gEvolve = helper.generateG(margin)
+    const gEvolve = helper.generateGLineChart(margin)
 
     helper.appendAxes(gEvolve)
 

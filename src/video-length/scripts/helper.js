@@ -93,50 +93,13 @@ Font weigth: normal+ A bold label for the player name followed
 
 const target = d3.select(d.target)
 
-
-if(engagementCategory === 'likes') {
   return  `<div class='tooltip'>
 <span class='tooltiptext'>${target.data()[0].count} </br>videos</br> posted
 </br>
 </br>
-Average likes: ${Math.round(target.data()[0].likes)}
+Average ${engagementCategory}: ${Math.round(target.data()[0][engagementCategory])}
 </span>
 </div>
 
 `
-}
-else if(engagementCategory === 'partages') {
-  return  `<div class='tooltip'>
-<span class='tooltiptext'>${target.data()[0].count} </br>videos</br> posted
-</br>
-</br>
-Average shares: ${Math.round(target.data()[0].partages)}
-</span>
-</div>
-`
-}
-else if(engagementCategory === 'vues') {
-  return  `<div class='tooltip'>
-<span class='tooltiptext'>${target.data()[0].count} </br>videos</br> posted
-</br>
-</br>
-Average views: ${Math.round(target.data()[0].vues)}
-</span>
-</div>
-
-`
-}
-else if(engagementCategory === 'commentaires') {
-  return  `<div class='tooltip'>
-<span class='tooltiptext'>${target.data()[0].count} </br>videos</br> posted
-</br>
-</br>
-Average comments: ${Math.round(target.data()[0].commentaires)}
-
-</span>
-</div>
-
-`
-  }
-
 }
