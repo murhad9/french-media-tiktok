@@ -33,6 +33,7 @@ export function appendLines(data) {
  */
 export function updateXScale(data, xScale, width) {
   const xExtent = d3.extent(data, (d) => new Date(d.date));
+  console.log(xExtent);
 
   xScale.domain(xExtent).range([0, width]);
 }
@@ -45,8 +46,6 @@ export function updateXScale(data, xScale, width) {
  * @param {number} height The height of the diagram
  */
 export function updateYScale(yScale, data, height, domainColumn) {
-  console.log("update y scale");
-  console.log(data);
   const yExtent = d3.extent(data, (row) => row[domainColumn]);
 
   yScale.domain(yExtent).range([height, 0]);
@@ -100,7 +99,15 @@ export function rotateYTicks() {
  * @param {*} colorScale The color scale used to set the rectangles' colors
  * @param {string} targetColumn The column to use as domain
  */
-export function updateLines(xScale, yScale, colorScale, data, domainColumn) {
+export function updateLines(
+  xScale,
+  yScale,
+  colorScale,
+  data,
+  domainColumn,
+  displayPanel,
+  selectedMediaList
+) {
   // TODO : Set position, size and fill of rectangles according to bound data
 
   let sumstat = d3Collection
@@ -108,9 +115,7 @@ export function updateLines(xScale, yScale, colorScale, data, domainColumn) {
     .key((d) => d["média"])
     .entries(data);
 
-  console.log(sumstat);
-
-  console.log(d3.selectAll(".drawn-line").remove());
+  d3.selectAll(".drawn-line").remove();
   d3.select("svg")
     .selectAll(".line")
     .append("g")
@@ -119,12 +124,7 @@ export function updateLines(xScale, yScale, colorScale, data, domainColumn) {
     .append("path")
     .attr("class", "drawn-line")
     .attr("d", (d) => {
-      console.log(d);
-      if (
-        d.key === "hugodecrypte" ||
-        d.key === "lefigarofr" ||
-        d.key === "bfmtv"
-      ) {
+      if (selectedMediaList.includes(d.key)) {
         return d3
           .line()
           .x((d) => xScale(new Date(d.date)))
@@ -133,7 +133,7 @@ export function updateLines(xScale, yScale, colorScale, data, domainColumn) {
       }
       return null;
     })
-    .attr("transform", "translate(200, 33)")
+    .attr("transform", "translate(50, 10)")
     .style("fill", "none")
     .style("stroke", "#803082")
     .style("stroke-width", "1")
@@ -157,8 +157,7 @@ export function updateLines(xScale, yScale, colorScale, data, domainColumn) {
         .style("fill", "#803082");
     });
 
-  console.log(d3.selectAll(".drawn-circle").remove());
-  console.log(d3.selectAll(".line").remove());
+  d3.selectAll(".drawn-circle").remove();
   d3.select("svg")
     .selectAll(".circle")
     .append("g")
@@ -166,18 +165,13 @@ export function updateLines(xScale, yScale, colorScale, data, domainColumn) {
     .join("circle")
     .attr("class", "drawn-circle")
     .filter((d) => {
-      return (
-        d["média"] === "hugodecrypte" ||
-        d["média"] === "lefigarofr" ||
-        d["média"] == "bfmtv"
-      );
-      console.log(d);
+      return selectedMediaList.includes(d["média"]);
     })
     .attr("r", "2")
     .attr("fill", "#803082")
     .attr("transform", (d) => {
-      return `translate(${200 + xScale(new Date(d.date))}, ${
-        33 + yScale(d[domainColumn])
+      return `translate(${50 + xScale(new Date(d.date))}, ${
+        10 + yScale(d[domainColumn])
       })`;
     })
     .on("mouseenter", function (d) {
@@ -197,6 +191,7 @@ export function updateLines(xScale, yScale, colorScale, data, domainColumn) {
 
       // set hovered circle with higher radius
       d3.select(this).style("fill", "steelblue").attr("r", "4");
+      displayPanel(d);
     })
     .on("mouseleave", function (d) {
       d3.select(this).style("fill", "#803082").attr("r", "2");
@@ -211,7 +206,6 @@ export function updateLines(xScale, yScale, colorScale, data, domainColumn) {
       // undraw the line too
       d3.selectAll(".drawn-line")
         .filter((lineData) => {
-          console.log(d);
           return lineData.key === d.target.__data__["média"];
         })
         .style("stroke", "#803082");

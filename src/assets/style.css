@@ -71,6 +71,57 @@ button:active {
   padding: 0 100px;
 }
 
+/************************** OVERVIEW CSS RULES **************************
+ *
+ * All of the CSS rules for the "Overview" tab.
+ *
+ * Every selector is prefixed by #songs and therefore only applies to
+ * elements within the div associated with the tab.
+ */
+
+#overview-viz-wrapper {
+  display: flex;
+  flex-direction: row;
+  background-color: black;
+  gap: 12px;
+  padding: 12px;
+}
+
+#overview #overview-panel {
+  width: 20%;
+  border: 1px solid black;
+  padding: 10px;
+  visibility: visible;
+  background-color: #292929;
+  border-radius: 28px;
+  color: white;
+}
+
+#overview #overview-media-selection {
+  width: 20%;
+  border: 1px solid black;
+  padding: 10px;
+  visibility: visible;
+  background-color: #292929;
+  border-radius: 28px;
+  color: white;
+}
+
+.overview-graph-and-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 60%;
+  /* background-color: red; */
+  background-color: black;
+}
+
+#overview-controls {
+  background-color: #292929;
+  border-radius: 28px;
+  height: 100px;
+}
+
 /************************** SONGS CSS RULES **************************
  *
  * All of the CSS rules for the "Songs" tab.
@@ -158,7 +209,6 @@ button:active {
   bottom: 125%;
   left: 50%;
   margin-left: -60px;
- 
 }
 
 .tooltip .tooltiptext::after {
