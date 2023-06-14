@@ -26,46 +26,33 @@ export function load (d3) {
   let graphSize
 
   const tip = d3Tip().attr('class', 'd3-tip').html(function (d) { 
-    return helper.getContents(d, engagementCategory)  
+    return helper.getContents(d, engagementCategory)
   })
   d3.select('.video-length-heatmap-svg').call(tip)
 
   const margin = { top: 35, right: 200, bottom: 50, left: 50 }
   // TODO: Use this file for welcom vizs
-  // const xScale = d3.scaleBand().padding(0.05)
-  // const yScale = d3.scaleBand().padding(0.2)
-  // const colorScale = d3.scaleSequential(d3Chromatic.interpolateBuPu)
 
   d3.csv('./data_source.csv', d3.autoType).then(function (data) {
-    // These are just examples
-    // data = preproc.addTimeBlocks(preproc.processDateTime(data))
-    // data = preproc.aggregateColumns(
-    //   data,
-    //   ['vues', 'likes', 'partages', 'commentaires'],
-    //   ['dayOfWeek', 'timeBlock']
-    // )
-    // data = preproc.sortByColumns(
-    //   data,
-    //   ['averageVues', 'vues', 'likes', 'partages', 'commentaires'],
-    //   true
-    // )
-    // data = preproc.normalizeColumn(data, 'vuesAverage')
-    // viz.setColorScaleDomain(colorScale, data, 'vuesAverageNormalized')
 
 
-    data = preproc.topTenIdealVideo(data)
 
-    // legend.initGradient(colorScale)
-    // legend.initLegendBar()
-    // legend.initLegendAxis()
+    const dataVideoLengthCategory = preproc.topTenIdealVideo(data)
 
     const g = helper.generateG(margin)
 
+    const gEvolve = helper.generateG(margin)
+
+    helper.appendAxes(gEvolve)
+
     helper.appendAxes(g)
+
     helper.initButtons(switchAxis)
    
 
     setSizing()
+    setSizingEvolve()
+    
     build()
 
     /**
@@ -90,6 +77,25 @@ export function load (d3) {
       helper.setCanvasSize(svgSize.width, svgSize.height)
     }
 
+    function setSizingEvolve () {
+      bounds = d3
+        .select('.video-length-graph-evolve')
+        .node()
+        .getBoundingClientRect()
+
+      svgSize = {
+        width: bounds.width,
+        height: 500
+      }
+
+      graphSize = {
+        width: svgSize.width - margin.right - margin.left,
+        height: svgSize.height - margin.bottom - margin.top
+      }
+
+      helper.setCanvasSizeEvolve(svgSize.width, svgSize.height)
+    }
+
     function switchAxis (category) {
       engagementCategory = category
       const g = helper.generateG(margin)
@@ -99,7 +105,7 @@ export function load (d3) {
 
       setSizing()
        console.log(engagementCategory)
-       viz.appendRects(data, graphSize.width, graphSize.height, engagementCategory, tip)
+       viz.appendRects(dataVideoLengthCategory, graphSize.width, graphSize.height, engagementCategory, tip)
       build()
     }
 
@@ -107,42 +113,13 @@ export function load (d3) {
      *   This function builds the graph.
      */
     function build () {
-      viz.appendRects(data, graphSize.width, graphSize.height, engagementCategory, tip)
-      // viz.updateXScale(xScale, graphSize.width)
-      // viz.updateYScale(
-      //   yScale,
-      //   preproc.getUniqueTimeBlocks(data),
-      //   graphSize.height
-      // )
-
-      // viz.drawXAxis(xScale)
-      // viz.drawYAxis(yScale, graphSize.width)
-
-      // viz.rotateYTicks()
-
-      // viz.updateRects(xScale, yScale, colorScale)
-
-      // hover.setRectHandler(
-      //   xScale,
-      //   yScale,
-      //   hover.rectSelected,
-      //   hover.rectUnselected,
-      //   hover.selectTicks,
-      //   hover.unselectTicks
-      // )
-
-      // legend.draw(
-      //   margin.left / 2,
-      //   margin.top + 5,
-      //   graphSize.height - 10,
-      //   15,
-      //   'url(#gradient)',
-      //   colorScale
-      // )
+      viz.appendRects(dataVideoLengthCategory, graphSize.width, graphSize.height, engagementCategory, tip)
+      viz.appendRectsEvolve(data, graphSize.width, graphSize.height, engagementCategory)
     }
 
     window.addEventListener('resize', () => {
       setSizing()
+      setSizingEvolve()
       build()
     })
   })

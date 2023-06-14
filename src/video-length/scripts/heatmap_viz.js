@@ -95,64 +95,30 @@
 /**
  * After the rectangles have been appended, this function dictates
  * their position, size and fill color.
+ *
  * @param {*} xScale The x scale used to position the rectangles
  * @param {*} yScale The y scale used to position the rectangles
  * @param {*} colorScale The color scale used to set the rectangles' colors
  * @param {string} targetColumn The column to use as domain
  * @param data
  */
-// export function updateRects (xScale, yScale, colorScale, targetColumn) {
-//   // TODO : Set position, size and fill of rectangles according to bound data
-//   d3.selectAll('#video-length-graph-g .cell')
-//     .attr(
-//       'transform',
-//       (d) => `translate(${xScale(d.dayOfWeek)},${yScale(d.timeBlock)})`
-//     )
-//     .select('rect')
-//     .attr('width', xScale.bandwidth())
-//     .attr('height', yScale.bandwidth())
-//     .attr('fill', (d) => colorScale(d[targetColumn]))
-// }
 
+/**
+ * @param data
+ * @param width
+ * @param height
+ * @param engagementCategory
+ * @param tip
+ */
 export function appendRects (data, width, height, engagementCategory, tip) {
-  // engagementCategory = 'likes' // temporaire
-
-  // const allColors = [
-  //   '#7f3300',
-  //   '#8c3900',
-  //   '#994000',
-  //   '#a64600',
-  //   '#b34c00',
-  //   '#bf5200',
-  //   '#cc5700',
-  //   '#d95d00',
-  //   '#e66300',
-  //   '#f26900',
-  //   '#ff6e00',
-  //   '#ff7931',
-  //   '#ff844d',
-  //   '#ff8f66',
-  //   '#ff9b80',
-  //   '#ffa699',
-  //   '#ffb1b3',
-  //   '#ffbccd',
-  //   '#ffc8e6',
-  //   '#ffd3f0',
-  //   '#ffddfa',
-  //   '#ffe8ff',
-  //   '#fff2ff',
-  //   '#fffdff',
-  //   '#ffffff'
-  // ]
-
   const echelleCouleurs = d3.scaleSequential()
-    .domain([0,d3.max(data, d => d.count)])
+    .domain([0, d3.max(data, d => d.count)])
     .interpolator(d3.interpolateReds) // Utilisation de la palette de couleurs Viridis
 
   const svg = d3.select('#video-length-graph-g')
   const x = d3
     .scaleBand()
-    .domain(data.map(function(d) {
+    .domain(data.map(function (d) {
       return d.intervalle1 + 's - ' + d.intervalle2 + 's'
     }))
     .padding(0.2)
@@ -180,23 +146,19 @@ export function appendRects (data, width, height, engagementCategory, tip) {
       .selectAll('.bar')
       .remove()
 
-
     svg
       .selectAll('.bar') // Utilisation de la classe ".bar" pour sélectionner les barres
       .data(data)
       .join('rect')
       .attr('class', 'bar') // Ajout de la classe "bar" pour les éléments <rect>
-      .attr('x', d => x(d.intervalle1 + 's - ' +  d.intervalle2 + 's'))
+      .attr('x', d => x(d.intervalle1 + 's - ' + d.intervalle2 + 's'))
       .attr('y', d => y(d.likes))
       .attr('width', x.bandwidth())
       .attr('height', d => height - y(d.likes))
       .attr('fill', d => echelleCouleurs(d.count))
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide)
-  } 
- 
-
-  else if (engagementCategory === 'partages') {
+  } else if (engagementCategory === 'partages') {
     const y = d3
       .scaleLinear()
       .domain([0, d3.max(data, d => d.partages)]) // Utilisation de d3.max pour obtenir la valeur maximale des étoiles
@@ -214,16 +176,14 @@ export function appendRects (data, width, height, engagementCategory, tip) {
       .enter()
       .append('rect')
       .attr('class', 'bar') // Ajout de la classe "bar" pour les éléments <rect>
-      .attr('x', d => x(d.intervalle1 + 's - ' +  d.intervalle2 + 's'))
+      .attr('x', d => x(d.intervalle1 + 's - ' + d.intervalle2 + 's'))
       .attr('y', d => y(d.partages))
       .attr('width', x.bandwidth())
       .attr('height', d => height - y(d.partages))
       .attr('fill', d => echelleCouleurs(d.count))
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide)
-  } 
-
-  else if (engagementCategory === 'commentaires') {
+  } else if (engagementCategory === 'commentaires') {
     const y = d3
       .scaleLinear()
       .domain([0, d3.max(data, d => d.commentaires)]) // Utilisation de d3.max pour obtenir la valeur maximale des étoiles
@@ -241,16 +201,14 @@ export function appendRects (data, width, height, engagementCategory, tip) {
       .enter()
       .append('rect')
       .attr('class', 'bar') // Ajout de la classe "bar" pour les éléments <rect>
-      .attr('x', d => x(d.intervalle1 + 's - ' +  d.intervalle2 + 's'))
+      .attr('x', d => x(d.intervalle1 + 's - ' + d.intervalle2 + 's'))
       .attr('y', d => y(d.commentaires))
       .attr('width', x.bandwidth())
       .attr('height', d => height - y(d.commentaires))
       .attr('fill', d => echelleCouleurs(d.count))
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide)
-  } 
-
-  else if (engagementCategory === 'vues') {
+  } else if (engagementCategory === 'vues') {
     const y = d3
       .scaleLinear()
       .domain([0, d3.max(data, d => d.vues)]) // Utilisation de d3.max pour obtenir la valeur maximale des étoiles
@@ -268,13 +226,69 @@ export function appendRects (data, width, height, engagementCategory, tip) {
       .enter()
       .append('rect')
       .attr('class', 'bar') // Ajout de la classe "bar" pour les éléments <rect>
-      .attr('x', d => x(d.intervalle1 + 's - ' +  d.intervalle2 + 's'))
+      .attr('x', d => x(d.intervalle1 + 's - ' + d.intervalle2 + 's'))
       .attr('y', d => y(d.vues))
       .attr('width', x.bandwidth())
       .attr('height', d => height - y(d.vues))
       .attr('fill', d => echelleCouleurs(d.count))
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide)
-  } 
-  
+  }
+}
+
+
+export function appendRectsEvolve (data, width, height, engagementCategory) {
+  const svg = d3.select('#video-length-graph-evolve-g')
+
+  // Add Y axis
+
+  if (engagementCategory === 'likes') {
+    // Regroupement des données par année
+    const dataByYear = d3.group(data, d => {
+      return d.date.toString().split('-')[0]
+    })
+
+    // Recherche de la vidéo avec le plus de vues par année
+    const videosByYear = Array.from(dataByYear, ([year, videos]) => {
+      const maxViewsVideo = d3.max(videos, d => d.likes)
+      return {
+        year: +year,
+        maxViews: maxViewsVideo
+      }
+    })
+
+    const x = d3.scaleLinear()
+      .domain(d3.extent(videosByYear, d => d.year))
+      .range([0, width])
+
+    d3.select('#video-length-graph-evolve-g .x.axis')
+      .attr('transform', `translate(0,${height})`)
+      .call(d3.axisBottom(x))
+      .selectAll('text')
+      .attr('transform', 'rotate(-45)')
+      .style('text-anchor', 'end')
+
+    // Création de l'échelle en y
+    const y = d3.scaleLinear()
+      .domain([0, d3.max(videosByYear, d => d.maxViews)])
+      .range([height, 0])
+
+    d3.select('#video-length-graph-evolve-g .y.axis').call(d3.axisLeft(y))
+
+    // Create and fill the bars
+    svg
+      .selectAll('.bar')
+      .remove()
+
+    const line = d3.line()
+      .x(d => x(d.year))
+      .y(d => y(d.maxViews))
+
+    svg.append('path')
+      .datum(videosByYear)
+      .attr('fill', 'none')
+      .attr('stroke', 'steelblue')
+      .attr('stroke-width', 2)
+      .attr('d', line)
+  }
 }

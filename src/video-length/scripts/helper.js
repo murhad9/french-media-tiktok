@@ -14,6 +14,15 @@ export function generateG (margin) {
     .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 }
 
+export function generateGLineChart (margin) {
+  return d3
+    .select('.video-length-graph-evolve')
+    .select('svg')
+    .append('g')
+    .attr('id', 'video-length-graph-evolve-g')
+    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+}
+
 /**
  * Sets the size of the SVG canvas containing the graph.
  *
@@ -22,6 +31,13 @@ export function generateG (margin) {
  */
 export function setCanvasSize (width, height) {
   d3.select('#video-length-heatmap')
+    .select('svg')
+    .attr('width', width)
+    .attr('height', height)
+}
+
+export function setCanvasSizeEvolve (width, height) {
+  d3.select('#video-length-evolve-heatmap')
     .select('svg')
     .attr('width', width)
     .attr('height', height)
