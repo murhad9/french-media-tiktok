@@ -1,3 +1,5 @@
+import * as d3Collection from "d3-collection";
+
 /**
  * Sets the domain of the color scale
  *
@@ -5,9 +7,9 @@
  * @param {object[]} data The data to be displayed
  * @param {string} targetColumn The column to use as domain
  */
-export function setColorScaleDomain (colorScale, data, targetColumn) {
-  const averageViews = data.map((entry) => entry[targetColumn])
-  colorScale.domain(d3.extent(averageViews))
+export function setColorScaleDomain(colorScale, data, targetColumn) {
+  const averageViews = data.map((entry) => entry[targetColumn]);
+  colorScale.domain(d3.extent(averageViews));
 }
 
 /**
@@ -15,15 +17,12 @@ export function setColorScaleDomain (colorScale, data, targetColumn) {
  *
  * @param {object[]} data The data to use for binding
  */
-export function appendRects (data) {
+export function appendLines(data) {
   // TODO : Append SVG rect elements
-  d3.select('#overview-graph-g')
-    .selectAll('g.cell')
-    .data(data)
-    .enter()
-    .append('g')
-    .attr('class', 'cell')
-    .append('rect')
+  // d3.select("svg").selectAll(".line").append("g").attr("class", "line");
+  // // .data(sumstat)
+  // // .enter()
+  // // .append("path");
 }
 
 /**
@@ -32,17 +31,10 @@ export function appendRects (data) {
  * @param {*} xScale The scale for the x axis
  * @param {number} width The width of the diagram
  */
-export function updateXScale (xScale, width) {
-  const daysOfWeekDomain = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday'
-  ]
-  xScale.domain(daysOfWeekDomain).range([0, width])
+export function updateXScale(data, xScale, width) {
+  const xExtent = d3.extent(data, (d) => new Date(d.date));
+
+  xScale.domain(xExtent).range([0, width]);
 }
 
 /**
@@ -52,9 +44,12 @@ export function updateXScale (xScale, width) {
  * @param {object[]} timeBlocks The names of the neighborhoods
  * @param {number} height The height of the diagram
  */
-export function updateYScale (yScale, timeBlocks, height) {
-  const sortedTimeBlocks = timeBlocks.sort()
-  yScale.domain(sortedTimeBlocks).range([0, height])
+export function updateYScale(yScale, data, height, domainColumn) {
+  console.log("update y scale");
+  console.log(data);
+  const yExtent = d3.extent(data, (row) => row[domainColumn]);
+
+  yScale.domain(yExtent).range([height, 0]);
 }
 
 /**
@@ -62,10 +57,13 @@ export function updateYScale (yScale, timeBlocks, height) {
  *
  *  @param {*} xScale The scale to use to draw the axis
  */
-export function drawXAxis (xScale) {
+export function drawXAxis(xScale, height) {
   // TODO : Draw X axis
-  const xAxisGenerator = d3.axisTop().scale(xScale)
-  d3.select('#overview-graph-g .x').call(xAxisGenerator)
+  const xAxisGenerator = d3.axisBottom().scale(xScale);
+  d3.select("#overview-graph-g .x")
+    .attr("transform", `translate(0,${height})`)
+    .attr("color", "white")
+    .call(xAxisGenerator);
 }
 
 /**
@@ -74,22 +72,23 @@ export function drawXAxis (xScale) {
  * @param {*} yScale The scale to use to draw the axis
  * @param {number} width The width of the graphic
  */
-export function drawYAxis (yScale, width) {
+export function drawYAxis(yScale, width) {
   // TODO : Draw Y axis
-  const yAxisGenerator = d3.axisRight().scale(yScale)
-  d3.select('#overview-graph-g .y')
-    .attr('transform', `translate(${width},0)`)
-    .call(yAxisGenerator)
+  const yAxisGenerator = d3.axisLeft().scale(yScale);
+  d3.select("#overview-graph-g .y")
+    .attr("transform", `translate(${0},0)`)
+    .attr("color", "white")
+    .call(yAxisGenerator);
 }
 
 /**
  * Rotates the ticks on the Y axis 30 degrees towards the left.
  */
-export function rotateYTicks () {
+export function rotateYTicks() {
   // TODO : Rotate Y ticks.
-  d3.selectAll('#overview-graph-g .y .tick').attr('transform', function () {
-    return d3.select(this).attr('transform') + ` rotate(${-30})`
-  })
+  d3.selectAll("#overview-graph-g .y .tick").attr("transform", function () {
+    return d3.select(this).attr("transform") + ` rotate(${-30})`;
+  });
 }
 
 /**
@@ -101,15 +100,120 @@ export function rotateYTicks () {
  * @param {*} colorScale The color scale used to set the rectangles' colors
  * @param {string} targetColumn The column to use as domain
  */
-export function updateRects (xScale, yScale, colorScale, targetColumn) {
+export function updateLines(xScale, yScale, colorScale, data, domainColumn) {
   // TODO : Set position, size and fill of rectangles according to bound data
-  d3.selectAll('#overview-graph-g .cell')
-    .attr(
-      'transform',
-      d => `translate(${xScale(d.dayOfWeek)},${yScale(d.timeBlock)})`
-    )
-    .select('rect')
-    .attr('width', xScale.bandwidth())
-    .attr('height', yScale.bandwidth())
-    .attr('fill', (d) => colorScale(d[targetColumn]))
+
+  let sumstat = d3Collection
+    .nest()
+    .key((d) => d["média"])
+    .entries(data);
+
+  console.log(sumstat);
+
+  console.log(d3.selectAll(".drawn-line").remove());
+  d3.select("svg")
+    .selectAll(".line")
+    .append("g")
+    .data(sumstat)
+    .enter()
+    .append("path")
+    .attr("class", "drawn-line")
+    .attr("d", (d) => {
+      console.log(d);
+      if (
+        d.key === "hugodecrypte" ||
+        d.key === "lefigarofr" ||
+        d.key === "bfmtv"
+      ) {
+        return d3
+          .line()
+          .x((d) => xScale(new Date(d.date)))
+          .y((d) => yScale(d[domainColumn]))
+          .curve(d3.curveLinear)(d.values);
+      }
+      return null;
+    })
+    .attr("transform", "translate(200, 33)")
+    .style("fill", "none")
+    .style("stroke", "#803082")
+    .style("stroke-width", "1")
+    .on("mouseenter", function (d) {
+      // draw other
+      d3.select(this).style("stroke", "steelblue").style("stroke-width", "2");
+      // draw the circles too
+      d3.selectAll(".drawn-circle")
+        .filter((circleData) => {
+          return circleData["média"] === d.target.__data__.key;
+        })
+        .style("fill", "steelblue");
+    })
+    .on("mouseleave", function (d) {
+      d3.select(this).style("stroke", "#803082").style("stroke-width", "1");
+      // undraw the circles too
+      d3.selectAll(".drawn-circle")
+        .filter((circleData) => {
+          return circleData["média"] === d.target.__data__.key;
+        })
+        .style("fill", "#803082");
+    });
+
+  console.log(d3.selectAll(".drawn-circle").remove());
+  console.log(d3.selectAll(".line").remove());
+  d3.select("svg")
+    .selectAll(".circle")
+    .append("g")
+    .data(data)
+    .join("circle")
+    .attr("class", "drawn-circle")
+    .filter((d) => {
+      return (
+        d["média"] === "hugodecrypte" ||
+        d["média"] === "lefigarofr" ||
+        d["média"] == "bfmtv"
+      );
+      console.log(d);
+    })
+    .attr("r", "2")
+    .attr("fill", "#803082")
+    .attr("transform", (d) => {
+      return `translate(${200 + xScale(new Date(d.date))}, ${
+        33 + yScale(d[domainColumn])
+      })`;
+    })
+    .on("mouseenter", function (d) {
+      // draw other circles too
+      d3.selectAll(".drawn-circle")
+        .filter((circleData) => {
+          return circleData["média"] === d.target.__data__["média"];
+        })
+        .style("fill", "steelblue");
+
+      // draw the line too
+      d3.selectAll(".drawn-line")
+        .filter((lineData) => {
+          return lineData.key === d.target.__data__["média"];
+        })
+        .style("stroke", "steelblue");
+
+      // set hovered circle with higher radius
+      d3.select(this).style("fill", "steelblue").attr("r", "4");
+    })
+    .on("mouseleave", function (d) {
+      d3.select(this).style("fill", "#803082").attr("r", "2");
+
+      // undraw other circles too
+      d3.selectAll(".drawn-circle")
+        .filter((circleData) => {
+          return circleData["média"] === d.target.__data__["média"];
+        })
+        .style("fill", "#803082");
+
+      // undraw the line too
+      d3.selectAll(".drawn-line")
+        .filter((lineData) => {
+          console.log(d);
+          return lineData.key === d.target.__data__["média"];
+        })
+        .style("stroke", "#803082");
+    });
 }

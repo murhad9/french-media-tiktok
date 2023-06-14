@@ -5,14 +5,30 @@
  * @param {string[]} targets The columns to keep
  * @returns {object[]} The data with only the needed columns
  */
-export function trim (data, targets) {
+export function trim(data, targets) {
   return data.map((row) => {
-    const trimmedRow = {}
+    const trimmedRow = {};
     targets.forEach((target) => {
-      trimmedRow[target] = row[target]
-    })
-    return trimmedRow
-  })
+      trimmedRow[target] = row[target];
+    });
+    return trimmedRow;
+  });
+}
+
+export function removeAfter(data, date) {
+  return data.filter((row) => {
+    return new Date(row.date) < date;
+  });
+}
+
+export function setYear(data) {
+  return data.map((row) => {
+    const year = new Date(row.date).getFullYear();
+    return {
+      ...row,
+      year: parseInt(year),
+    };
+  });
 }
 
 /**
@@ -23,30 +39,35 @@ export function trim (data, targets) {
  * @param {string[]} groupBy The columns to group by when aggregating
  * @returns {object[]} The data with the groupBy columns and the aggregated column
  */
-export function aggregateColumns (data, targets, groupBy) {
-  data = trim(data, targets.concat(groupBy))
+export function aggregateColumns(data, sumCols, listCols, groupBy) {
+  data = trim(data, sumCols.concat(groupBy).concat(listCols));
   const groupedData = d3.group(data, (d) => {
-    return groupBy.map((column) => d[column]).join('-')
-  })
+    return groupBy.map((column) => d[column]).join("-");
+  });
 
   const aggregatedData = Array.from(groupedData, ([key, values]) => {
     const aggregation = {
       ...values[0],
-      count: values.length
-    }
-    targets.forEach((target) => {
-      const sum = d3.sum(values, (d) => d[target])
-      const average = sum / values.length
-      aggregation[target] = sum
-      aggregation[`${target}Average`] = Math.floor(average)
-    })
+      count: values.length,
+    };
+    sumCols.forEach((target) => {
+      const sum = d3.sum(values, (d) => d[target]);
+      const average = sum / values.length;
+      aggregation[target] = sum;
+      aggregation[`${target}Average`] = Math.floor(average);
+    });
+    listCols.forEach((column) => {
+      aggregation[`${column}List`] = Array.from(
+        new Set(values.map((value) => value[column]))
+      );
+    });
     groupBy.forEach((column, index) => {
-      aggregation[column] = key.split('-')[index]
-    })
-    return aggregation
-  })
+      aggregation[column] = key.split("-")[index];
+    });
+    return aggregation;
+  });
 
-  return aggregatedData
+  return aggregatedData;
 }
 
 /**
@@ -57,24 +78,24 @@ export function aggregateColumns (data, targets, groupBy) {
  * @param {boolean} isDescending Determines if sort order is ascending or descending
  * @returns {object[]} The sorted data
  */
-export function sortByColumns (data, sortBy, isDescending = false) {
-  const sortedData = [...data] // Create a copy of the original data to avoid modifying it directly
+export function sortByColumns(data, sortBy, isDescending = false) {
+  const sortedData = [...data]; // Create a copy of the original data to avoid modifying it directly
 
   sortedData.sort((a, b) => {
     for (let i = 0; i < sortBy.length; i++) {
-      const column = sortBy[i]
-      let result = 0
-      if (a[column] < b[column]) result = -1
-      else if (a[column] > b[column]) result = 1
+      const column = sortBy[i];
+      let result = 0;
+      if (a[column] < b[column]) result = -1;
+      else if (a[column] > b[column]) result = 1;
 
-      if (isDescending) result = -result // Reverse the sorting order for descending
+      if (isDescending) result = -result; // Reverse the sorting order for descending
 
-      if (result !== 0) return result
+      if (result !== 0) return result;
     }
-    return 0
-  })
+    return 0;
+  });
 
-  return sortedData
+  return sortedData;
 }
 
 /**
@@ -83,24 +104,32 @@ export function sortByColumns (data, sortBy, isDescending = false) {
  * @param {object[]} data The data to analyze
  * @returns {object[]} The data with the processed datetime and day of week
  */
-export function processDateTime (data) {
-  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+export function processDateTime(data) {
+  const daysOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
 
-  const processedData = data.map(item => {
-    const dateTimeParts = item.date.split(' ')
-    const date = dateTimeParts[0]
-    const time = dateTimeParts[1]
-    const dayOfWeekIndex = new Date(date).getDay()
-    const dayOfWeek = daysOfWeek[dayOfWeekIndex]
+  const processedData = data.map((item) => {
+    const dateTimeParts = item.date.split(" ");
+    const date = dateTimeParts[0];
+    const time = dateTimeParts[1];
+    const dayOfWeekIndex = new Date(date).getDay();
+    const dayOfWeek = daysOfWeek[dayOfWeekIndex];
 
     return {
       ...item,
       date: date,
       time: time,
-      dayOfWeek: dayOfWeek
-    }
-  })
-  return processedData
+      dayOfWeek: dayOfWeek,
+    };
+  });
+  return processedData;
 }
 
 /**
@@ -111,13 +140,13 @@ export function processDateTime (data) {
  * @param {string} endDate The end date
  * @returns {object[]} The data within the dates
  */
-export function filterDataByDates (data, startDate, endDate) {
-  const filteredData = data.filter(obj => {
-    const date = obj.date // Assuming the date column is in the format "yyyy-mm-dd"
-    return date >= startDate && date <= endDate
-  })
+export function filterDataByDates(data, startDate, endDate) {
+  const filteredData = data.filter((obj) => {
+    const date = obj.date; // Assuming the date column is in the format "yyyy-mm-dd"
+    return date >= startDate && date <= endDate;
+  });
 
-  return filteredData
+  return filteredData;
 }
 /**
  * Adds time block dpending on time of publication
@@ -126,29 +155,36 @@ export function filterDataByDates (data, startDate, endDate) {
  * @param {number} timeBlockLength the length of the time block. Default is 2
  * @returns {object[]} The data with the time block clomun added
  */
-export function addTimeBlocks (data, timeBlockLength = 2) {
-  const processedData = data.map(item => {
-    const timeParts = item.time.split(':')
-    const hour = Number(timeParts[0])
-    const minute = Number(timeParts[1])
+export function addTimeBlocks(data, timeBlockLength = 2) {
+  const processedData = data.map((item) => {
+    const timeParts = item.time.split(":");
+    const hour = Number(timeParts[0]);
+    const minute = Number(timeParts[1]);
 
     // Calculate the total minutes from 00:00
-    const totalMinutes = hour * 60 + minute
+    const totalMinutes = hour * 60 + minute;
 
     // Calculate the time block
-    const timeBlockStart = Math.floor(totalMinutes / (timeBlockLength * 60)) * (timeBlockLength * 60)
-    const timeBlockEnd = timeBlockStart + timeBlockLength * 60
+    const timeBlockStart =
+      Math.floor(totalMinutes / (timeBlockLength * 60)) *
+      (timeBlockLength * 60);
+    const timeBlockEnd = timeBlockStart + timeBlockLength * 60;
 
     // Format the time block as HH:MM - HH:MM
-    const timeBlock = `${String(Math.floor(timeBlockStart / 60)).padStart(2, '0')}:${String(timeBlockStart % 60).padStart(2, '0')} to ${String(Math.floor(timeBlockEnd / 60)).padStart(2, '0')}:${String(timeBlockEnd % 60).padStart(2, '0')}`
+    const timeBlock = `${String(Math.floor(timeBlockStart / 60)).padStart(
+      2,
+      "0"
+    )}:${String(timeBlockStart % 60).padStart(2, "0")} to ${String(
+      Math.floor(timeBlockEnd / 60)
+    ).padStart(2, "0")}:${String(timeBlockEnd % 60).padStart(2, "0")}`;
 
     return {
       ...item,
-      timeBlock: timeBlock
-    }
-  })
+      timeBlock: timeBlock,
+    };
+  });
 
-  return processedData
+  return processedData;
 }
 
 /**
@@ -157,15 +193,15 @@ export function addTimeBlocks (data, timeBlockLength = 2) {
  * @param {object[]} data The data to analyze
  * @returns {string[]} The unique timeBlocks in the data
  */
-export function getUniqueTimeBlocks (data) {
-  const uniqueTimeBlocks = new Set()
+export function getUniqueTimeBlocks(data) {
+  const uniqueTimeBlocks = new Set();
 
-  data.forEach(item => {
-    const timeBlock = item.timeBlock
-    uniqueTimeBlocks.add(timeBlock)
-  })
+  data.forEach((item) => {
+    const timeBlock = item.timeBlock;
+    uniqueTimeBlocks.add(timeBlock);
+  });
 
-  return Array.from(uniqueTimeBlocks)
+  return Array.from(uniqueTimeBlocks);
 }
 
 /**
@@ -175,12 +211,12 @@ export function getUniqueTimeBlocks (data) {
  * @param {string} targetColumn The column to normalize
  * @returns {object[]} The column with the normalized data
  */
-export function normalizeColumn (data, targetColumn) {
-  const min = Math.min(...data.map(obj => obj[targetColumn]))
-  const max = Math.max(...data.map(obj => obj[targetColumn]))
-  data.forEach(obj => {
-    obj[`${targetColumn}Normalized`] = (obj[targetColumn] - min) / (max - min)
-  })
+export function normalizeColumn(data, targetColumn) {
+  const min = Math.min(...data.map((obj) => obj[targetColumn]));
+  const max = Math.max(...data.map((obj) => obj[targetColumn]));
+  data.forEach((obj) => {
+    obj[`${targetColumn}Normalized`] = (obj[targetColumn] - min) / (max - min);
+  });
 
-  return data
+  return data;
 }

@@ -172,3 +172,6 @@ button:active {
   border-color: #555 transparent transparent transparent;
 }
 
+.overview-heatmap-svg {
+  background-color: #292929;
+}
