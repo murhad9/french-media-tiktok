@@ -9,7 +9,7 @@
  * file.
  */
 
-body {
+ body {
   font-family: "Roboto Slab", "sans-serif";
   font-size: 16px;
   background-color: #fff;
@@ -71,6 +71,7 @@ button:active {
   padding: 0 100px;
 }
 
+
 /************************** OVERVIEW CSS RULES **************************
  *
  * All of the CSS rules for the "Overview" tab.
@@ -112,7 +113,6 @@ button:active {
   flex-direction: column;
   gap: 12px;
   width: 60%;
-  /* background-color: red; */
   background-color: black;
 }
 
@@ -120,6 +120,47 @@ button:active {
   background-color: #292929;
   border-radius: 28px;
   height: 100px;
+}
+
+#overview .categories {
+  margin-left: 50px;
+}
+
+#overview .tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+  background-color: #000;
+  color: #f6f6f6;
+  width: auto;
+}
+
+#overview .tooltip .tooltiptext {
+  text-align: center;
+  background-color: #555;
+  color: #fff;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+#overview .tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+#overview .overview-heatmap-svg {
+  background-color: #292929;
 }
 
 /************************** SONGS CSS RULES **************************
@@ -183,45 +224,4 @@ button:active {
 
 #video-posting .axis path {
   opacity: 0;
-}
-
-.categories {
-  margin-left: 50px;
-}
-
-.tooltip {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black;
-  background-color: #000;
-  color: #f6f6f6;
-  width: auto;
-}
-
-.tooltip .tooltiptext {
-  text-align: center;
-  background-color: #555;
-  color: #fff;
-  border-radius: 6px;
-  padding: 5px 0;
-  position: absolute;
-  z-index: 1;
-  bottom: 125%;
-  left: 50%;
-  margin-left: -60px;
-}
-
-.tooltip .tooltiptext::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
-}
-
-.overview-heatmap-svg {
-  background-color: #292929;
 }
