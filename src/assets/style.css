@@ -78,7 +78,7 @@ button:active {
  */
 
 .media-container {
-  width: 320px;
+  width: 250px;
 }
 
 .media-select-btn {
@@ -124,6 +124,8 @@ button:active {
   background-color: #fff;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   display: none;
+  overflow-y: scroll;
+  max-height: 400px;
 }
 
 .media-select-btn.open ~ .media-list-items {
@@ -146,7 +148,7 @@ button:active {
 }
 
 .media-item .media-item-text {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
   color: #333;
 }

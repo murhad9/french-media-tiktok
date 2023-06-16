@@ -4,7 +4,6 @@ import * as preproc from './scripts/preprocess.js'
 import * as viz from './scripts/viz.js'
 import * as addons from './scripts/viz-addons.js'
 // import * as slider from '../components/slider.js'
-import * as menu from '../components/media-selection-menu.js'
 
 /**
  * Loads the songs tab.
@@ -24,7 +23,6 @@ export function load (d3) {
   const radiusModulator = 1600 // the greater the value, the smaller the circles at the same window width
 
   // slider.append(document.querySelector('#songs .viz-container'), new Date(2018, 10, 30), new Date(2023, 3, 14), () => {})
-  menu.append(document.querySelector('#songs .viz-container'), ['HTML & CSS', 'Bootstrap', 'JavaScript', 'Node.Js', 'React JS', 'Mongo DB'])
 
   d3.csv('./data_source.csv', d3.autoType).then(function (data) {
     data = preproc.filterOutRowsByValue(
