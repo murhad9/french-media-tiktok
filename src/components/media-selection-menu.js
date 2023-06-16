@@ -9,6 +9,8 @@ export function append (parent, items, onSelection) {
   const container = createContainer()
   createButton(container)
   createList(container)
+  createSelectAllButton(container)
+  createRemoveAllButton(container)
 
   /**
    * Creates the container which will contain the dropdown menu.
@@ -74,5 +76,43 @@ export function append (parent, items, onSelection) {
       list.appendChild(listItem)
     })
     container.appendChild(list)
+  }
+
+  /**
+   * Creates the 'Select all media' button.
+   *
+   * @param {*} container The container to create the button in
+   */
+  function createSelectAllButton (container) {
+    const button = document.createElement('button')
+    button.setAttribute('type', 'button')
+    button.innerText = 'Select all media'
+    button.addEventListener('click', () => {
+      const listItems = container.querySelectorAll('li')
+      const btnText = container.querySelector('.media-btn-text')
+      listItems.forEach(listItem => listItem.classList.add('checked'))
+      btnText.innerText = `${items.length} Selected`
+      onSelection(items)
+    })
+    container.appendChild(button)
+  }
+
+  /**
+   * Creates the 'Remove all media' button.
+   *
+   * @param {*} container The container to create the button in
+   */
+  function createRemoveAllButton (container) {
+    const button = document.createElement('button')
+    button.setAttribute('type', 'button')
+    button.innerText = 'Remove all media'
+    button.addEventListener('click', () => {
+      const listItems = container.querySelectorAll('li')
+      const btnText = container.querySelector('.media-btn-text')
+      listItems.forEach(listItem => listItem.classList.remove('checked'))
+      btnText.innerText = 'Select Media'
+      onSelection([])
+    })
+    container.appendChild(button)
   }
 }
