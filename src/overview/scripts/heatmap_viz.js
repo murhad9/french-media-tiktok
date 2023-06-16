@@ -33,7 +33,6 @@ export function appendLines(data) {
  */
 export function updateXScale(data, xScale, width) {
   const xExtent = d3.extent(data, (d) => new Date(d.date));
-  console.log(xExtent);
 
   xScale.domain(xExtent).range([0, width]);
 }

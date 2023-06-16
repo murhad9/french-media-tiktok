@@ -8,8 +8,6 @@ export function initMediaSelection(
   selectedMediaList,
   mediaList
 ) {
-  console.log(mediaList);
-  console.log(selectedMediaList);
   const select = document.getElementById("overview-add-media-select");
 
   // remove all select previous options

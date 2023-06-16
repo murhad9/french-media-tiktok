@@ -30,7 +30,6 @@ export function load(d3) {
   const colorScale = d3.scaleSequential(d3Chromatic.interpolateBuPu);
 
   d3.csv("./data_source.csv", d3.autoType).then(function (data) {
-    console.log("INITIAL DATA");
     // removes video in april 2023 because the month is not entirely covered in input data
     data = preproc.removeAfter(data, new Date("2023-03-30"));
     data = preproc.setYear(data);
@@ -41,7 +40,6 @@ export function load(d3) {
         yearMonth: row.year + ">" + new Date(row.date).getMonth(),
       };
     });
-    console.log(data);
     data = preproc.aggregateColumns(
       data,
       ["vues", "likes", "partages", "commentaires"],

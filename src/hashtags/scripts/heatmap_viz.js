@@ -1,6 +1,5 @@
 
 export function appendRects (data, width, height, engagementCategory, tip) {
-  console.log(data)
   const svg = d3.select('#hashtags-graph-g')
   const x = d3
     .scaleBand()

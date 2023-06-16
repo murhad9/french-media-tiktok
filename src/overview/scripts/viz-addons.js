@@ -14,7 +14,6 @@ export function displayPanel(d) {
   const panel = d3.select("#overview-panel").style("visibility", "visible");
 
   const data = d.target.__data__;
-  console.log(data);
 
   panel.selectAll("*").remove();
 
