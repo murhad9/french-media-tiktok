@@ -1,6 +1,7 @@
 "use strict";
 
 import * as helper from "./scripts/helper.js";
+import * as menu from "../components/media-selection-menu.js";
 import * as preproc from "./scripts/preprocess.js";
 import * as viz from "./scripts/heatmap_viz.js";
 import * as legend from "./scripts/legend.js";
@@ -21,7 +22,7 @@ export function load(d3) {
   let graphSize;
 
   let domainColumn = "vues";
-  let selectedMediaList = ["hugodecrypte", "lefigarofr"];
+  let selectedMediaList = [];
 
   const margin = { top: 10, right: 20, bottom: 35, left: 50 };
   // TODO: Use this file for welcom vizs
@@ -34,6 +35,9 @@ export function load(d3) {
     data = preproc.removeAfter(data, new Date("2023-03-30"));
     data = preproc.setYear(data);
     const mediaList = preproc.getMediaList(data);
+
+    // creates the media selection component
+    menu.append(document.querySelector("#overview-media-selection"), mediaList);
     data = data.map((row) => {
       return {
         ...row,
@@ -60,11 +64,6 @@ export function load(d3) {
 
     // addons.initPanelDiv();
     addons.initButtons(updateDomainColumn);
-    mediaSelection.initMediaSelection(
-      updateSelectedMedia,
-      selectedMediaList,
-      mediaList
-    );
 
     setSizing();
     build();
@@ -104,6 +103,28 @@ export function load(d3) {
       build();
     }
 
+    function getCheckedMedia() {
+      let checkedMedia = [];
+      const items = document.querySelectorAll(
+        "#overview-media-selection .media-list-items .media-item"
+      );
+      items.forEach((child) => {
+        if (child.classList.contains("checked")) {
+          checkedMedia.push(child.innerText);
+        }
+      });
+      return checkedMedia;
+    }
+
+    const listItems = document.querySelectorAll(
+      "#overview-media-selection .media-list-items .media-item"
+    );
+    listItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        updateSelectedMedia(getCheckedMedia());
+      });
+    });
+
     /**
      *   This function builds the graph.
      */
@@ -139,12 +160,6 @@ export function load(d3) {
         hover.rectUnselected,
         hover.selectTicks,
         hover.unselectTicks
-      );
-
-      mediaSelection.initMediaSelection(
-        updateSelectedMedia,
-        selectedMediaList,
-        mediaList
       );
 
       legend.draw(
