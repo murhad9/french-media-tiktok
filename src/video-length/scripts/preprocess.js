@@ -287,36 +287,10 @@ export function topTenIdealVideo (data) {
     objet.commentaires = objet.commentaires / objet.count
     objet.vues = objet.vues / objet.count
   })
-  // // Convertir le dictionnaire en tableau d'objets clé-valeur
-  // const entries = Object.entries(tableau)
 
-  // // Trier le tableau par valeur décroissante
-  // entries.sort((a, b) => b[1].engament - a[1].engament)
-
- 
-  // const finalData = []
-  // for (const el of entries) {
-  //   const x = {
-  //     duréeSecondes: el[1].duréeSecondes,
-  //     likes: el[1].likes,
-  //     partages: el[1].partages,
-  //     commentaires: el[1].commentaires,
-  //     vues: el[1].vues,
-  //     engament : el[1].engament
-  //   }
-  //   finalData.push(x)
-  // }
-
-  // console.log(tab)
   return tab
 }
 
 
-// const tableau = [
-//   { duree: 10, age: 30 },
-//   { duree: 10, age: 25 },
-//   { duree: 5, age: 35 }
-// ];
 
-// const nouveauTableau = regrouperParDuree(tableau);
-// console.log(nouveauTableau);
+
