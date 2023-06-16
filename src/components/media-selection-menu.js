@@ -3,8 +3,9 @@
  *
  * @param {Element} parent The parent element to which the menu will be appended
  * @param {string[]} items A list of strings to display in the dropdown menu
+ * @param {Function} onSelection A function which takes a string list of the selected media as a parameter
  */
-export function append (parent, items) {
+export function append (parent, items, onSelection) {
   const container = createContainer()
   createButton(container)
   createList(container)
@@ -54,13 +55,15 @@ export function append (parent, items) {
       listItem.setAttribute('class', 'media-item')
       listItem.addEventListener('click', () => {
         listItem.classList.toggle('checked')
-        const checked = container.querySelectorAll('.checked')
+        const checkedElements = container.querySelectorAll('.checked')
+        const checkedMedia = Array.from(checkedElements).map(element => element.innerText)
         const btnText = container.querySelector('.media-btn-text')
-        if (checked && checked.length > 0) {
-          btnText.innerText = `${checked.length} Selected`
+        if (checkedElements && checkedElements.length > 0) {
+          btnText.innerText = `${checkedElements.length} Selected`
         } else {
           btnText.innerText = 'Select Media'
         }
+        onSelection(checkedMedia)
       })
       listItem.innerHTML = `
         <span class="media-checkbox">
