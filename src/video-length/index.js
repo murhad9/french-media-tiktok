@@ -98,7 +98,6 @@ export function load (d3) {
       // helper.initButtons()
 
       setSizing()
-       console.log(engagementCategory)
        viz.appendRects(data, graphSize.width, graphSize.height, engagementCategory, tip)
       build()
     }

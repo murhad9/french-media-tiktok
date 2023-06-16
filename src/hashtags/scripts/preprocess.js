@@ -184,3 +184,74 @@ export function normalizeColumn (data, targetColumn) {
 
   return data
 }
+
+export function weightFeatures(data) {
+  let numberOfLikes = 0
+  let numberOfShares = 0
+  let numberOfComments = 0
+  let numberOfViews = 0
+
+  for (let i = 0; i < data.length ; i++) {
+    numberOfLikes += data[i].likes
+    numberOfShares += data[i].partages
+    numberOfComments += data[i].commentaires
+    numberOfViews += data[i].vues
+  }
+
+  const numberOfEngagementsData = numberOfLikes + numberOfShares + numberOfComments + numberOfViews
+
+  return [numberOfLikes / numberOfEngagementsData, numberOfShares / numberOfEngagementsData, numberOfComments / numberOfEngagementsData, numberOfViews / numberOfEngagementsData]
+}
+
+/**
+ * Returns the list of the most popular hashtags
+ * @param {object[]} data The data to analyze
+ * @param {string} targetColumn The column to normalize
+* @returns {object[]} The column with the normalized data
+*/
+export function regrouperParHashtags (data) {
+  const groupes = {}
+
+  data.forEach((objet) => {
+    const likes = objet.likes
+    const partages = objet.partages
+    const commentaires = objet.commentaires
+    const vues = objet.vues
+    const hashtags = (objet.description ?? '').match(/#\w+/g) ?? []
+
+    for (const hashtag of hashtags) {
+      if (groupes[hashtag]) {
+        groupes[hashtag].likes += likes
+        groupes[hashtag].partages += partages
+        groupes[hashtag].commentaires += commentaires
+        groupes[hashtag].vues += vues
+        groupes[hashtag].count++
+      } else {
+        groupes[hashtag] = {
+          hashtag: hashtag,
+          likes: likes,
+          partages: partages,
+          commentaires: commentaires,
+          vues: vues,
+          count: 1
+        }
+      }
+    }
+  })
+
+  const nouveauTableau = Object.values(groupes).map((groupe) => {
+    const moyenneLikes = groupe.likes / groupe.count
+    const moyennePartages = groupe.partages / groupe.count
+    const moyenneCommentaires = groupe.commentaires / groupe.count
+    const moyenneVues = groupe.vues / groupe.count
+    return {
+      hashtag: groupe.hashtag,
+      likes: moyenneLikes,
+      partages: moyennePartages,
+      commentaires: moyenneCommentaires,
+      vues: moyenneVues
+    }
+  })
+
+  return nouveauTableau
+}

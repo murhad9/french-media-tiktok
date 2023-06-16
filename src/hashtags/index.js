@@ -3,52 +3,37 @@
 import * as helper from './scripts/helper.js'
 import * as preproc from './scripts/preprocess.js'
 import * as viz from './scripts/heatmap_viz.js'
-import * as legend from './scripts/legend.js'
-import * as hover from './scripts/hover.js'
 
-import * as d3Chromatic from 'd3-scale-chromatic'
+import d3Tip from 'd3-tip'
 
 /**
- * Loads the hashtags tab.
+ * Loads the video length tab.
  *
  * @param {*} d3 The d3 library
  */
 export function load (d3) {
   let bounds
   let svgSize
+  let engagementCategory = 'likes'
+  // eslint-disable-next-line no-unused-vars
   let graphSize
 
-  const margin = { top: 35, right: 200, bottom: 35, left: 200 }
-  // TODO: Use this file for welcom vizs
-  const xScale = d3.scaleBand().padding(0.05)
-  const yScale = d3.scaleBand().padding(0.2)
-  const colorScale = d3.scaleSequential(d3Chromatic.interpolateBuPu)
+  const tip = d3Tip().attr('class', 'd3-tip').html(function (d) {
+    return helper.getContents(d, engagementCategory)
+  })
+  d3.select('.hashtags-heatmap-svg').call(tip)
 
-  d3.csv('./data_source.csv', d3.autoType).then(function (data) {
-    // These are just examples
-    data = preproc.addTimeBlocks(preproc.processDateTime(data))
-    data = preproc.aggregateColumns(
-      data,
-      ['vues', 'likes', 'partages', 'commentaires'],
-      ['dayOfWeek', 'timeBlock']
-    )
-    data = preproc.sortByColumns(
-      data,
-      ['averageVues', 'vues', 'likes', 'partages', 'commentaires'],
-      true
-    )
-    data = preproc.normalizeColumn(data, 'vuesAverage')
-    viz.setColorScaleDomain(colorScale, data, 'vuesAverageNormalized')
+  const margin = { top: 35, right: 200, bottom: 50, left: 50 }
 
-    legend.initGradient(colorScale)
-    legend.initLegendBar()
-    legend.initLegendAxis()
+  d3.csv('./data_source.csv', d3.autoType).then(function (csvData) {
+
+    // Certainly to modify in the future
+
 
     const g = helper.generateG(margin)
 
     helper.appendAxes(g)
-    viz.appendRects(data)
-
+    helper.initButtons(switchAxis)
     setSizing()
     build()
 
@@ -56,11 +41,14 @@ export function load (d3) {
      *   This function handles the graph's sizing.
      */
     function setSizing () {
-      bounds = d3.select('.hashtags-graph').node().getBoundingClientRect()
+      bounds = d3
+        .select('.hashtags-graph')
+        .node()
+        .getBoundingClientRect()
 
       svgSize = {
         width: bounds.width,
-        height: 550
+        height: 500
       }
 
       graphSize = {
@@ -71,41 +59,26 @@ export function load (d3) {
       helper.setCanvasSize(svgSize.width, svgSize.height)
     }
 
+    function switchAxis (category) {
+      engagementCategory = category
+      const g = helper.generateG(margin)
+
+      helper.appendAxes(g)
+      // helper.initButtons()
+
+      const data = preproc.regrouperParHashtags(csvData).sort((a, b) => b[category] - a[category]).slice(0, 10)
+
+      setSizing()
+      viz.appendRects(data, graphSize.width, graphSize.height, engagementCategory, tip)
+      build()
+    }
+
     /**
      *   This function builds the graph.
      */
     function build () {
-      viz.updateXScale(xScale, graphSize.width)
-      viz.updateYScale(
-        yScale,
-        preproc.getUniqueTimeBlocks(data),
-        graphSize.height
-      )
-
-      viz.drawXAxis(xScale)
-      viz.drawYAxis(yScale, graphSize.width)
-
-      viz.rotateYTicks()
-
-      viz.updateRects(xScale, yScale, colorScale)
-
-      hover.setRectHandler(
-        xScale,
-        yScale,
-        hover.rectSelected,
-        hover.rectUnselected,
-        hover.selectTicks,
-        hover.unselectTicks
-      )
-
-      legend.draw(
-        margin.left / 2,
-        margin.top + 5,
-        graphSize.height - 10,
-        15,
-        'url(#gradient)',
-        colorScale
-      )
+      const data = preproc.regrouperParHashtags(csvData).sort((a, b) => b[engagementCategory] - a[engagementCategory]).slice(0, 10)
+      viz.appendRects(data, graphSize.width, graphSize.height, engagementCategory, tip)
     }
 
     window.addEventListener('resize', () => {

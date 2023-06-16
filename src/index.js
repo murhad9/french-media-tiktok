@@ -19,8 +19,9 @@ import * as videoPosting from './video-posting/index.js'
   })
 
   overview.load(d3)
-  hashtags.load(d3)
+
   videoLength.load(d3)
+  hashtags.load(d3)
   songs.load(d3)
   videoPosting.load(d3)
 

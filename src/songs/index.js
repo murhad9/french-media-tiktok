@@ -35,10 +35,7 @@ export function load(d3) {
       ["musiqueTitre", "musiqueArtiste"]
     );
 
-    // console.log("songs data");
-    // console.log(data);
-
-    const g = viz.generateG(margin);
+    const g = viz.generateG(margin)
 
     viz.appendPointG(g);
     viz.appendAxis(g);
