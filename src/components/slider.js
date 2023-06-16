@@ -5,7 +5,7 @@
  *
  * Slider documentation: http://ionden.com/a/plugins/ion.rangeSlider/
  *
- * @param {Element} parent A text input element
+ * @param {Element} parent The element to which the slider will be appended
  * @param {Date} min The minimum date
  * @param {Date} max The maximum date
  * @param {Function} onChange Callback function to call when the value of the slider changes.
