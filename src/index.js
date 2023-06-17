@@ -25,7 +25,7 @@ import * as videoPosting from './video-posting/index.js'
   songs.load(d3)
   videoPosting.load(d3)
 
-  document.getElementById('songs').style.display = 'block' // default tab
+  document.getElementById('overview').style.display = 'block' // default tab
 
   document.getElementById('overview-tab').addEventListener('click', () => displayTab('overview'))
   document.getElementById('hashtags-tab').addEventListener('click', () => displayTab('hashtags'))
