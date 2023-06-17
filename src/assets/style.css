@@ -71,6 +71,115 @@ button:active {
   padding: 0 100px;
 }
 
+/************************** MEDIA SELECTION CSS RULES **************************
+ *
+ * All of the CSS rules for the media selection dropdown menu.
+ *
+ */
+
+.media-container {
+  width: 250px;
+}
+
+.media-select-btn {
+  display: flex;
+  height: 50px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.media-select-btn .media-btn-text {
+  font-size: 17px;
+  font-weight: 400;
+  color: #333;
+}
+
+.media-select-btn .media-arrow-dwn {
+  display: flex;
+  height: 21px;
+  width: 21px;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 50%;
+  background: #6e93f7;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.media-select-btn.open .media-arrow-dwn {
+  transform: rotate(-180deg);
+}
+
+.media-list-items {
+  position: relative;
+  margin-top: 15px;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  display: none;
+  overflow-y: scroll;
+  max-height: 400px;
+}
+
+.media-select-btn.open ~ .media-list-items {
+  display: block;
+}
+
+.media-list-items .media-item {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  height: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 0 15px;
+  border-radius: 8px;
+}
+
+.media-list-items .media-item:hover {
+  background-color: #e7edfe;
+}
+
+.media-item .media-item-text {
+  font-size: 14px;
+  font-weight: 400;
+  color: #333;
+}
+
+.media-item .media-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 16px;
+  width: 16px;
+  border-radius: 4px;
+  margin-right: 12px;
+  border: 1.5px solid #c0c0c0;
+  transition: all 0.3s ease-in-out;
+}
+
+.media-item.checked .media-checkbox {
+  background-color: #4070f4;
+  border-color: #4070f4;
+}
+
+.media-checkbox .media-check-icon {
+  color: #fff;
+  font-size: 11px;
+  transform: scale(0);
+  transition: all 0.2s ease-in-out;
+}
+
+.media-item.checked .media-check-icon {
+  transform: scale(1);
+}
 
 /************************** OVERVIEW CSS RULES **************************
  *
