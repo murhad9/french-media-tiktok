@@ -27,6 +27,31 @@ export function generateG (margin) {
 }
 
 /**
+ * Generates the title of the visualization
+ *
+ * @param {string} title The title of the visualization
+ * @param {number} width The width of the svg containing the viz
+ */
+export function generateTitle (title, width) {
+  const svg = d3.select('.songs-svg')
+
+  // Append a group element at the top of the SVG
+  const titleGroup = svg.append('g')
+    .attr('class', 'title-group')
+    .attr('transform', 'translate(0, 20)') // Adjust the y-coordinate to position the title
+
+  // Append the title text
+  titleGroup.append('text')
+    .attr('class', 'title')
+    .attr('x', width / 2 - 50) // Position the title in the center of the SVG
+    .attr('text-anchor', 'middle')
+    .attr('fill', '#fff')
+    .style('font-size', '20px') // Adjust the font size to resemble an h6 element
+    .style('font-weight', 'bold') // Add bold style
+    .text(title)
+}
+
+/**
  * Appends an SVG g element which will contain the data points.
  *
  * @param {*} g The d3 Selection of the graph's g SVG element
@@ -188,11 +213,14 @@ export function drawXAxis (xScale, width, height, xColumn) {
 
   d3.select('#songs-graph-g .x.axis')
     .attr('transform', 'translate( 0, ' + height + ')')
+    .style('color', '#C7C7C7')
     .call(xAxisGenerator)
+
   d3.select('#songs-graph-g .x.axis-text')
     .attr('x', width / 2)
     .attr('y', height + 30)
     .text(`${xColumn}`)
+    .style('fill', '#C7C7C7')
 
   if (!isNaN(xScale(0))) { // remove minor tick labels for symlog scale
     d3.selectAll('#songs-graph-g .tick text')

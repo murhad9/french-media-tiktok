@@ -18,6 +18,7 @@ export function load (d3) {
   let simulation
   let widthBound
   let domainColumn = 'vuesAverage' // by default, display songs according to average views
+  const graphTitle = 'Songs Used in TikTok Videos by Average View Count' // By default
 
   const margin = { top: 35, right: 400, bottom: 35, left: 50 }
   const radiusModulator = 1600 // the greater the value, the smaller the circles at the same window width
@@ -49,6 +50,8 @@ export function load (d3) {
       .select('#songs-beeswarm-plot')
       .node()
       .getBoundingClientRect().width
+
+    viz.generateTitle(graphTitle, widthBound - margin.left)
 
     addons.initPanelDiv()
     addons.initButtons(updateDomainColumn)

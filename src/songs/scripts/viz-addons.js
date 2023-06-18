@@ -44,7 +44,9 @@ export function initButtons (switchAxis) {
  * @param {object} d The data bound to the clicked marker
  */
 export function displayPanel (d) {
-  const panel = d3.select('#songs-panel').style('visibility', 'visible')
+  const panel = d3.select('#songs-panel')
+    .style('visibility', 'visible')
+    .style('background-color', 'white')
 
   panel.selectAll('*').remove()
 

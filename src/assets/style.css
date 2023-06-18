@@ -198,6 +198,15 @@ button:active {
   padding-right: 300px;
 }
 
+#songs .viz-container{
+  padding-top: 10px;
+  background-color: #151515;
+}
+
+#songs .songs-svg {
+  background-color: #292929;
+  border-radius: 25px;
+}
 
 #songs .songs-button {
   width: 100px;
@@ -208,7 +217,7 @@ button:active {
 }
 
 #songs .points .selected {
-  fill: red;
+  fill: #387DAF;
 }
 
 /************************** VIDEO POSTING CSS RULES **************************
