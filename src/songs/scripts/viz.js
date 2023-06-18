@@ -66,7 +66,7 @@ export function appendCircles (data) {
     .data(data)
     .enter()
     .append('circle')
-    .attr('fill', 'black')
+    .attr('fill', '#5E3764')
     .attr('stroke', 'white')
 }
 
@@ -215,11 +215,16 @@ export function updateCircles (simulation, radiusScale, displayPanel) {
     .attr('r', d => radiusScale(d.count))
     .on('mouseover', function () {
       const element = d3.select(this)
-      element.attr('r', d => radiusScale(d.count) * 1.5)
+      element.transition()
+        .duration(200) // Set the duration of the transition in milliseconds
+        .attr('r', d => radiusScale(d.count) * 1.5)
       element.node().parentElement.append(this)
     })
     .on('mouseout', function () {
-      d3.select(this).attr('r', d => radiusScale(d.count))
+      const element = d3.select(this)
+      element.transition()
+        .duration(200)
+        .attr('r', d => radiusScale(d.count))
     })
     .on('click', (event, d) => {
       d3.select('#songs-graph-g .points .selected').classed('selected', false)
