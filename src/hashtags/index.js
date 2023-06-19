@@ -3,6 +3,8 @@
 import * as helper from './scripts/helper.js'
 import * as preproc from './scripts/preprocess.js'
 import * as viz from './scripts/heatmap_viz.js'
+import * as slider from '../components/slider.js'
+import * as sortBySelect from '../components/sort-by-select.js'
 
 import d3Tip from 'd3-tip'
 
@@ -14,7 +16,11 @@ import d3Tip from 'd3-tip'
 export function load (d3) {
   let bounds
   let svgSize
-  let engagementCategory = 'likes'
+  let engagementCategory = 'vues'
+  const fromToDates = {
+    from: new Date(2018, 10, 30),
+    to: new Date(2023, 3, 14)
+  }
   // eslint-disable-next-line no-unused-vars
   let graphSize
 
@@ -26,14 +32,27 @@ export function load (d3) {
   const margin = { top: 35, right: 200, bottom: 50, left: 50 }
 
   d3.csv('./data_source.csv', d3.autoType).then(function (csvData) {
-
-    // Certainly to modify in the future
-
-
     const g = helper.generateG(margin)
+    let data = preproc.regrouperParHashtags(csvData, fromToDates).sort((a, b) => b[engagementCategory] - a[engagementCategory]).slice(0, 10)
+    slider.append(
+      document.querySelector('#hashtags-controls-time-range'),
+      new Date(2018, 10, 30),
+      new Date(2023, 3, 14),
+      updateSelectedDates
+    )
+
+    sortBySelect.append(
+      document.querySelector('#hashtags-controls-sort-by'),
+      {
+        'Average Views': 'vues',
+        'Average Likes': 'likes',
+        'Average Comments': 'commentaires',
+        'Average Shares': 'partages'
+      },
+      updateDomainColumn
+    )
 
     helper.appendAxes(g)
-    helper.initButtons(switchAxis)
     setSizing()
     build()
 
@@ -59,26 +78,39 @@ export function load (d3) {
       helper.setCanvasSize(svgSize.width, svgSize.height)
     }
 
-    function switchAxis (category) {
-      engagementCategory = category
-      const g = helper.generateG(margin)
-
-      helper.appendAxes(g)
-      // helper.initButtons()
-
-      const data = preproc.regrouperParHashtags(csvData).sort((a, b) => b[category] - a[category]).slice(0, 10)
-
-      setSizing()
-      viz.appendRects(data, graphSize.width, graphSize.height, engagementCategory, tip)
-      build()
-    }
-
     /**
      *   This function builds the graph.
      */
     function build () {
-      const data = preproc.regrouperParHashtags(csvData).sort((a, b) => b[engagementCategory] - a[engagementCategory]).slice(0, 10)
+      data = preproc.regrouperParHashtags(csvData, fromToDates).sort((a, b) => b[engagementCategory] - a[engagementCategory]).slice(0, 10)
       viz.appendRects(data, graphSize.width, graphSize.height, engagementCategory, tip)
+    }
+
+    /**
+     * Updates the plot with the select date range
+     *
+     * @param {*} fromToDatesParam Object with "from" and "to" properties containing Date objects
+     */
+    function updateSelectedDates (fromToDatesParam) {
+      fromToDates.from = fromToDatesParam.from
+      fromToDates.to = fromToDatesParam.to
+      const g = helper.generateG(margin)
+      helper.appendAxes(g)
+      setSizing()
+      build()
+    }
+
+    /**
+     * Callback function to update the column used for the x axis
+     *
+     * @param {*} column The new column to use
+     */
+    function updateDomainColumn (column) {
+      engagementCategory = column
+      const g = helper.generateG(margin)
+      helper.appendAxes(g)
+      setSizing()
+      build()
     }
 
     window.addEventListener('resize', () => {

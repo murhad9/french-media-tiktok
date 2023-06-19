@@ -1,9 +1,18 @@
+/* eslint-disable jsdoc/require-param-type */
+/* eslint-disable jsdoc/require-param-description */
 
+/**
+ * @param data
+ * @param width
+ * @param height
+ * @param engagementCategory
+ * @param tip
+ */
 export function appendRects (data, width, height, engagementCategory, tip) {
   const svg = d3.select('#hashtags-graph-g')
   const x = d3
     .scaleBand()
-    .domain(data.map(function(d) {
+    .domain(data.map(function (d) {
       return d.hashtag
     }))
     .padding(0.2)
@@ -32,7 +41,6 @@ export function appendRects (data, width, height, engagementCategory, tip) {
       .selectAll('.bar')
       .remove()
 
-
     svg
       .selectAll('.bar') // Utilisation de la classe ".bar" pour sélectionner les barres
       .data(data)
@@ -45,10 +53,7 @@ export function appendRects (data, width, height, engagementCategory, tip) {
       .attr('fill', d => '#483248')
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide)
-  } 
- 
-
-  else if (engagementCategory === 'partages') {
+  } else if (engagementCategory === 'partages') {
     const y = d3
       .scaleLinear()
       .domain([0, d3.max(data, d => d.partages)]) // Utilisation de d3.max pour obtenir la valeur maximale des étoiles
@@ -73,9 +78,7 @@ export function appendRects (data, width, height, engagementCategory, tip) {
       .attr('fill', d => '#483248')
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide)
-  } 
-
-  else if (engagementCategory === 'commentaires') {
+  } else if (engagementCategory === 'commentaires') {
     const y = d3
       .scaleLinear()
       .domain([0, d3.max(data, d => d.commentaires)]) // Utilisation de d3.max pour obtenir la valeur maximale des étoiles
@@ -100,9 +103,7 @@ export function appendRects (data, width, height, engagementCategory, tip) {
       .attr('fill', d => '#483248')
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide)
-  } 
-
-  else if (engagementCategory === 'vues') {
+  } else if (engagementCategory === 'vues') {
     const y = d3
       .scaleLinear()
       .domain([0, d3.max(data, d => d.vues)]) // Utilisation de d3.max pour obtenir la valeur maximale des étoiles
@@ -127,6 +128,5 @@ export function appendRects (data, width, height, engagementCategory, tip) {
       .attr('fill', d => '#483248')
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide)
-  } 
-  
+  }
 }
