@@ -77,11 +77,11 @@ button:active {
  *
  */
 
-.media-container {
+.dropdown-container {
   width: 250px;
 }
 
-.media-select-btn {
+.dropdown-select-btn {
   display: flex;
   height: 50px;
   align-items: center;
@@ -93,13 +93,13 @@ button:active {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
 
-.media-select-btn .media-btn-text {
+.dropdown-select-btn .dropdown-btn-text {
   font-size: 17px;
   font-weight: 400;
   color: #333;
 }
 
-.media-select-btn .media-arrow-dwn {
+.dropdown-select-btn .dropdown-arrow-dwn {
   display: flex;
   height: 21px;
   width: 21px;
@@ -112,11 +112,11 @@ button:active {
   transition: 0.3s;
 }
 
-.media-select-btn.open .media-arrow-dwn {
+.dropdown-select-btn.open .dropdown-arrow-dwn {
   transform: rotate(-180deg);
 }
 
-.media-list-items {
+.dropdown-list-items {
   position: relative;
   margin-top: 15px;
   border-radius: 8px;
@@ -128,11 +128,11 @@ button:active {
   max-height: 400px;
 }
 
-.media-select-btn.open ~ .media-list-items {
+.dropdown-select-btn.open ~ .dropdown-list-items {
   display: block;
 }
 
-.media-list-items .media-item {
+.dropdown-list-items .dropdown-item {
   display: flex;
   align-items: center;
   list-style: none;
@@ -143,17 +143,17 @@ button:active {
   border-radius: 8px;
 }
 
-.media-list-items .media-item:hover {
+.dropdown-list-items .dropdown-item:hover {
   background-color: #e7edfe;
 }
 
-.media-item .media-item-text {
+.dropdown-item .dropdown-item-text {
   font-size: 14px;
   font-weight: 400;
   color: #333;
 }
 
-.media-item .media-checkbox {
+.dropdown-item .dropdown-checkbox {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -165,19 +165,19 @@ button:active {
   transition: all 0.3s ease-in-out;
 }
 
-.media-item.checked .media-checkbox {
+.dropdown-item.checked .dropdown-checkbox {
   background-color: #4070f4;
   border-color: #4070f4;
 }
 
-.media-checkbox .media-check-icon {
+.dropdown-checkbox .dropdown-check-icon {
   color: #fff;
   font-size: 11px;
   transform: scale(0);
   transition: all 0.2s ease-in-out;
 }
 
-.media-item.checked .media-check-icon {
+.dropdown-item.checked .dropdown-check-icon {
   transform: scale(1);
 }
 
@@ -299,20 +299,6 @@ button:active {
   transform-origin: center;
   transform-box: fill-box;
   text-anchor: middle;
-}
-
-#songs #songs-sidebar-buttons {
-  display: flex;
-  justify-content: center;
-  padding-right: 300px;
-}
-
-#songs .songs-button {
-  width: 100px;
-  margin: 20px 5px;
-  padding: 6px;
-  font-family: "Roboto";
-  font-size: 14px;
 }
 
 #songs .points .selected {
