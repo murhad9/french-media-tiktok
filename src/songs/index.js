@@ -4,6 +4,7 @@ import * as preproc from './scripts/preprocess.js'
 import * as viz from './scripts/viz.js'
 import * as addons from './scripts/viz-addons.js'
 import * as slider from '../components/slider.js'
+import * as dropdown from '../components/sort-by-select.js'
 
 /**
  * Loads the songs tab.
@@ -54,7 +55,11 @@ export function load (d3) {
       .getBoundingClientRect().width
 
     addons.initPanelDiv()
-    addons.initButtons(updateDomainColumn)
+    dropdown.append(
+      document.querySelector('#songs .viz-container'),
+      { 'Average Views': 'vuesAverage', 'Average Likes': 'likesAverage', 'Average Comments': 'commentairesAverage', 'Average Shares': 'partagesAverage' },
+      updateDomainColumn
+    )
 
     const minDate = d3.min(nonAggregatedData, row => new Date(row.date))
     const maxDate = d3.max(nonAggregatedData, row => new Date(row.date))

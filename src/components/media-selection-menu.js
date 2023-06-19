@@ -3,7 +3,7 @@
  *
  * @param {Element} parent The parent element to which the menu will be appended
  * @param {string[]} items A list of strings to display in the dropdown menu
- * @param {Function} onSelection A function which takes a string list of the selected media as a parameter
+ * @param {Function} onSelection A function which takes a string of the selected media as a parameter
  */
 export function append (parent, items, onSelection) {
   const container = createContainer()
@@ -19,7 +19,7 @@ export function append (parent, items, onSelection) {
    */
   function createContainer () {
     const container = document.createElement('div')
-    container.setAttribute('class', 'media-container')
+    container.setAttribute('class', 'dropdown-container')
     parent.appendChild(container)
     return container
   }
@@ -31,13 +31,13 @@ export function append (parent, items, onSelection) {
    */
   function createButton (container) {
     const selectBtn = document.createElement('div')
-    selectBtn.setAttribute('class', 'media-select-btn')
+    selectBtn.setAttribute('class', 'dropdown-select-btn')
     selectBtn.addEventListener('click', () => {
       selectBtn.classList.toggle('open')
     })
     selectBtn.innerHTML = `
-      <span class="media-btn-text">Select Media</span>
-      <span class="media-arrow-dwn">
+      <span class="dropdown-btn-text">Select Media</span>
+      <span class="dropdown-arrow-dwn">
         <i class="fa-solid fa-chevron-down"></i>
       </span>
     `
@@ -51,15 +51,15 @@ export function append (parent, items, onSelection) {
    */
   function createList (container) {
     const list = document.createElement('ul')
-    list.setAttribute('class', 'media-list-items')
+    list.setAttribute('class', 'dropdown-list-items')
     items.forEach(item => {
       const listItem = document.createElement('li')
-      listItem.setAttribute('class', 'media-item')
+      listItem.setAttribute('class', 'dropdown-item')
       listItem.addEventListener('click', () => {
         listItem.classList.toggle('checked')
         const checkedElements = container.querySelectorAll('.checked')
         const checkedMedia = Array.from(checkedElements).map(element => element.innerText)
-        const btnText = container.querySelector('.media-btn-text')
+        const btnText = container.querySelector('.dropdown-btn-text')
         if (checkedElements && checkedElements.length > 0) {
           btnText.innerText = `${checkedElements.length} Selected`
         } else {
@@ -68,10 +68,10 @@ export function append (parent, items, onSelection) {
         onSelection(checkedMedia)
       })
       listItem.innerHTML = `
-        <span class="media-checkbox">
-          <i class="fa-solid fa-check media-check-icon"></i>
+        <span class="dropdown-checkbox">
+          <i class="fa-solid fa-check dropdown-check-icon"></i>
         </span>
-        <span class="media-item-text">${item}</span>
+        <span class="dropdown-item-text">${item}</span>
       `
       list.appendChild(listItem)
     })
@@ -89,7 +89,7 @@ export function append (parent, items, onSelection) {
     button.innerText = 'Select all media'
     button.addEventListener('click', () => {
       const listItems = container.querySelectorAll('li')
-      const btnText = container.querySelector('.media-btn-text')
+      const btnText = container.querySelector('.dropdown-btn-text')
       listItems.forEach(listItem => listItem.classList.add('checked'))
       btnText.innerText = `${items.length} Selected`
       onSelection(items)
@@ -108,7 +108,7 @@ export function append (parent, items, onSelection) {
     button.innerText = 'Remove all media'
     button.addEventListener('click', () => {
       const listItems = container.querySelectorAll('li')
-      const btnText = container.querySelector('.media-btn-text')
+      const btnText = container.querySelector('.dropdown-btn-text')
       listItems.forEach(listItem => listItem.classList.remove('checked'))
       btnText.innerText = 'Select Media'
       onSelection([])

@@ -6,6 +6,7 @@ import * as preproc from './scripts/preprocess.js'
 import * as viz from './scripts/heatmap_viz.js'
 import * as addons from './scripts/viz-addons.js'
 import * as slider from '../components/slider.js'
+import * as sortBySelect from '../components/sort-by-select.js'
 
 import * as d3Chromatic from 'd3-scale-chromatic'
 
@@ -48,6 +49,12 @@ export function load (d3) {
       updateSelectedDates
     )
 
+    sortBySelect.append(
+      document.querySelector('#overview-controls'),
+      { 'Total Views': 'vues', 'Total Likes': 'likes', 'Total Comments': 'commentaires', 'Total Shares': 'partages' },
+      updateDomainColumn
+    )
+
     data = data.map((row) => {
       return {
         ...row,
@@ -75,7 +82,7 @@ export function load (d3) {
     viz.appendLines(data)
 
     // addons.initPanelDiv();
-    addons.initButtons(updateDomainColumn)
+    // addons.initButtons(updateDomainColumn);
 
     setSizing()
     build()
@@ -122,7 +129,7 @@ export function load (d3) {
     /**
      * Updates the plot with the select date range
      *
-     * @param fromToDates
+     * @param {*} fromToDates Object with "from" and "to" properties containing Date objects
      */
     function updateSelectedDates (fromToDates) {
       dataFromTo = data
@@ -140,12 +147,7 @@ export function load (d3) {
      */
     function build () {
       viz.updateXScale(dataFromTo, xScale, graphSize.width)
-      viz.updateYScale(
-        yScale,
-        dataFromTo,
-        graphSize.height,
-        domainColumn
-      )
+      viz.updateYScale(yScale, dataFromTo, graphSize.height, domainColumn)
 
       viz.drawXAxis(xScale, graphSize.height)
       viz.drawYAxis(yScale, graphSize.width)
