@@ -44,6 +44,10 @@ h2 {
   font-weight: normal;
 }
 
+h3 {
+  color: #f3f3f3;
+}
+
 svg {
   background-color: #ffffff;
 }
@@ -228,7 +232,7 @@ button:active {
 #overview-controls {
   background-color: #292929;
   border-radius: 28px;
-  height: 100px;
+  padding: 0px 16px;
 }
 
 #overview .categories {

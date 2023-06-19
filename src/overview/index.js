@@ -37,13 +37,13 @@ export function load (d3) {
 
     // creates the media selection component
     menu.append(
-      document.querySelector('#overview-media-selection'),
+      document.querySelector("#overview-controls-media-selection"),
       mediaList,
       updateSelectedMedia
     )
 
     slider.append(
-      document.querySelector('#overview-controls'),
+      document.querySelector("#overview-controls-time-range"),
       new Date(2018, 10, 30),
       new Date(2023, 3, 14),
       updateSelectedDates
