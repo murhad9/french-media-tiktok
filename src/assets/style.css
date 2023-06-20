@@ -294,6 +294,26 @@ button:active {
   align-items: center;
 }
 
+#songs #songs-control {
+  width: 83%;
+  height: 120px;
+  border-radius: 28px;
+  background-color: #292929;
+  margin-bottom: 20px;
+  display: inline-flex;
+  flex-direction: row;
+}
+
+#songs .songs-dropdown {
+  width: 400px;
+  margin-left: 20%;
+}
+
+#songs .songs-slider {
+  width: 400px;
+  margin-left: 10%;
+}
+
 #songs #songs-panel {
   width: 300px;
   border: 1px solid black;
@@ -320,7 +340,7 @@ button:active {
 
 #songs .songs-svg {
   background-color: #292929;
-  border-radius: 25px;
+  border-radius: 28px;
 }
 
 #songs .songs-button {

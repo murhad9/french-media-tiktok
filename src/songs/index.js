@@ -62,17 +62,9 @@ export function load (d3) {
     viz.generateGraphTitle(graphTitleMap.get(domainColumn), widthBound - margin.left)
 
     addons.initPanelDiv()
-    dropdown.append(
-      document.querySelector('#songs .viz-container'),
-      { 'Average Views': 'vuesAverage', 'Average Likes': 'likesAverage', 'Average Comments': 'commentairesAverage', 'Average Shares': 'partagesAverage' },
-      updateDomainColumn
-    )
-
-    const minDate = d3.min(nonAggregatedData, row => new Date(row.date))
-    const maxDate = d3.max(nonAggregatedData, row => new Date(row.date))
-    slider.append(document.querySelector('#songs .viz-container'), minDate, maxDate, updateTimeRange)
 
     setSizing()
+    initControlPanel()
     build()
 
     /**
@@ -137,6 +129,41 @@ export function load (d3) {
       )
 
       viz.updateCircles(timeBoundData, simulation, radiusScale, addons.displayPanel)
+    }
+
+    /**
+     * This function initialises the control panel by adding the dropdown and the slider.
+     */
+    function initControlPanel () {
+      // Dropdown
+      d3.select('#songs .songs-dropdown')
+        .append('div')
+        .style('color', 'white')
+        .style('font-size', '24px')
+        .style('font-weight', 'bold')
+        .style('margin-left', '20%')
+        .style('margin-bottom', '10px')
+        .text('Sort by')
+
+      dropdown.append(
+        document.querySelector('#songs .songs-dropdown'),
+        { 'Average Views': 'vuesAverage', 'Average Likes': 'likesAverage', 'Average Comments': 'commentairesAverage', 'Average Shares': 'partagesAverage' },
+        updateDomainColumn
+      )
+
+      // Slider
+      d3.select('#songs .songs-slider')
+        .append('div')
+        .style('color', 'white')
+        .style('font-size', '24px')
+        .style('font-weight', 'bold')
+        .style('margin-left', '35%')
+        .style('margin-bottom', '10px')
+        .text('Time range')
+
+      const minDate = d3.min(nonAggregatedData, row => new Date(row.date))
+      const maxDate = d3.max(nonAggregatedData, row => new Date(row.date))
+      slider.append(document.querySelector('#songs .songs-slider'), minDate, maxDate, updateTimeRange)
     }
 
     /**
