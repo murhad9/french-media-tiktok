@@ -121,7 +121,8 @@ button:active {
 }
 
 .dropdown-list-items {
-  position: relative;
+  position: absolute;
+  width: 218px;
   margin-top: 15px;
   border-radius: 8px;
   padding: 16px;
@@ -130,6 +131,7 @@ button:active {
   display: none;
   overflow-y: scroll;
   max-height: 400px;
+  z-index: 10;
 }
 
 .dropdown-select-btn.open ~ .dropdown-list-items {
