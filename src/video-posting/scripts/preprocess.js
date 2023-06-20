@@ -14,7 +14,19 @@ export function trim (data, targets) {
     return trimmedRow
   })
 }
-
+/**
+ * @param {object[]} data The data to get the list from
+ * @returns {string[]} all medias
+ */
+export function getMediaList (data) {
+  return [
+    ...new Set(
+      data.map((row) => {
+        return row['média']
+      })
+    )
+  ]
+}
 /**
  * Aggregates specific columns
  *

@@ -5,7 +5,9 @@ import * as preproc from './scripts/preprocess.js'
 import * as viz from './scripts/heatmap_viz.js'
 import * as legend from './scripts/legend.js'
 import * as hover from './scripts/hover.js'
-
+import * as menu from '../components/media-selection-menu.js'
+import * as slider from '../components/slider.js'
+import * as sortBySelect from '../components/sort-by-select.js'
 import * as d3Chromatic from 'd3-scale-chromatic'
 
 /**
@@ -17,27 +19,34 @@ export function load (d3) {
   let bounds
   let svgSize
   let graphSize
-
+  let selectedMediaList = []
+  let targetColumn = 'vuesAverage'
+  let currentData
   const margin = { top: 35, right: 200, bottom: 35, left: 200 }
   // TODO: Use this file for welcom vizs
   const xScale = d3.scaleBand().padding(0.05)
   const yScale = d3.scaleBand().padding(0.2)
-  const colorScale = d3.scaleSequential(d3Chromatic.interpolateBuPu)
+  const colorScale = d3.scaleSequential(d3.interpolateBuPu)
+    .domain([0, 1]) // Define the domain of the scale
+
+  const darkColor = '#74427c'
+  const paleColor = '#fcf5fd'
+
+  const customInterpolator = t => d3.interpolate(paleColor, darkColor)(t)
+
+  colorScale.interpolator(customInterpolator)
 
   d3.csv('./data_source.csv', d3.autoType).then(function (data) {
     // These are just examples
+    const mediaList = preproc.getMediaList(data)
+
+    // creates the media selection component
+    menu.append(
+      document.querySelector('#vp-controls-media-selection'),
+      mediaList,
+      updateSelectedMedia
+    )
     data = preproc.addTimeBlocks(preproc.processDateTime(data))
-    data = preproc.aggregateColumns(
-      data,
-      ['vues', 'likes', 'partages', 'commentaires'],
-      ['dayOfWeek', 'timeBlock']
-    )
-    data = preproc.sortByColumns(
-      data,
-      ['averageVues', 'vues', 'likes', 'partages', 'commentaires'],
-      true
-    )
-    viz.setColorScaleDomain(colorScale, data, 'vuesAverage')
 
     legend.initGradient(colorScale)
     legend.initLegendBar()
@@ -46,7 +55,6 @@ export function load (d3) {
     const g = helper.generateG(margin)
 
     helper.appendAxes(g)
-    viz.appendRects(data)
 
     setSizing()
     build()
@@ -72,15 +80,48 @@ export function load (d3) {
 
       helper.setCanvasSize(svgSize.width, svgSize.height)
     }
-
+    /**
+     * Updates the plot with the selected media
+     *
+     * @param {string[]} mediaList The selected media
+     */
+    function updateSelectedMedia (mediaList) {
+      selectedMediaList = mediaList
+      build()
+    }
+    /**
+     * function to process data before build
+     */
+    function process () {
+      currentData = data
+      console.log(selectedMediaList)
+      if (selectedMediaList.length > 0) {
+        currentData = currentData.filter(row => selectedMediaList.includes(row['média']))
+      }
+      console.log(currentData.length)
+      currentData = preproc.aggregateColumns(
+        currentData,
+        ['vues', 'likes', 'partages', 'commentaires'],
+        ['dayOfWeek', 'timeBlock']
+      )
+      // console.log(currentData)
+      currentData = preproc.sortByColumns(
+        currentData,
+        ['vuesAverage', 'vues', 'likes', 'partages', 'commentaires'],
+        true
+      )
+      viz.setColorScaleDomain(colorScale, currentData, targetColumn)
+      viz.appendRects(currentData)
+    }
     /**
      *   This function builds the graph.
      */
     function build () {
+      process()
       viz.updateXScale(xScale, graphSize.width)
       viz.updateYScale(
         yScale,
-        preproc.getUniqueTimeBlocks(data),
+        preproc.getUniqueTimeBlocks(currentData),
         graphSize.height
       )
 
@@ -89,7 +130,7 @@ export function load (d3) {
 
       viz.rotateYTicks()
 
-      viz.updateRects(xScale, yScale, colorScale, 'vuesAverage')
+      viz.updateRects(xScale, yScale, colorScale, targetColumn)
 
       hover.setRectHandler(
         xScale,
