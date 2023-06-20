@@ -1,3 +1,4 @@
+let graphTitle = null
 /**
  * Sets the size of the SVG canvas containing the graph.
  *
@@ -32,22 +33,27 @@ export function generateG (margin) {
  * @param {string} title The title of the visualization
  * @param {number} width The width of the svg containing the viz
  */
-export function generateTitle (title, width) {
+export function generateGraphTitle (title, width) {
   const svg = d3.select('.songs-svg')
 
+  // Remove the previous title if it exists
+  if (graphTitle) {
+    graphTitle.remove()
+  }
+
   // Append a group element at the top of the SVG
-  const titleGroup = svg.append('g')
+  graphTitle = svg.append('g')
     .attr('class', 'title-group')
-    .attr('transform', 'translate(0, 20)') // Adjust the y-coordinate to position the title
+    .attr('transform', 'translate(0, 20)')
 
   // Append the title text
-  titleGroup.append('text')
+  graphTitle.append('text')
     .attr('class', 'title')
-    .attr('x', width / 2 - 50) // Position the title in the center of the SVG
+    .attr('x', width / 2)
     .attr('text-anchor', 'middle')
     .attr('fill', '#fff')
-    .style('font-size', '20px') // Adjust the font size to resemble an h6 element
-    .style('font-weight', 'bold') // Add bold style
+    .style('font-size', '20px')
+    .style('font-weight', 'bold')
     .text(title)
 }
 

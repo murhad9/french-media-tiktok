@@ -18,7 +18,11 @@ export function load (d3) {
   let simulation
   let widthBound
   let domainColumn = 'vuesAverage' // by default, display songs according to average views
-  const graphTitle = 'Songs Used in TikTok Videos by Average View Count' // By default
+  const graphTitleMap = new Map()
+    .set('vuesAverage', 'Songs Used in TikTok Videos by Average View Count')
+    .set('likesAverage', 'Songs Used in TikTok Videos by Average Like Count')
+    .set('commentairesAverage', 'Songs Used in TikTok Videos by Average Comment Count')
+    .set('partagesAverage', 'Songs Used in TikTok Videos by Average Share Count')
 
   const margin = { top: 35, right: 400, bottom: 35, left: 50 }
   const radiusModulator = 1600 // the greater the value, the smaller the circles at the same window width
@@ -51,7 +55,7 @@ export function load (d3) {
       .node()
       .getBoundingClientRect().width
 
-    viz.generateTitle(graphTitle, widthBound - margin.left)
+    viz.generateGraphTitle(graphTitleMap.get(domainColumn), widthBound - margin.left)
 
     addons.initPanelDiv()
     addons.initButtons(updateDomainColumn)
@@ -113,6 +117,8 @@ export function load (d3) {
       viz.updateXCoordinateInData(data, xScale, domainColumn)
 
       viz.drawXAxis(xScale, graphSize.width, graphSize.height, domainColumn)
+
+      viz.generateGraphTitle(graphTitleMap.get(domainColumn), graphSize.width + margin.right)
 
       simulation.stop()
       simulation = viz.getSimulation(
