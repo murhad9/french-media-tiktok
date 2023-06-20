@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="assets/style.css">
     <link rel="stylesheet" href="assets/typography.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/> <!-- Ion.RangeSlider CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"> <!-- Font Awesome -->
     
     <script type="module" src="index.js"></script>
     <script src="https://d3js.org/d3.v7.js"></script>
@@ -37,18 +38,21 @@
       <main>
         <div class="viz-container" id="#overview-viz-container">
           <div id="overview-viz-wrapper">
-            <div id="overview-panel"></div>
+            <div id="overview-controls">
+              <h3>Sort By</h3>
+              <div id="overview-controls-sort-by"></div>
+              <h3>Media Selection</h3>
+              <div id="overview-controls-media-selection"></div>
+
+              <h3>Time Range</h3>
+              <div id="overview-controls-time-range"></div>
+            </div>
             <div class="overview-graph-and-controls">
               <div class="overview-graph" id="overview-heatmap">
                 <svg class="overview-heatmap-svg"></svg>
               </div>
-              <div id="overview-controls"></div>
             </div>
-            <div id="overview-media-selection">
-              <h3>Media Selection</h3>
-              <p class="overview-title-label">Select which media to show on the graph</p>
-              <select id="overview-add-media-select"></select>
-            </div>
+            <div id="overview-panel"></div>
           </div>
         </div>
       </main>
@@ -64,6 +68,13 @@
         </h2>
       </header>
       <main>
+        <div id="hashtags-controls">
+          <h3>Sort By</h3>
+          <div id="hashtags-controls-sort-by"></div>
+
+          <h3>Time Range</h3>
+          <div id="hashtags-controls-time-range"></div>
+        </div>
         <div class="hashtags-viz-container">
           <div class="hashtags-graph" id="hashtags-heatmap">
             <svg class="hashtags-heatmap-svg"></svg>

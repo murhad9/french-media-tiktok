@@ -17,22 +17,6 @@ export function displayPanel(d) {
 
   panel.selectAll("*").remove();
 
-  // "FERMER" button
-  // panel
-  //   .append("div")
-  //   .style("text-align", "right")
-  //   .style("font-family", "Roboto")
-  //   .style("font-size", "12px")
-  //   .style("cursor", "pointer")
-  //   .text("CLOSE")
-  //   .on("click", () => {
-  //     panel.style("visibility", "hidden");
-  //     d3.select("#overview-graph-g .points .selected").classed(
-  //       "selected",
-  //       false
-  //     );
-  //   });
-
   // Media name
   panel
     .append("div")
@@ -87,32 +71,4 @@ export function displayPanel(d) {
     .style("font-size", "16px")
     .style("padding-top", "3px")
     .text(`Total shares: ${data.partages}`);
-}
-
-export function initButtons(switchAxis) {
-  const buttonDiv = d3.select("#overview-controls");
-
-  buttonDiv
-    .append("button")
-    .attr("class", "overview-button")
-    .text("Views")
-    .on("click", () => switchAxis("vues"));
-
-  buttonDiv
-    .append("button")
-    .attr("class", "overview-button")
-    .text("Likes")
-    .on("click", () => switchAxis("likes"));
-
-  buttonDiv
-    .append("button")
-    .attr("class", "overview-button")
-    .text("Comments")
-    .on("click", () => switchAxis("commentaires"));
-
-  buttonDiv
-    .append("button")
-    .attr("class", "overview-button")
-    .text("Shares")
-    .on("click", () => switchAxis("partages"));
 }

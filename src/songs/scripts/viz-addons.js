@@ -8,37 +8,6 @@ export function initPanelDiv () {
 }
 
 /**
- * Initializes the buttons which will allow the user to switch the variable used for the x axis.
- *
- * @param {Function} switchAxis Callback function used to switch the x axis
- */
-export function initButtons (switchAxis) {
-  const buttonDiv = d3.select('#songs-viz-wrapper')
-    .append('div')
-    .attr('id', 'songs-sidebar-buttons')
-
-  buttonDiv.append('button')
-    .attr('class', 'songs-button')
-    .text('Views')
-    .on('click', () => switchAxis('vuesAverage'))
-
-  buttonDiv.append('button')
-    .attr('class', 'songs-button')
-    .text('Likes')
-    .on('click', () => switchAxis('likesAverage'))
-
-  buttonDiv.append('button')
-    .attr('class', 'songs-button')
-    .text('Comments')
-    .on('click', () => switchAxis('commentairesAverage'))
-
-  buttonDiv.append('button')
-    .attr('class', 'songs-button')
-    .text('Shares')
-    .on('click', () => switchAxis('partagesAverage'))
-}
-
-/**
  * Displays the information panel when a data point is clicked.
  *
  * @param {object} d The data bound to the clicked marker

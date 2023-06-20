@@ -1,12 +1,12 @@
 "use strict";
 
 import * as helper from "./scripts/helper.js";
+import * as menu from "../components/media-selection-menu.js";
 import * as preproc from "./scripts/preprocess.js";
 import * as viz from "./scripts/heatmap_viz.js";
-import * as legend from "./scripts/legend.js";
-import * as hover from "./scripts/hover.js";
 import * as addons from "./scripts/viz-addons.js";
-import * as mediaSelection from "./scripts/media_selection.js";
+import * as slider from "../components/slider.js";
+import * as sortBySelect from "../components/sort-by-select.js";
 
 import * as d3Chromatic from "d3-scale-chromatic";
 
@@ -21,7 +21,7 @@ export function load(d3) {
   let graphSize;
 
   let domainColumn = "vues";
-  let selectedMediaList = ["hugodecrypte", "lefigarofr"];
+  let selectedMediaList = [];
 
   const margin = { top: 10, right: 20, bottom: 35, left: 50 };
   // TODO: Use this file for welcom vizs
@@ -34,6 +34,32 @@ export function load(d3) {
     data = preproc.removeAfter(data, new Date("2023-03-30"));
     data = preproc.setYear(data);
     const mediaList = preproc.getMediaList(data);
+
+    // creates the media selection component
+    menu.append(
+      document.querySelector("#overview-controls-media-selection"),
+      mediaList,
+      updateSelectedMedia
+    );
+
+    slider.append(
+      document.querySelector("#overview-controls-time-range"),
+      new Date(2018, 10, 30),
+      new Date(2023, 3, 14),
+      updateSelectedDates
+    );
+
+    sortBySelect.append(
+      document.querySelector("#overview-controls-sort-by"),
+      {
+        "Total Views": "vues",
+        "Total Likes": "likes",
+        "Total Comments": "commentaires",
+        "Total Shares": "partages",
+      },
+      updateDomainColumn
+    );
+
     data = data.map((row) => {
       return {
         ...row,
@@ -47,6 +73,8 @@ export function load(d3) {
       ["yearMonth", "média"]
     );
 
+    let dataFromTo = data;
+
     // viz.setColorScaleDomain(colorScale, data, "vuesAverageNormalized");
 
     // legend.initGradient(colorScale);
@@ -59,12 +87,7 @@ export function load(d3) {
     viz.appendLines(data);
 
     // addons.initPanelDiv();
-    addons.initButtons(updateDomainColumn);
-    mediaSelection.initMediaSelection(
-      updateSelectedMedia,
-      selectedMediaList,
-      mediaList
-    );
+    // addons.initButtons(updateDomainColumn);
 
     setSizing();
     build();
@@ -98,9 +121,29 @@ export function load(d3) {
       build();
     }
 
-    // function updateSelectedMedia(mediaList)
+    /**
+     * Updates the plot with the selected media
+     *
+     * @param {string[]} mediaList The selected media
+     */
     function updateSelectedMedia(mediaList) {
       selectedMediaList = mediaList;
+      build();
+    }
+
+    /**
+     * Updates the plot with the select date range
+     *
+     * @param {*} fromToDates Object with "from" and "to" properties containing Date objects
+     */
+    function updateSelectedDates(fromToDates) {
+      dataFromTo = data;
+      dataFromTo = dataFromTo.filter((row) => {
+        return (
+          new Date(row.date).getTime() >= fromToDates.from.getTime() &&
+          new Date(row.date).getTime() <= fromToDates.to.getTime()
+        );
+      });
       build();
     }
 
@@ -108,14 +151,8 @@ export function load(d3) {
      *   This function builds the graph.
      */
     function build() {
-      viz.updateXScale(data, xScale, graphSize.width);
-      viz.updateYScale(
-        yScale,
-        data,
-        // preproc.getUniqueTimeBlocks(data),
-        graphSize.height,
-        domainColumn
-      );
+      viz.updateXScale(dataFromTo, xScale, graphSize.width);
+      viz.updateYScale(yScale, dataFromTo, graphSize.height, domainColumn);
 
       viz.drawXAxis(xScale, graphSize.height);
       viz.drawYAxis(yScale, graphSize.width);
@@ -126,34 +163,10 @@ export function load(d3) {
         xScale,
         yScale,
         colorScale,
-        data,
+        dataFromTo,
         domainColumn,
         addons.displayPanel,
         selectedMediaList
-      );
-
-      hover.setRectHandler(
-        xScale,
-        yScale,
-        hover.rectSelected,
-        hover.rectUnselected,
-        hover.selectTicks,
-        hover.unselectTicks
-      );
-
-      mediaSelection.initMediaSelection(
-        updateSelectedMedia,
-        selectedMediaList,
-        mediaList
-      );
-
-      legend.draw(
-        margin.left / 2,
-        margin.top + 5,
-        graphSize.height - 10,
-        15,
-        "url(#gradient)",
-        colorScale
       );
     }
 

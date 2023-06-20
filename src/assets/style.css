@@ -44,6 +44,10 @@ h2 {
   font-weight: normal;
 }
 
+h3 {
+  color: #f3f3f3;
+}
+
 svg {
   background-color: #ffffff;
 }
@@ -71,6 +75,117 @@ button:active {
   padding: 0 100px;
 }
 
+/************************** MEDIA SELECTION CSS RULES **************************
+ *
+ * All of the CSS rules for the media selection dropdown menu.
+ *
+ */
+
+.dropdown-container {
+  width: 250px;
+}
+
+.dropdown-select-btn {
+  display: flex;
+  height: 50px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-select-btn .dropdown-btn-text {
+  font-size: 17px;
+  font-weight: 400;
+  color: #333;
+}
+
+.dropdown-select-btn .dropdown-arrow-dwn {
+  display: flex;
+  height: 21px;
+  width: 21px;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 50%;
+  background: #6e93f7;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.dropdown-select-btn.open .dropdown-arrow-dwn {
+  transform: rotate(-180deg);
+}
+
+.dropdown-list-items {
+  position: absolute;
+  width: 218px;
+  margin-top: 15px;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  display: none;
+  overflow-y: scroll;
+  max-height: 400px;
+  z-index: 10;
+}
+
+.dropdown-select-btn.open ~ .dropdown-list-items {
+  display: block;
+}
+
+.dropdown-list-items .dropdown-item {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  height: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 0 15px;
+  border-radius: 8px;
+}
+
+.dropdown-list-items .dropdown-item:hover {
+  background-color: #e7edfe;
+}
+
+.dropdown-item .dropdown-item-text {
+  font-size: 14px;
+  font-weight: 400;
+  color: #333;
+}
+
+.dropdown-item .dropdown-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 16px;
+  width: 16px;
+  border-radius: 4px;
+  margin-right: 12px;
+  border: 1.5px solid #c0c0c0;
+  transition: all 0.3s ease-in-out;
+}
+
+.dropdown-item.checked .dropdown-checkbox {
+  background-color: #4070f4;
+  border-color: #4070f4;
+}
+
+.dropdown-checkbox .dropdown-check-icon {
+  color: #fff;
+  font-size: 11px;
+  transform: scale(0);
+  transition: all 0.2s ease-in-out;
+}
+
+.dropdown-item.checked .dropdown-check-icon {
+  transform: scale(1);
+}
 
 /************************** OVERVIEW CSS RULES **************************
  *
@@ -119,7 +234,7 @@ button:active {
 #overview-controls {
   background-color: #292929;
   border-radius: 28px;
-  height: 100px;
+  padding: 0px 16px;
 }
 
 #overview .categories {

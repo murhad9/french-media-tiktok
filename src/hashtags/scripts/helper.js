@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/require-jsdoc */
+/* eslint-disable jsdoc/require-returns */
 
 /**
  * Generates the SVG element g which will contain the data visualisation.
@@ -38,89 +40,47 @@ export function appendAxes (g) {
   g.append('g').attr('class', 'y axis')
 }
 
-export function initButtons (switchAxis) {
-  const buttonDiv = d3.select('.hashtags-viz-container')
-    .append('div')
-    
-
-  buttonDiv.append('button')
-    
-    .text('likes')
-    .on('click', () => switchAxis('likes'))
-
-  buttonDiv.append('button')
-    
-    .text('commentaires')
-    .on('click', () => switchAxis('commentaires'))
-
-  buttonDiv.append('button')
-    
-    .text('partages')
-    .on('click', () => switchAxis('partages'))
-
-  buttonDiv.append('button')
-  
-    .text('vues')
-    .on('click', () => switchAxis('vues'))
-}
-
 export function getContents (d, engagementCategory) {
-  /* TODO : Define and return the tooltip contents including :
-      + A title stating the hovered element's group, with:
-        
-Font family: Grenze Gotish
-Font size: 24px
-Font weigth: normal+ A bold label for the player name followed
-  by the hovered elements's player's name+ A bold label for the player's line count
-  followed by the number of lines
-*/
+  const target = d3.select(d.target)
 
-const target = d3.select(d.target)
+  if (engagementCategory === 'likes') {
+    return `<div class='tooltip'>
+    <span class='tooltiptext'>${target.data()[0].hashtag}
+        </br>
+        </br>
+        Average likes: ${Math.round(target.data()[0].likes)}
+        </span>
+        </div>
 
+    `
+  } else if (engagementCategory === 'partages') {
+    return `<div class='tooltip'>
+      <span class='tooltiptext'>${target.data()[0].hashtag}
+        </br>
+        </br>
+        Average shares: ${Math.round(target.data()[0].partages)}
+        </span>
+        </div>
+    `
+  } else if (engagementCategory === 'vues') {
+    return `<div class='tooltip'>
+      <span class='tooltiptext'>${target.data()[0].hashtag}
+        </br>
+        </br>
+        Average views: ${Math.round(target.data()[0].vues)}
+        </span>
+        </div>
 
-if(engagementCategory === 'likes') {
-  return  `<div class='tooltip'>
-<span class='tooltiptext'>${target.data()[0].hashtag}
-</br>
-</br>
-Average likes: ${Math.round(target.data()[0].likes)}
-</span>
-</div>
+    `
+  } else if (engagementCategory === 'commentaires') {
+    return `<div class='tooltip'>
+      <span class='tooltiptext'>${target.data()[0].hashtag}
+        </br>
+        </br>
+        Average comments: ${Math.round(target.data()[0].commentaires)}
 
-`
-}
-else if(engagementCategory === 'partages') {
-  return  `<div class='tooltip'>
-  <span class='tooltiptext'>${target.data()[0].hashtag}
-</br>
-</br>
-Average shares: ${Math.round(target.data()[0].partages)}
-</span>
-</div>
-`
-}
-else if(engagementCategory === 'vues') {
-  return  `<div class='tooltip'>
-  <span class='tooltiptext'>${target.data()[0].hashtag}
-</br>
-</br>
-Average views: ${Math.round(target.data()[0].vues)}
-</span>
-</div>
-
-`
-}
-else if(engagementCategory === 'commentaires') {
-  return  `<div class='tooltip'>
-  <span class='tooltiptext'>${target.data()[0].hashtag}
-</br>
-</br>
-Average comments: ${Math.round(target.data()[0].commentaires)}
-
-</span>
-</div>
-
-`
+        </span>
+        </div>
+    `
   }
-
 }

@@ -193,7 +193,7 @@ export function getSimulation (data, xScale, yPosition, domainColumn, radiusScal
     )
     .force('y',
       d3.forceY(yPosition)
-        .strength(0.01) // proximity of points to the center y value
+        .strength(0.02) // proximity of points to the center y value
     )
 }
 
@@ -239,13 +239,18 @@ export function drawXAxis (xScale, width, height, xColumn) {
 /**
  * After the circles have been appended, this repositions and resizes them.
  *
+ * @param data
  * @param {*} simulation The force simulation used for the points
  * @param {*} radiusScale The scale used to calculate the radius of each point
  * @param {Function} displayPanel The function that displays the panel when a circle is clicked
  */
-export function updateCircles (simulation, radiusScale, displayPanel) {
+export function updateCircles (data, simulation, radiusScale, displayPanel) {
   d3.select('#songs-graph-g .points')
     .selectAll('circle')
+    .data(data)
+    .join('circle')
+    .attr('fill', '#533458')
+    .attr('stroke', 'white')
     .attr('r', d => radiusScale(d.count))
     .on('mouseover', function () {
       const element = d3.select(this)
@@ -269,9 +274,7 @@ export function updateCircles (simulation, radiusScale, displayPanel) {
   simulation.on('tick', () => {
     d3.select('#songs-graph-g .points')
       .selectAll('circle')
-      .attr('cx', (d) => {
-        return d.x
-      })
-      .attr('cy', (d) => d.y)
+      .attr('cx', d => d.x)
+      .attr('cy', d => d.y)
   })
 }

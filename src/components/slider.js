@@ -5,12 +5,11 @@
  *
  * Slider documentation: http://ionden.com/a/plugins/ion.rangeSlider/
  *
- * @param {Element} parent A text input element
+ * @param {Element} parent The element to which the slider will be appended
  * @param {Date} min The minimum date
  * @param {Date} max The maximum date
  * @param {Function} onChange Callback function to call when the value of the slider changes.
- *                            This function takes one parameter containing the slider options.
- *                            Check the API documentation for more details.
+ *                            This function takes one object parameter with "from" and "to" properties containing Date objects
  */
 export function append (parent, min, max, onChange) {
   const slider = document.createElement('input')
@@ -32,6 +31,12 @@ export function append (parent, min, max, onChange) {
         day: 'numeric'
       })
     },
-    onChange: onChange
+    onChange: (data) => {
+      // transform data into Date objects
+      onChange({
+        from: new Date(data.from),
+        to: new Date(data.to)
+      })
+    }
   })
 }
