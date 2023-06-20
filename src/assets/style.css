@@ -295,11 +295,11 @@ button:active {
 }
 
 #songs #songs-control {
-  width: 83%;
+  position: relative;
+  width: 81%;
   height: 120px;
   border-radius: 28px;
   background-color: #292929;
-  margin-bottom: 20px;
   display: inline-flex;
   flex-direction: row;
 }
@@ -315,10 +315,17 @@ button:active {
 }
 
 #songs #songs-panel {
-  width: 300px;
-  border: 1px solid black;
+  position: relative;
+  top: -65px;
+  width: 350px;
+  height: 630px;
+  border: 2px solid #A6A6A6;
+  border-radius: 28px;
+  margin-left: 15px;
+  background-color: #292929;
+  text-align: left;
   padding: 10px;
-  visibility: hidden;
+  color: #fff
 }
 
 #songs .axis-text {
@@ -336,6 +343,7 @@ button:active {
 #songs .viz-container{
   padding-top: 10px;
   background-color: #151515;
+  border: 1px solid white;
 }
 
 #songs .songs-svg {

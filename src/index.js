@@ -33,6 +33,8 @@ import * as videoPosting from './video-posting/index.js'
   document.getElementById('songs-tab').addEventListener('click', () => displayTab('songs'))
   document.getElementById('video-posting-tab').addEventListener('click', () => displayTab('video-posting'))
 
+  displayTab('songs')
+
   /**
    * Displays the tab with the corresponding id
    *

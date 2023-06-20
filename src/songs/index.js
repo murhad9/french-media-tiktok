@@ -34,7 +34,7 @@ export function load (d3) {
     data = preproc.filterOutRowsByValue(
       data,
       'musiqueTitre',
-      /son original|original sound|sonido original|suono originale|sunet original|som original/
+      /son original|original sound|sonido original|suono originale|sunet original|som original|오리지널 사운드/
     )
 
     nonAggregatedData = data
