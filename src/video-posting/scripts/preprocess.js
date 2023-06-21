@@ -149,13 +149,13 @@ export function processDateTime (data) {
  * Filters the data by only keeping entries within the dates.THIS FUNCTION ASSUMES processDateTime was applied.
  *
  * @param {object[]} data The data
- * @param {string} startDate The start date
- * @param {string} endDate The end date
+ * @param {Date} startDate The start date
+ * @param {Date} endDate The end date
  * @returns {object[]} The data within the dates
  */
 export function filterDataByDates (data, startDate, endDate) {
   const filteredData = data.filter(obj => {
-    const date = obj.date // Assuming the date column is in the format "yyyy-mm-dd"
+    const date = new Date(obj.date)
     return date >= startDate && date <= endDate
   })
 

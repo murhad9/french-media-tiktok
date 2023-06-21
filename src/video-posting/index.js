@@ -48,7 +48,12 @@ export function load (d3) {
       mediaList,
       updateSelectedMedia
     )
-
+    slider.append(
+      document.querySelector('#vp-controls-time-range'),
+      startDate,
+      endDate,
+      updateSelectedDates
+    )
     sortBySelect.append(
       document.querySelector('#vp-controls-sort-by'),
       {
@@ -71,7 +76,16 @@ export function load (d3) {
 
     setSizing()
     build()
-
+    /**
+     * Updates the plot with the select date range
+     *
+     * @param {*} fromToDates Object with "from" and "to" properties containing Date objects
+     */
+    function updateSelectedDates (fromToDates) {
+      startDate = fromToDates.from
+      endDate = fromToDates.to
+      build()
+    }
     /**
      *   This function handles the graph's sizing.
      */
@@ -120,7 +134,8 @@ export function load (d3) {
       if (selectedMediaList.length > 0) {
         currentData = currentData.filter(row => selectedMediaList.includes(row['média']))
       }
-
+      //console.log(startDate, endDate)
+      currentData = preproc.filterDataByDates(currentData, startDate, endDate)
       currentData = preproc.aggregateColumns(
         currentData,
         ['vues', 'likes', 'partages', 'commentaires'],
@@ -137,6 +152,20 @@ export function load (d3) {
       )
       viz.setColorScaleDomain(colorScale, currentData, targetColumn)
       viz.appendRects(currentData)
+      legend.initGradient(colorScale)
+      legend.initLegendBar()
+      legend.initLegendAxis()
+      setSizing()
+
+      // Draw the updated legend
+      legend.draw(
+        margin.left / 2,
+        margin.top + 5,
+        graphSize.height - 10,
+        15,
+        'url(#video-posting-gradient)',
+        colorScale
+      )
     }
     /**
      *   This function builds the graph.
@@ -165,20 +194,11 @@ export function load (d3) {
         hover.selectTicks,
         hover.unselectTicks
       )
-      legend.initLegendBar()
-      legend.initLegendAxis()
-  
-      const g = helper.generateG(margin)
-  
-      helper.appendAxes(g)
-  
-      setSizing()
-      legend.draw(
+
+      legend.update(
         margin.left / 2,
         margin.top + 5,
         graphSize.height - 10,
-        15,
-        'url(#video-posting-gradient)',
         colorScale
       )
     }

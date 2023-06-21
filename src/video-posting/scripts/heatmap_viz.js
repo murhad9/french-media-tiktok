@@ -6,8 +6,8 @@
  * @param {string} targetColumn The column to use as domain
  */
 export function setColorScaleDomain (colorScale, data, targetColumn) {
-  const averageViews = data.map((entry) => entry[targetColumn])
-  colorScale.domain(d3.extent(averageViews))
+  const target = data.map((entry) => entry[targetColumn])
+  colorScale.domain(d3.extent(target))
 }
 
 /**

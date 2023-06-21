@@ -86,3 +86,41 @@ export function draw (x, y, height, width, fill, colorScale) {
       }
     })
 }
+/**
+ * Updates the legend
+ *
+ * @param {number} x The x position of the legend
+ * @param {number} y The y position of the legend
+ * @param {number} height The height of the legend
+ * @param {*} colorScale The color scale represented by the legend
+ */
+export function update (x, y, height, colorScale) {
+  const ticks = colorScale.ticks()
+
+  // Remove existing ticks
+  d3.select('.video-posting-heatmap-svg .legend.axis')
+    .selectAll('text')
+    .remove()
+
+  // Append new ticks
+  d3.select('.video-posting-heatmap-svg .legend.axis')
+    .selectAll('text')
+    .data(ticks)
+    .enter()
+    .append('text')
+    .style('font', '10px sans-serif')
+    .style('fill', '#777')
+    .attr('x', function (d, i) {
+      return x - 10
+    })
+    .attr('text-anchor', 'end')
+    .attr('y', function (d, i) {
+      return ((ticks.length - 1) - i) * (height / (ticks.length - 1)) + y
+    })
+    .text(function (d, i) {
+      if (i % 2 === 0) {
+        if (d >= 1000) return Math.floor((d / 1000)) + ',' + (d % 1000).toString().padStart(3, '0')
+        return d
+      }
+    })
+}
