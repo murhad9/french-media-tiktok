@@ -21,6 +21,8 @@ export function load (d3) {
   let graphSize
   let selectedMediaList = []
   let targetColumn = 'vuesAverage'
+  let startDate = new Date(2018, 10, 30)
+  let endDate = new Date(2023, 3, 14)
   let currentData
   const margin = { top: 35, right: 200, bottom: 35, left: 200 }
   // TODO: Use this file for welcom vizs
@@ -45,6 +47,17 @@ export function load (d3) {
       document.querySelector('#vp-controls-media-selection'),
       mediaList,
       updateSelectedMedia
+    )
+
+    sortBySelect.append(
+      document.querySelector('#vp-controls-sort-by'),
+      {
+        'Average Weekly Views': 'vuesAverage',
+        'Total Views': 'vues',
+        'Average Weekly Posts': 'countAverage',
+        'Total Posts': 'count'
+      },
+      updateTargetColumn
     )
     data = preproc.addTimeBlocks(preproc.processDateTime(data))
 
@@ -80,6 +93,16 @@ export function load (d3) {
 
       helper.setCanvasSize(svgSize.width, svgSize.height)
     }
+
+    /**
+     * Update target column and redraw
+     *
+     * @param {string} newTarget the new target column
+     */
+    function updateTargetColumn (newTarget) {
+      targetColumn = newTarget
+      build()
+    }
     /**
      * Updates the plot with the selected media
      *
@@ -94,17 +117,19 @@ export function load (d3) {
      */
     function process () {
       currentData = data
-      console.log(selectedMediaList)
       if (selectedMediaList.length > 0) {
         currentData = currentData.filter(row => selectedMediaList.includes(row['média']))
       }
-      console.log(currentData.length)
+
       currentData = preproc.aggregateColumns(
         currentData,
         ['vues', 'likes', 'partages', 'commentaires'],
         ['dayOfWeek', 'timeBlock']
       )
-      // console.log(currentData)
+
+      if (targetColumn === 'countAverage') {
+        currentData = preproc.computeAverageCount(currentData, startDate, endDate)
+      }
       currentData = preproc.sortByColumns(
         currentData,
         ['vuesAverage', 'vues', 'likes', 'partages', 'commentaires'],
@@ -140,7 +165,14 @@ export function load (d3) {
         hover.selectTicks,
         hover.unselectTicks
       )
-
+      legend.initLegendBar()
+      legend.initLegendAxis()
+  
+      const g = helper.generateG(margin)
+  
+      helper.appendAxes(g)
+  
+      setSizing()
       legend.draw(
         margin.left / 2,
         margin.top + 5,

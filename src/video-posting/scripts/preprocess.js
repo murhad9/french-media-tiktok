@@ -88,7 +88,37 @@ export function sortByColumns (data, sortBy, isDescending = false) {
 
   return sortedData
 }
+/**
+ * Returns the number of weeks between two dates
+ *
+ * @param {Date} startDate start
+ * @param {Date} endDate end
+ * @returns {number} - The number of weeks between the two dates
+ */
+function countWeeks (startDate, endDate) {
+  // Calculate the difference in milliseconds
+  const diffInMs = Math.abs(endDate - startDate)
 
+  // Convert milliseconds to weeks
+  const diffInWeeks = Math.ceil(diffInMs / (1000 * 60 * 60 * 24 * 7))
+
+  return diffInWeeks
+}
+
+/**
+ * Returns the number of weeks between two dates
+ *
+ * @param {object[]} data the data
+ * @param {Date} startDate start
+ * @param {Date} endDate end
+ * @returns {object[]} - The number of weeks between the two dates
+ */
+export function computeAverageCount (data, startDate, endDate) {
+  const weeksCount = countWeeks(startDate, endDate)
+  // eslint-disable-next-line no-return-assign
+  data.forEach(row => row.countAverage = Math.floor(row.count / weeksCount))
+  return data
+}
 /**
  * Splits date into date and time and adds day of week
  *
