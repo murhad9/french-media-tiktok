@@ -94,7 +94,8 @@ export function load (d3) {
 
       viz.addCoordinatesToData(data, xScale, graphSize.height / 2, domainColumn)
 
-      viz.drawXAxis(xScale, graphSize.width, graphSize.height, domainColumn)
+      const xScaleText = graphTitleMap.get(domainColumn).split(' ').slice(-3).join(' ')
+      viz.drawXAxis(xScale, graphSize.width, graphSize.height, xScaleText)
 
       simulation = viz.getSimulation(
         timeBoundData,
@@ -115,7 +116,8 @@ export function load (d3) {
 
       viz.updateXCoordinateInData(timeBoundData, xScale, domainColumn)
 
-      viz.drawXAxis(xScale, graphSize.width, graphSize.height, domainColumn)
+      const xScaleText = graphTitleMap.get(domainColumn).split(' ').slice(-3).join(' ')
+      viz.drawXAxis(xScale, graphSize.width, graphSize.height, xScaleText)
 
       viz.generateGraphTitle(graphTitleMap.get(domainColumn), graphSize.width + margin.right)
 

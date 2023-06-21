@@ -106,15 +106,15 @@ export function displayPanel (d) {
     .style('font-size', '16px')
 
   mediaDiv.append('div')
-    .style('padding-top', '20px')
+    .style('padding-top', '10px')
     .style('font-weight', 'bold')
     .text(`List of accounts that used the song (${d.médiaList.length})`)
 
   mediaDiv.append('div')
     .append('ul')
     .selectAll('li')
-    .data(d.médiaList)
+    .data(d.médiaList) // currently in our data, this list can have up to 19 elements
     .enter()
     .append('li')
-    .text(d => d) // currently in our data, this list can have up to 19 elements
+    .text(d => d)
 }
