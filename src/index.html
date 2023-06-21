@@ -93,17 +93,34 @@
         </h2>
       </header>
       <main>
-        <div class="video-viz-container">
-          <div class="video-length-graph" id="video-length-heatmap">
-            <svg class="video-length-heatmap-svg"></svg>
-          </div>
+        
 
-          <div class="video-length-graph-evolve" id="video-length-evolve-heatmap">
-            <svg class="video-length-evolve-heatmap-svg"></svg>
+
+
+        <div class="viz-container" id="#video-viz-container">
+          <div id="video-viz-wrapper">
+            <div id="video-viz">
+              <div id="video-controls">
+                <div class="controls-1">
+                  <h4>Sort By</h3>
+                  <div id="video-controls-sort-by"></div>
+                </div>
+                
+                <div class="controls-2">
+                  <h4>Time Range</h3>
+                  <div id="video-controls-time-range"></div>
+                </div>
+              </div>
+              <br>
+              <div class="video-viz-container">
+                <div class="video-length-graph" id="video-length-heatmap">
+                  <svg class="video-length-heatmap-svg"></svg>
+                </div>
+              </div>
+            </div>
+            
+            <div id="video-panel"></div>
           </div>
-          <br>
-          <br>
-          
         </div>
       </main>
     </div>
