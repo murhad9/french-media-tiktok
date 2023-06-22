@@ -1,10 +1,49 @@
 /**
- * Initializes the div which will contain the information panel.
+ * Intialises the domain column selection dropdown in the control panel.
+ *
+ * @param {*} dropdown The dropdown to append
+ * @param {Function} updateDomainColumn The callback function to call when a selection is made in the dropdown
+ */
+export function initDropdown (dropdown, updateDomainColumn) {
+  d3.select('#songs-control .songs-dropdown')
+    .append('div')
+    .attr('class', 'songs-dropdown-title')
+    .text('Sort by')
+
+  dropdown.append(
+    document.querySelector('#songs-control .songs-dropdown'),
+    { 'Average Views': 'vuesAverage', 'Average Likes': 'likesAverage', 'Average Comments': 'commentairesAverage', 'Average Shares': 'partagesAverage' },
+    updateDomainColumn
+  )
+}
+
+/**
+ * Initializes the time range slider in the control panel.
+ *
+ * @param {*} slider The slider to append
+ * @param {Date} minDate The minimum date
+ * @param {Date} maxDate The maximum date
+ * @param {Function} updateTimeRange The callback function to call when the time range is updated
+ */
+export function initSlider (slider, minDate, maxDate, updateTimeRange) {
+  d3.select('#songs-control .songs-slider')
+    .append('div')
+    .attr('class', 'songs-slider-title')
+    .text('Time range')
+
+  slider.append(document.querySelector('#songs-control .songs-slider'), minDate, maxDate, updateTimeRange)
+}
+
+/**
+ * Initializes the empty tooltip.
  */
 export function initPanelDiv () {
-  d3.select('#songs-beeswarm-plot')
+  d3.select('#songs-panel')
+    .classed('empty', true)
     .append('div')
-    .attr('id', 'songs-panel')
+    .text('Click on a dot to display the selected media\'s statistics')
+    .style('text-align', 'center')
+    .style('color', '#A4A4A4')
 }
 
 /**
@@ -13,80 +52,84 @@ export function initPanelDiv () {
  * @param {object} d The data bound to the clicked marker
  */
 export function displayPanel (d) {
-  const panel = d3.select('#songs-panel').style('visibility', 'visible')
+  const panel = d3.select('#songs-panel').classed('empty', false)
 
   panel.selectAll('*').remove()
-
-  // "FERMER" button
-  panel.append('div')
-    .style('text-align', 'right')
-    .style('font-family', 'Roboto')
-    .style('font-size', '12px')
-    .style('cursor', 'pointer')
-    .text('CLOSE')
-    .on('click', () => {
-      panel.style('visibility', 'hidden')
-      d3.select('#songs-graph-g .points .selected').classed('selected', false)
-    })
 
   // Song title
   panel.append('div')
     .style('font-family', 'Roboto')
     .style('font-size', '20px')
     .style('font-weight', 'bold')
+    .style('text-align', 'center')
+    .style('color', '#fff')
     .text(d.musiqueTitre)
 
   // Song artist
   panel.append('div')
     .style('font-family', 'Roboto')
-    .style('font-size', '18px')
+    .style('font-size', '16px')
+    .style('text-align', 'center')
+    .style('color', '#A4A4A4')
+    .style('padding-top', '3px')
     .text(d.musiqueArtiste)
 
   // Number of videos
   panel.append('div')
-    .style('font-family', 'Roboto')
-    .style('font-size', '16px')
+    .attr('class', 'songs-tooltip-main-text')
     .style('padding-top', '25px')
-    .text(`Number of videos: ${d.count}`)
+    .text('Number of videos which used the song')
+  panel.append('div')
+    .attr('class', 'songs-tooltip-sub-text')
+    .text(`${d.count}`)
 
   // Average views
   panel.append('div')
-    .style('font-family', 'Roboto')
-    .style('font-size', '16px')
-    .style('padding-top', '3px')
-    .text(`Average views: ${d.vuesAverage}`)
+    .attr('class', 'songs-tooltip-main-text')
+    .text('Average views per video')
+  panel.append('div')
+    .attr('class', 'songs-tooltip-sub-text')
+    .text(`${d.vuesAverage}`)
 
   // Average likes
   panel.append('div')
-    .style('font-family', 'Roboto')
-    .style('font-size', '16px')
-    .style('padding-top', '3px')
-    .text(`Average likes: ${d.likesAverage}`)
-
-  // Average comments
+    .attr('class', 'songs-tooltip-main-text')
+    .text('Average likes per video')
   panel.append('div')
-    .style('font-family', 'Roboto')
-    .style('font-size', '16px')
-    .style('padding-top', '3px')
-    .text(`Average comments: ${d.commentairesAverage}`)
+    .attr('class', 'songs-tooltip-sub-text')
+    .text(`${d.likesAverage}`)
 
   // Average shares
   panel.append('div')
-    .style('font-family', 'Roboto')
-    .style('font-size', '16px')
-    .style('padding-top', '3px')
-    .text(`Average shares: ${d.partagesAverage}`)
+    .attr('class', 'songs-tooltip-main-text')
+    .text('Average shares per video')
+  panel.append('div')
+    .attr('class', 'songs-tooltip-sub-text')
+    .text(`${d.partagesAverage}`)
 
   // Media outlets
   const mediaDiv = panel.append('div')
-    .style('font-family', 'Roboto')
-    .style('font-size', '16px')
 
   mediaDiv.append('div')
-    .style('padding-top', '20px')
-    .style('font-weight', 'bold')
-    .text(`Media outlets (${d.médiaList.length})`)
+    .attr('class', 'songs-tooltip-main-text')
+    .text(`List of accounts that used the song (${d.médiaList.length})`) // currently in our data, médiaList can have up to 19 elements
 
-  mediaDiv.append('div')
-    .text(`${d.médiaList.join(', ')}`) // currently in our data, this list can have up to 19 elements
+  const leftMediaList = d.médiaList.slice(0, (d.médiaList.length + 1) / 2)
+  const rightMediaList = d.médiaList.slice((d.médiaList.length + 1) / 2)
+
+  const listWrapper = mediaDiv.append('div').attr('class', 'songs-tooltip-list-wrapper')
+  listWrapper.append('ul')
+    .attr('class', 'songs-tooltip-list')
+    .selectAll('li')
+    .data(leftMediaList)
+    .enter()
+    .append('li')
+    .text(d => d)
+  listWrapper.append('ul')
+    .attr('class', 'songs-tooltip-list')
+    .selectAll('li')
+    .data(rightMediaList)
+    .enter()
+    .append('li')
+    .text(d => d)
 }
