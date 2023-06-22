@@ -327,22 +327,23 @@ button:active {
   opacity: 0;
 }
 
-/************************** videolength CSS RULES **************************
+/************************** VIDEO LENGTH CSS RULES **************************
  *
- * All of the CSS rules for the "Overview" tab.
+ * All of the CSS rules for the "Video length" tab.
  *
- * Every selector is prefixed by #songs and therefore only applies to
+ * Every selector is prefixed by #video-length and therefore only applies to
  * elements within the div associated with the tab.
  */
 
- #video-viz-wrapper {
+#video-length #video-viz-wrapper {
   display: flex;
   flex-direction: row;
   background-color: black;
   gap: 12px;
   padding: 12px;
 }
-#video-viz {
+
+#video-length #video-viz {
   width: 80%;
   height: 100%;
   border: 1px solid black;
@@ -352,7 +353,8 @@ button:active {
   border-radius: 28px;
   
 }
- #video-panel {
+
+#video-length #video-panel {
   width: 20%;
   border: 1px solid black;
   padding: 10px;
@@ -362,28 +364,28 @@ button:active {
   color: white;
 }
 
-.video-viz-container {
+#video-length .video-viz-container {
   border: 1px solid black;
   border-radius: 28px;
   height: 80%;
   color: #f6f6f6;
 }
 
-.video-viz-container svg{
+#video-length .video-viz-container svg {
   background-color: #292929;
   border-radius: 28px;
 }
 
-.controls-2 {
+#video-length .controls-2 {
   width: 50%;
   text-align: center;
 }
-.controls-1 {
+
+#video-length .controls-1 {
   width: 50%;
 }
 
-
-#video-controls {
+#video-length #video-controls {
   border-radius: 28px;
   padding: 0px 16px;
   height: 20%;
@@ -391,42 +393,5 @@ button:active {
   color: #f6f6f6;
   background-color: #292929;
 
-}
-
-#video .categories {
-  margin-left: 50px;
-}
-
-#video .tooltip {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black;
-  background-color: #000;
-  color: #f6f6f6;
-  width: auto;
-}
-
-#video .tooltip .tooltiptext {
-  text-align: center;
-  background-color: #555;
-  color: #fff;
-  border-radius: 6px;
-  padding: 5px 0;
-  position: absolute;
-  z-index: 1;
-  bottom: 125%;
-  left: 50%;
-  margin-left: -60px;
-}
-
-#video .tooltip .tooltiptext::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
 }
 

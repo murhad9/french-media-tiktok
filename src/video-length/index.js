@@ -165,7 +165,6 @@ export function load (d3) {
           new Date(row.date).getTime() <= fromToDates.to.getTime()
         );
       });
-      console.log(dataFromTo)
       dataVideoLengthCategory = preproc.topTenIdealVideo(dataFromTo)
       build();
     }

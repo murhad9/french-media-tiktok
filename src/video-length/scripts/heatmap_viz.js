@@ -111,7 +111,6 @@
  * @param tip
  */
 export function appendRects (data, width, height, engagementCategory, displayPanel) {
-  console.log(engagementCategory)
   const echelleCouleurs = d3.scaleSequential()
     .domain([0, d3.max(data, d => d.count)])
     .interpolator(d3.interpolateReds) // Utilisation de la palette de couleurs Viridis
