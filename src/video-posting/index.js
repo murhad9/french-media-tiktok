@@ -134,7 +134,6 @@ export function load (d3) {
       if (selectedMediaList.length > 0) {
         currentData = currentData.filter(row => selectedMediaList.includes(row['média']))
       }
-      //console.log(startDate, endDate)
       currentData = preproc.filterDataByDates(currentData, startDate, endDate)
       currentData = preproc.aggregateColumns(
         currentData,

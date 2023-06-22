@@ -326,3 +326,72 @@ button:active {
 #video-posting .axis path {
   opacity: 0;
 }
+
+/************************** VIDEO LENGTH CSS RULES **************************
+ *
+ * All of the CSS rules for the "Video length" tab.
+ *
+ * Every selector is prefixed by #video-length and therefore only applies to
+ * elements within the div associated with the tab.
+ */
+
+#video-length #video-viz-wrapper {
+  display: flex;
+  flex-direction: row;
+  background-color: black;
+  gap: 12px;
+  padding: 12px;
+}
+
+#video-length #video-viz {
+  width: 80%;
+  height: 100%;
+  border: 1px solid black;
+  padding: 10px;
+  visibility: visible;
+  background-color: black;
+  border-radius: 28px;
+  
+}
+
+#video-length #video-panel {
+  width: 20%;
+  border: 1px solid black;
+  padding: 10px;
+  visibility: visible;
+  background-color: #292929;
+  border-radius: 28px;
+  color: white;
+}
+
+#video-length .video-viz-container {
+  border: 1px solid black;
+  border-radius: 28px;
+  height: 80%;
+  color: #f6f6f6;
+}
+
+#video-length .video-viz-container svg {
+  background-color: #292929;
+  border-radius: 28px;
+}
+
+#video-length .controls-2 {
+  width: 50%;
+  text-align: center;
+}
+
+#video-length .controls-1 {
+  width: 50%;
+}
+
+#video-length #video-controls {
+  border-radius: 28px;
+  padding: 0px 16px;
+  height: 20%;
+  display: flex;
+  color: #f6f6f6;
+  background-color: #292929;
+
+}
+

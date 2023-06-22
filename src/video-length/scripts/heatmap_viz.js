@@ -110,7 +110,7 @@
  * @param engagementCategory
  * @param tip
  */
-export function appendRects (data, width, height, engagementCategory, tip) {
+export function appendRects (data, width, height, engagementCategory, displayPanel) {
   const echelleCouleurs = d3.scaleSequential()
     .domain([0, d3.max(data, d => d.count)])
     .interpolator(d3.interpolateReds) // Utilisation de la palette de couleurs Viridis
@@ -155,8 +155,13 @@ export function appendRects (data, width, height, engagementCategory, tip) {
     .attr('width', x.bandwidth())
     .attr('height', d => height - y(d[engagementCategory]))
     .attr('fill', d => echelleCouleurs(d.count))
-    .on('mouseover', tip.show)
-    .on('mouseout', tip.hide)
+    .on('mouseover', function (d) {
+      displayPanel(d);
+      d3.select(this).attr('fill', 'black')
+    })
+    .on('mouseleave', function (d) {
+      d3.select(this).attr('fill', d => echelleCouleurs(d.count))
+    })
 }
 
 /**
