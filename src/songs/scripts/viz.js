@@ -1,4 +1,3 @@
-let graphTitle = null
 /**
  * Sets the size of the SVG canvas containing the graph.
  *
@@ -28,33 +27,67 @@ export function generateG (margin) {
 }
 
 /**
- * Generates the title of the visualization
+ * Generates the title of the visualization.
  *
  * @param {string} title The title of the visualization
- * @param {number} width The width of the svg containing the viz
+ * @param {number} width The width of the g element containing the visualization
  */
 export function generateGraphTitle (title, width) {
-  const svg = d3.select('.songs-svg')
+  const svg = d3.select('#songs-graph-g')
 
-  // Remove the previous title if it exists
-  if (graphTitle) {
-    graphTitle.remove()
+  const graphTitle = d3.select('#songs .songs-title')
+  if (graphTitle.node()) { // update title if it already exists
+    graphTitle
+      .attr('x', width / 2)
+      .text(title)
+  } else {
+    svg.append('text')
+      .attr('class', 'songs-title')
+      .attr('x', width / 2)
+      .attr('text-anchor', 'middle')
+      .attr('fill', '#fff')
+      .style('font-size', '20px')
+      .style('font-weight', 'bold')
+      .text(title)
   }
+}
 
-  // Append a group element at the top of the SVG
-  graphTitle = svg.append('g')
-    .attr('class', 'title-group')
-    .attr('transform', 'translate(0, 20)')
+/**
+ * Generates the subtitle for the visualization.
+ *
+ * @param {Date} minDate The minimum displayed date
+ * @param {Date} maxDate The maximum displayed date
+ * @param {number} width The width of the g element containing the visualization
+ */
+export function generateGraphSubtitle (minDate, maxDate, width) {
+  const svg = d3.select('#songs-graph-g')
 
-  // Append the title text
-  graphTitle.append('text')
-    .attr('class', 'title')
-    .attr('x', width / 2)
-    .attr('text-anchor', 'middle')
-    .attr('fill', '#fff')
-    .style('font-size', '20px')
-    .style('font-weight', 'bold')
-    .text(title)
+  const formattedMinDate = minDate.toLocaleDateString('en', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+  const formattedMaxDate = maxDate.toLocaleDateString('en', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+
+  const subtitle = d3.select('#songs .songs-subtitle')
+  if (subtitle.node()) {
+    subtitle
+      .attr('x', width / 2)
+      .text(`From ${formattedMinDate} to ${formattedMaxDate}`)
+  } else {
+    svg.append('text')
+      .attr('class', 'songs-subtitle')
+      .attr('x', width / 2)
+      .attr('y', 30)
+      .attr('text-anchor', 'middle')
+      .attr('fill', '#a4a4a4')
+      .style('font-size', '14px')
+      .text(`From ${formattedMinDate} to ${formattedMaxDate}`)
+  }
 }
 
 /**
@@ -84,21 +117,6 @@ export function appendGraphLabel (g) {
   g.append('text')
     .attr('class', 'x axis-text')
     .attr('font-size', 12)
-}
-
-/**
- * For each data element, appends an SVG circle to the points' g element
- *
- * @param {object[]} data The data to use for binding
- */
-export function appendCircles (data) {
-  d3.select('#songs-graph-g .points')
-    .selectAll('circle')
-    .data(data)
-    .enter()
-    .append('circle')
-    .attr('fill', '#5E3764')
-    .attr('stroke', 'white')
 }
 
 /**
@@ -203,9 +221,9 @@ export function getSimulation (data, xScale, yPosition, domainColumn, radiusScal
  * @param {*} xScale The scale to use to draw the axis
  * @param {number} width The width of the graph
  * @param {number} height The height of the graph
- * @param {string} xColumn The name of the data column used for the x axis
+ * @param {string} title The title for the x axis
  */
-export function drawXAxis (xScale, width, height, xColumn) {
+export function drawXAxis (xScale, width, height, title) {
   let xAxisGenerator
   if (isNaN(xScale(0))) { // check if xScale is a symlog scale, necessary since the default axis ticks are poorly formatted
     xAxisGenerator = d3.axisBottom(xScale)
@@ -225,8 +243,12 @@ export function drawXAxis (xScale, width, height, xColumn) {
   d3.select('#songs-graph-g .x.axis-text')
     .attr('x', width / 2)
     .attr('y', height + 30)
-    .text(`${xColumn}`)
+    .text(`${title}`)
     .style('fill', '#C7C7C7')
+
+  d3.select('#songs-graph-g .x.axis')
+    .selectAll('.tick line')
+    .attr('y1', -4)
 
   if (!isNaN(xScale(0))) { // remove minor tick labels for symlog scale
     d3.selectAll('#songs-graph-g .tick text')
@@ -239,7 +261,7 @@ export function drawXAxis (xScale, width, height, xColumn) {
 /**
  * After the circles have been appended, this repositions and resizes them.
  *
- * @param data
+ * @param {object[]} data The data to be displayed
  * @param {*} simulation The force simulation used for the points
  * @param {*} radiusScale The scale used to calculate the radius of each point
  * @param {Function} displayPanel The function that displays the panel when a circle is clicked
@@ -250,12 +272,12 @@ export function updateCircles (data, simulation, radiusScale, displayPanel) {
     .data(data)
     .join('circle')
     .attr('fill', '#533458')
-    .attr('stroke', 'white')
+    .attr('stroke', '#292929')
     .attr('r', d => radiusScale(d.count))
     .on('mouseover', function () {
       const element = d3.select(this)
       element.transition()
-        .duration(200) // Set the duration of the transition in milliseconds
+        .duration(150) // Set the duration of the transition in milliseconds
         .attr('r', d => radiusScale(d.count) * 1.5)
       element.node().parentElement.append(this)
     })

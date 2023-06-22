@@ -17,18 +17,24 @@ export function load (d3) {
   let xScale
   let radiusScale
   let simulation
-  let widthBound
   let nonAggregatedData
   let timeBoundData
+  let minDate
+  let maxDate
   let domainColumn = 'vuesAverage' // by default, display songs according to average views
+
   const graphTitleMap = new Map()
     .set('vuesAverage', 'Songs Used in TikTok Videos by Average View Count')
     .set('likesAverage', 'Songs Used in TikTok Videos by Average Like Count')
     .set('commentairesAverage', 'Songs Used in TikTok Videos by Average Comment Count')
     .set('partagesAverage', 'Songs Used in TikTok Videos by Average Share Count')
-
-  const margin = { top: 35, right: 400, bottom: 35, left: 50 }
-  const radiusModulator = 1600 // the greater the value, the smaller the circles at the same window width
+  const axisTitleMap = new Map()
+    .set('vuesAverage', 'Average Views')
+    .set('likesAverage', 'Average Likes')
+    .set('commentairesAverage', 'Average Comments')
+    .set('partagesAverage', 'Average Shares')
+  const margin = { top: 80, right: 100, bottom: 80, left: 100 }
+  const radiusModulator = 1100 // the greater the value, the smaller the circles at the same window width
 
   d3.csv('./data_source.csv', d3.autoType).then(function (data) {
     data = preproc.filterOutRowsByValue(
@@ -54,17 +60,13 @@ export function load (d3) {
     viz.appendAxis(g)
     viz.appendGraphLabel(g)
 
-    widthBound = d3
-      .select('#songs-beeswarm-plot')
-      .node()
-      .getBoundingClientRect().width
-
-    viz.generateGraphTitle(graphTitleMap.get(domainColumn), widthBound - margin.left)
-
+    minDate = d3.min(nonAggregatedData, row => new Date(row.date))
+    maxDate = d3.max(nonAggregatedData, row => new Date(row.date))
     addons.initPanelDiv()
+    addons.initDropdown(dropdown, updateDomainColumn)
+    addons.initSlider(slider, minDate, maxDate, updateTimeRange)
 
     setSizing()
-    initControlPanel()
     build()
 
     /**
@@ -72,8 +74,10 @@ export function load (d3) {
      */
     function setSizing () {
       svgSize = {
-        width: widthBound,
-        height: 400
+        width: d3.select('#songs-beeswarm-plot')
+          .node()
+          .getBoundingClientRect().width,
+        height: 500
       }
 
       graphSize = {
@@ -94,7 +98,10 @@ export function load (d3) {
 
       viz.addCoordinatesToData(data, xScale, graphSize.height / 2, domainColumn)
 
-      viz.drawXAxis(xScale, graphSize.width, graphSize.height, domainColumn)
+      viz.drawXAxis(xScale, graphSize.width, graphSize.height, axisTitleMap.get(domainColumn))
+
+      viz.generateGraphTitle(graphTitleMap.get(domainColumn), graphSize.width)
+      viz.generateGraphSubtitle(minDate, maxDate, graphSize.width)
 
       simulation = viz.getSimulation(
         timeBoundData,
@@ -115,9 +122,10 @@ export function load (d3) {
 
       viz.updateXCoordinateInData(timeBoundData, xScale, domainColumn)
 
-      viz.drawXAxis(xScale, graphSize.width, graphSize.height, domainColumn)
+      viz.drawXAxis(xScale, graphSize.width, graphSize.height, axisTitleMap.get(domainColumn))
 
-      viz.generateGraphTitle(graphTitleMap.get(domainColumn), graphSize.width + margin.right)
+      viz.generateGraphTitle(graphTitleMap.get(domainColumn), graphSize.width)
+      viz.generateGraphSubtitle(minDate, maxDate, graphSize.width)
 
       simulation.stop()
       simulation = viz.getSimulation(
@@ -129,41 +137,6 @@ export function load (d3) {
       )
 
       viz.updateCircles(timeBoundData, simulation, radiusScale, addons.displayPanel)
-    }
-
-    /**
-     * This function initialises the control panel by adding the dropdown and the slider.
-     */
-    function initControlPanel () {
-      // Dropdown
-      d3.select('#songs .songs-dropdown')
-        .append('div')
-        .style('color', 'white')
-        .style('font-size', '24px')
-        .style('font-weight', 'bold')
-        .style('margin-left', '20%')
-        .style('margin-bottom', '10px')
-        .text('Sort by')
-
-      dropdown.append(
-        document.querySelector('#songs .songs-dropdown'),
-        { 'Average Views': 'vuesAverage', 'Average Likes': 'likesAverage', 'Average Comments': 'commentairesAverage', 'Average Shares': 'partagesAverage' },
-        updateDomainColumn
-      )
-
-      // Slider
-      d3.select('#songs .songs-slider')
-        .append('div')
-        .style('color', 'white')
-        .style('font-size', '24px')
-        .style('font-weight', 'bold')
-        .style('margin-left', '35%')
-        .style('margin-bottom', '10px')
-        .text('Time range')
-
-      const minDate = d3.min(nonAggregatedData, row => new Date(row.date))
-      const maxDate = d3.max(nonAggregatedData, row => new Date(row.date))
-      slider.append(document.querySelector('#songs .songs-slider'), minDate, maxDate, updateTimeRange)
     }
 
     /**
@@ -182,6 +155,9 @@ export function load (d3) {
      * @param {*} range Object with "from" and "to" properties containing Date objects
      */
     function updateTimeRange (range) {
+      minDate = range.from
+      maxDate = range.to
+
       const oldCoordinates = saveCoordinates()
       aggregateFilteredData(range)
       applyCoordinatesToData(oldCoordinates)
@@ -239,16 +215,8 @@ export function load (d3) {
     }
 
     window.addEventListener('resize', () => {
-      const newWidth = d3
-        .select('#songs-beeswarm-plot')
-        .node()
-        .getBoundingClientRect().width
-      if (newWidth !== widthBound) {
-        // mainly to prevent the simulation from rerunning unecessarily when the height changes
-        widthBound = newWidth
-        setSizing()
-        rebuild()
-      }
+      setSizing()
+      rebuild()
     })
   })
 }
