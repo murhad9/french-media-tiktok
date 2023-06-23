@@ -145,6 +145,7 @@ export function load (d3) {
      * @param {string} column The new column to use
      */
     function updateDomainColumn (column) {
+      d3.select('#songs-graph-g .points .selected').classed('selected', false)
       domainColumn = column
       rebuild()
     }

@@ -41,6 +41,8 @@ h2 {
   color: #F0F0F0;
   font-family: "Roboto Slab", "serif";
   font-weight: normal;
+  width: 100%;
+  text-align: center;
 }
 
 h3 {
@@ -70,14 +72,41 @@ button {
   padding: 0 100px;
 }
 
-/************************** MEDIA SELECTION CSS RULES **************************
+.tab-container {
+  height: 70px;
+  background: #5e3764;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding-left: 100px;
+}
+
+.tab-link {
+  background-color: #ffffff00;
+  border-radius: 12px;
+  color: white;
+  border: none;
+  height: 45px;
+}
+
+.tab-link:hover {
+  background: #ffffff11;
+}
+
+/************************** DROPDOWN CSS RULES **************************
  *
- * All of the CSS rules for the media selection dropdown menu.
- *
+ * All of the CSS rules for the dropdown menus.
  */
 
 .dropdown-container {
   width: 250px;
+}
+
+.dropdown-container div {
+  display: flex;
+  height: 40px;
+  gap: 5px;
+  margin-top: 10px;
 }
 
 .dropdown-select-btn {
@@ -181,6 +210,27 @@ button {
   transform: scale(1);
 }
 
+.dropdown-select-all {
+  border-radius: 8px;
+  border: 2px solid #5E3764;
+  background : transparent;
+  color: white;
+  font-size: 11pt;
+  padding: unset;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.dropdown-remove-all {
+  border-radius: 8px;
+  background: #D74F4F;
+  color: white;
+  font-size: 11pt;
+  padding: unset;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
 /************************** OVERVIEW CSS RULES **************************
  *
  * All of the CSS rules for the "Overview" tab.
@@ -188,11 +238,6 @@ button {
  * Every selector is prefixed by #songs and therefore only applies to
  * elements within the div associated with the tab.
  */
-
-h2 {
-  width: 100%;
-  text-align: center;
-}
 
 #overview-viz-wrapper {
   display: flex;
@@ -220,7 +265,7 @@ h2 {
   color: white;
 }
 
-.overview-graph-and-controls {
+#overview .overview-graph-and-controls {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -232,34 +277,6 @@ h2 {
   border-radius: 16px;
   padding: 0px 16px;
   width: 350px;
-}
-
-.dropdown-container div {
-  display: flex;
-  height: 40px;
-  gap: 5px;
-  margin-top: 10px;
-}
-
-.select-all {
-  border-radius: 8px;
-  border: 2px solid #5E3764;
-  background : transparent;
-  color: white;
-  font-size: 11pt;
-  padding: unset;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-.remove-all {
-  border-radius: 8px;
-  background: #D74F4F;
-  color: white;
-  font-size: 11pt;
-  padding: unset;
-  padding-left: 4px;
-  padding-right: 4px;
 }
 
 #overview .categories {
@@ -429,11 +446,11 @@ h2 {
 }
 
 #songs .points .selected {
-  fill: #5e3764;
+  fill: #387DAF;
 }
 
 #songs .points circle:hover {
-  fill: #5e3764;
+  fill: #387DAF;
 }
 
 /************************** VIDEO POSTING CSS RULES **************************
@@ -516,30 +533,9 @@ h2 {
 
 }
 
-.tab-container {
-  height: 70px;
-  background: #5e3764;
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  padding-left: 100px;
-}
-
-.tab-link {
-  background-color: #ffffff00;
-  border-radius: 12px;
-  color: white;
-  border: none;
-  height: 45px;
-}
-
-.tab-link:hover {
-  background: #ffffff11;
-}
-
 /************************** SLIDER CSS RULES **************************
  *
- * All of the CSS rules for the Slider
+ * All of the CSS rules for the time range slider.
  */
 
 .irs-from {
@@ -604,32 +600,32 @@ h2 {
  * elements within the div associated with the tab.
  */
 
-#hashtags-viz-wrapper {
+#hashtags #hashtags-viz-wrapper {
   display: flex;
   width: 100%;
   justify-content: space-around;
 }
 
-#hashtags-controls {
+#hashtags #hashtags-controls {
   width: 350px;
   background-color: #292929;
   border-radius: 16px;
   padding: 0 20px 20px 20px;
 }
 
-.hashtags-viz-container {
+#hashtags .hashtags-viz-container {
   background-color: #292929;
   border-radius: 16px;
 }
 
-.hashtags-viz-container svg {
+#hashtags .hashtags-viz-container svg {
   width: 63vw;
   padding-top: 70px;
   background: none;
   overflow: visible;
 }
 
-.tooltip {
+#hashtags .tooltip {
   position: relative;
   display: inline-block;
   background-color: #000;
@@ -637,7 +633,7 @@ h2 {
   width: auto;
 }
 
-.tooltip .tooltiptext {
+#hashtags .tooltip .tooltiptext {
   text-align: center;
   background-color: #555;
   color: #fff;
@@ -650,7 +646,7 @@ h2 {
   margin-left: -110px;
 }
 
-.tooltip .tooltiptext::after {
+#hashtags .tooltip .tooltiptext::after {
   content: "";
   position: absolute;
   top: 100%;
@@ -665,30 +661,30 @@ h2 {
  *
  * All of the CSS rules for the "Video posting" tab.
  *
- * Every selector is prefixed by #vp and therefore only applies to
+ * Every selector is prefixed by #video-posting and therefore only applies to
  * elements within the div associated with the tab.
  */
 
-#vp-viz-container {
+#video-posting #vp-viz-container {
   display: flex;
   width: 100%;
   align-items: stretch;
   justify-content: space-around;
 }
 
-#vp-controls {
+#video-posting #vp-controls {
   width: 350px;
   background-color: #292929;
   border-radius: 16px;
   padding: 0 20px 20px 20px;
 }
 
-.video-posting-graph {
+#video-posting .video-posting-graph {
   background-color: #292929;
   border-radius: 16px;
 }
 
-.video-posting-graph svg {
+#video-posting .video-posting-graph svg {
   width: 63vw;
   padding-top: 70px;
   background: none;
