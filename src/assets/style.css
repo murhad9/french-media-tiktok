@@ -315,7 +315,7 @@ button {
   border-color: #555 transparent transparent transparent;
 }
 
-#overview .overview-heatmap-svg {
+#overview .overview-svg {
   background-color: #292929;
   border-radius: 16px;
   padding-top: 70px;
