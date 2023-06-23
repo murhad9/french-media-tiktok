@@ -32,7 +32,7 @@ export function setCanvasSize (width, height) {
  * @param {*} g The d3 Selection of the graph's g SVG element
  */
 export function appendAxes (g) {
-  g.append('g').attr('class', 'x axis')
+  g.append('g').attr('class', 'x axis').attr('color', 'white')
 
-  g.append('g').attr('class', 'y axis')
+  g.append('g').attr('class', 'y axis').attr('color', 'white')
 }

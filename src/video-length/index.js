@@ -29,12 +29,22 @@ export function load (d3) {
   // eslint-disable-next-line no-unused-vars
   let graphSize
 
+  const graphTitleMap = new Map()
+    .set('vues', 'Average view count per video length')
+    .set('likes', 'Average like count per video length')
+    .set('commentaires', 'Average comment count per video length')
+    .set('partages', 'Average share count per video length')
+  const fromToDates = {
+    from: new Date(2018, 10, 30),
+    to: new Date(2023, 3, 14)
+  }
+
   const tip = d3Tip().attr('class', 'd3-tip').html(function (d) { 
     return helper.getContents(d, engagementCategory)
   })
   d3.select('.video-length-heatmap-svg').call(tip)
 
-  const margin = { top: 35, right: 200, bottom: 50, left: 50 }
+  const margin = { top: 75, right: 200, bottom: 50, left: 50 }
   // TODO: Use this file for welcom vizs
 
   d3.csv('./data_source.csv', d3.autoType).then(function (data) {
@@ -157,8 +167,10 @@ export function load (d3) {
      *
      * @param {*} fromToDates Object with "from" and "to" properties containing Date objects
      */
-    function updateSelectedDates(fromToDates) {
+    function updateSelectedDates(fromToDatesParam) {
       dataFromTo = rawData;
+      fromToDates.from = fromToDatesParam.from
+      fromToDates.to = fromToDatesParam.to
       dataFromTo = dataFromTo.filter((row) => {
         return (
           new Date(row.date).getTime() >= fromToDates.from.getTime() &&
@@ -174,6 +186,8 @@ export function load (d3) {
      */
     function build () {
       viz.appendRects(dataVideoLengthCategory, graphSize.width, graphSize.height, engagementCategory, addons.displayPanel)
+      viz.generateGraphTitle(graphTitleMap.get(engagementCategory), graphSize.width)
+      viz.generateGraphSubtitle(fromToDates.from, fromToDates.to, graphSize.width)
       //viz.appendRectsEvolve(data, graphSize.width, graphSize.height, engagementCategory)
     }
 

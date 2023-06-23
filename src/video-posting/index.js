@@ -24,7 +24,12 @@ export function load (d3) {
   let startDate = new Date(2018, 10, 30)
   let endDate = new Date(2023, 3, 14)
   let currentData
-  const margin = { top: 35, right: 200, bottom: 35, left: 200 }
+  const graphTitleMap = new Map()
+    .set('vuesAverage', 'Average View Count of Videos Uploaded per Time of Day')
+    .set('vues', 'Amount of Videos Uploaded per Time of Day')
+    .set('countAverage', 'Average Amount of Videos Uploaded per Time of Day')
+    .set('count', 'Amount of Videos Uploaded per Time of Day')
+  const margin = { top: 50, right: 200, bottom: 35, left: 200 }
   // TODO: Use this file for welcom vizs
   const xScale = d3.scaleBand().padding(0.05)
   const yScale = d3.scaleBand().padding(0.2)
@@ -184,6 +189,8 @@ export function load (d3) {
       viz.rotateYTicks()
 
       viz.updateRects(xScale, yScale, colorScale, targetColumn)
+      viz.generateGraphTitle(graphTitleMap.get(targetColumn), graphSize.width)
+      viz.generateGraphSubtitle(startDate, endDate, graphSize.width)
 
       hover.setRectHandler(
         xScale,

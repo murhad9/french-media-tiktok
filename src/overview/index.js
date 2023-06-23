@@ -22,7 +22,12 @@ export function load (d3) {
 
   let domainColumn = 'vues'
   let selectedMediaList = []
-
+  const graphTitleMap = new Map()
+    .set('vues', 'Total view count of Various Media Outlets Over Time')
+    .set('likes', 'Total like count of Various Media Outlets Over Time')
+    .set('commentaires', 'Total comment count of Various Media Outlets Over Time')
+    .set('partages', 'Total share count of Various Media Outlets Over Time')
+  const fromTo = { from: new Date(2018, 10, 30), to: new Date(2023, 3, 14) }
   const margin = { top: 10, right: 20, bottom: 35, left: 50 }
   // TODO: Use this file for welcom vizs
   const xScale = d3.scaleTime()
@@ -137,6 +142,8 @@ export function load (d3) {
      * @param {*} fromToDates Object with "from" and "to" properties containing Date objects
      */
     function updateSelectedDates (fromToDates) {
+      fromTo.from = fromToDates.from
+      fromTo.to = fromToDates.to
       dataFromTo = data
       dataFromTo = dataFromTo.filter((row) => {
         return (
@@ -158,6 +165,8 @@ export function load (d3) {
       viz.drawYAxis(yScale, graphSize.width)
 
       viz.rotateYTicks()
+      viz.generateGraphTitle(graphTitleMap.get(domainColumn), graphSize.width)
+      viz.generateGraphSubtitle(fromTo.from, fromTo.to, graphSize.width)
 
       viz.updateLines(
         xScale,

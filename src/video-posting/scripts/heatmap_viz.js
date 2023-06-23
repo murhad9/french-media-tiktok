@@ -115,3 +115,68 @@ export function updateRects (xScale, yScale, colorScale, targetColumn) {
     .attr('height', yScale.bandwidth())
     .attr('fill', (d) => colorScale(d[targetColumn]))
 }
+
+/**
+ * Generates the subtitle for the visualization.
+ *
+ * @param {Date} minDate The minimum displayed date
+ * @param {Date} maxDate The maximum displayed date
+ * @param {number} width The width of the g element containing the visualization
+ */
+export function generateGraphSubtitle (minDate, maxDate, width) {
+  const svg = d3.select('#video-posting-graph-g')
+
+  const formattedMinDate = minDate.toLocaleDateString('en', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+  const formattedMaxDate = maxDate.toLocaleDateString('en', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+
+  const subtitle = d3.select('#video-posting .video-posting-subtitle')
+  if (subtitle.node()) {
+    subtitle
+      .attr('x', width / 2)
+      .text(`From ${formattedMinDate} to ${formattedMaxDate}`)
+  } else {
+    svg.append('text')
+      .attr('class', 'video-posting-subtitle')
+      .attr('x', width / 2)
+      .attr('y', -50)
+      .attr('text-anchor', 'middle')
+      .attr('fill', '#a4a4a4')
+      .style('font-size', '14px')
+      .text(`From ${formattedMinDate} to ${formattedMaxDate}`)
+  }
+}
+
+/**
+ * Generates the title of the visualization.
+ *
+ * @param {string} title The title of the visualization
+ * @param {number} width The width of the g element containing the visualization
+ */
+export function generateGraphTitle (title, width) {
+  const svg = d3.select('#video-posting-graph-g')
+
+  const graphTitle = d3.select('#video-posting .video-posting-title')
+  if (graphTitle.node()) { // update title if it already exists
+    graphTitle
+      .attr('x', width / 2)
+      .text(title)
+  } else {
+    svg.append('text')
+      .attr('class', 'video-posting-title')
+      .attr('x', width / 2)
+      .attr('y', -75)
+      .attr('text-anchor', 'middle')
+      .attr('fill', '#fff')
+      .style('font-size', '20px')
+      .style('font-weight', 'bold')
+      .text(title)
+  }
+}

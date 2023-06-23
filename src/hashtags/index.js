@@ -17,6 +17,11 @@ export function load (d3) {
   let bounds
   let svgSize
   let engagementCategory = 'vues'
+  const graphTitleMap = new Map()
+    .set('vues', 'The 10 most popular hashtags by average view count')
+    .set('likes', 'The 10 most popular hashtags by average like count')
+    .set('commentaires', 'The 10 most popular hashtags by average comment count')
+    .set('partages', 'The 10 most popular hashtags by average share count')
   const fromToDates = {
     from: new Date(2018, 10, 30),
     to: new Date(2023, 3, 14)
@@ -29,7 +34,7 @@ export function load (d3) {
   })
   d3.select('.hashtags-heatmap-svg').call(tip)
 
-  const margin = { top: 35, right: 200, bottom: 50, left: 50 }
+  const margin = { top: 35, right: 50, bottom: 50, left: 70 }
 
   d3.csv('./data_source.csv', d3.autoType).then(function (csvData) {
     const g = helper.generateG(margin)
@@ -83,6 +88,8 @@ export function load (d3) {
      */
     function build () {
       data = preproc.regrouperParHashtags(csvData, fromToDates).sort((a, b) => b[engagementCategory] - a[engagementCategory]).slice(0, 10)
+      viz.generateGraphTitle(graphTitleMap.get(engagementCategory), graphSize.width)
+      viz.generateGraphSubtitle(fromToDates.from, fromToDates.to, graphSize.width)
       viz.appendRects(data, graphSize.width, graphSize.height, engagementCategory, tip)
     }
 

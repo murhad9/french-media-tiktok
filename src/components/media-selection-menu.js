@@ -9,8 +9,10 @@ export function append (parent, items, onSelection) {
   const container = createContainer()
   createButton(container)
   createList(container)
-  createSelectAllButton(container)
-  createRemoveAllButton(container)
+
+  const buttons = container.appendChild(document.createElement('div'))
+  createSelectAllButton(buttons)
+  createRemoveAllButton(buttons)
 
   /**
    * Creates the container which will contain the dropdown menu.
@@ -86,10 +88,11 @@ export function append (parent, items, onSelection) {
   function createSelectAllButton (container) {
     const button = document.createElement('button')
     button.setAttribute('type', 'button')
+    button.classList.add('select-all')
     button.innerText = 'Select all media'
     button.addEventListener('click', () => {
-      const listItems = container.querySelectorAll('li')
-      const btnText = container.querySelector('.dropdown-btn-text')
+      const listItems = container.parentElement.querySelectorAll('li')
+      const btnText = container.parentElement.querySelector('.dropdown-btn-text')
       listItems.forEach(listItem => listItem.classList.add('checked'))
       btnText.innerText = `${items.length} Selected`
       onSelection(items)
@@ -106,9 +109,10 @@ export function append (parent, items, onSelection) {
     const button = document.createElement('button')
     button.setAttribute('type', 'button')
     button.innerText = 'Remove all media'
+    button.classList.add('remove-all')
     button.addEventListener('click', () => {
-      const listItems = container.querySelectorAll('li')
-      const btnText = container.querySelector('.dropdown-btn-text')
+      const listItems = container.parentElement.querySelectorAll('li')
+      const btnText = container.parentElement.querySelector('.dropdown-btn-text')
       listItems.forEach(listItem => listItem.classList.remove('checked'))
       btnText.innerText = 'Select Media'
       onSelection([])

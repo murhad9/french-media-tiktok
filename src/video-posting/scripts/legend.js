@@ -71,7 +71,7 @@ export function draw (x, y, height, width, fill, colorScale) {
     .enter()
     .append('text')
     .style('font', '10px sans-serif')
-    .style('fill', '#777')
+    .style('fill', '#ccc')
     .attr('x', function (d, i) {
       return x - 10
     })
@@ -109,7 +109,7 @@ export function update (x, y, height, colorScale) {
     .enter()
     .append('text')
     .style('font', '10px sans-serif')
-    .style('fill', '#777')
+    .style('fill', '#ccc')
     .attr('x', function (d, i) {
       return x - 10
     })

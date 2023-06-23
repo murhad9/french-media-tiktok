@@ -35,9 +35,9 @@ export function setCanvasSize (width, height) {
  * @param {*} g The d3 Selection of the graph's g SVG element
  */
 export function appendAxes (g) {
-  g.append('g').attr('class', 'x axis')
+  g.append('g').attr('class', 'x axis').style('color', 'white')
 
-  g.append('g').attr('class', 'y axis')
+  g.append('g').attr('class', 'y axis').style('color', 'white')
 }
 
 export function getContents (d, engagementCategory) {
@@ -45,7 +45,7 @@ export function getContents (d, engagementCategory) {
 
   if (engagementCategory === 'likes') {
     return `<div class='tooltip'>
-    <span class='tooltiptext'>${target.data()[0].hashtag}
+    <span class='tooltiptext' style="padding: 10px; width: 200px">${target.data()[0].hashtag}
         </br>
         </br>
         Average likes: ${Math.round(target.data()[0].likes)}
@@ -55,7 +55,7 @@ export function getContents (d, engagementCategory) {
     `
   } else if (engagementCategory === 'partages') {
     return `<div class='tooltip'>
-      <span class='tooltiptext'>${target.data()[0].hashtag}
+      <span class='tooltiptext' style="padding: 10px; width: 200px">${target.data()[0].hashtag}
         </br>
         </br>
         Average shares: ${Math.round(target.data()[0].partages)}
@@ -64,7 +64,7 @@ export function getContents (d, engagementCategory) {
     `
   } else if (engagementCategory === 'vues') {
     return `<div class='tooltip'>
-      <span class='tooltiptext'>${target.data()[0].hashtag}
+      <span class='tooltiptext' style="padding: 10px; width: 200px">${target.data()[0].hashtag}
         </br>
         </br>
         Average views: ${Math.round(target.data()[0].vues)}
@@ -74,7 +74,7 @@ export function getContents (d, engagementCategory) {
     `
   } else if (engagementCategory === 'commentaires') {
     return `<div class='tooltip'>
-      <span class='tooltiptext'>${target.data()[0].hashtag}
+      <span class='tooltiptext' style="padding: 10px; width: 200px">${target.data()[0].hashtag}
         </br>
         </br>
         Average comments: ${Math.round(target.data()[0].commentaires)}
