@@ -698,3 +698,12 @@ h2 {
 #video-posting h1 {
   font-size: 29pt;
 }
+.radio-buttons label {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.radio-buttons input[type="radio"] {
+  margin-right: 5px;
+}

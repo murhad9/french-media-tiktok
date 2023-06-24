@@ -8,7 +8,6 @@ import * as hover from './scripts/hover.js'
 import * as menu from '../components/media-selection-menu.js'
 import * as slider from '../components/slider.js'
 import * as sortBySelect from '../components/sort-by-select.js'
-import * as d3Chromatic from 'd3-scale-chromatic'
 
 /**
  * Loads the video posting tab.
@@ -20,14 +19,21 @@ export function load (d3) {
   let svgSize
   let graphSize
   let selectedMediaList = []
-  let targetColumn = 'vuesAverage'
+  let targetColumn = 'vues'
   let startDate = new Date(2018, 10, 30)
   let endDate = new Date(2023, 3, 14)
+  let showTotal = true
   let currentData
   const graphTitleMap = new Map()
-    .set('vuesAverage', 'Average View Count of Videos Uploaded per Time of Day')
-    .set('vues', 'Amount of Videos Uploaded per Time of Day')
-    .set('countAverage', 'Average Amount of Videos Uploaded per Time of Day')
+    .set('vuesAverage', 'Weekly Average views of Videos Uploaded during each time block')
+    .set('vues', 'Total of views during each time block')
+    .set('likesAverage', 'Weekly Average likes received during each time block')
+    .set('likes', 'Total likes received during each time block')
+    .set('commentaires', 'Total amount of comments received during each time block')
+    .set('commentairesAverage', 'Weekly Average Amount of comments received during each time block')
+    .set('countAverage', 'Weekly Average Amount of Videos Uploaded per Time of Day')
+    .set('partages', 'Total amount of comments received during each time block')
+    .set('partagesAverage', 'Weekly Average Amount of comments received during each time block')
     .set('count', 'Amount of Videos Uploaded per Time of Day')
   const margin = { top: 50, right: 200, bottom: 35, left: 200 }
   // TODO: Use this file for welcom vizs
@@ -37,7 +43,7 @@ export function load (d3) {
     .domain([0, 1]) // Define the domain of the scale
 
   const darkColor = '#74427c'
-  const paleColor = '#fcf5fd'
+  const paleColor = '#e6d7f4'
 
   const customInterpolator = t => d3.interpolate(paleColor, darkColor)(t)
 
@@ -62,13 +68,18 @@ export function load (d3) {
     sortBySelect.append(
       document.querySelector('#vp-controls-sort-by'),
       {
-        'Average Weekly Views': 'vuesAverage',
-        'Total Views': 'vues',
-        'Average Weekly Posts': 'countAverage',
-        'Total Posts': 'count'
+        Views: 'vues',
+        Likes: 'likes',
+        Comments: 'commentaires',
+        Shares: 'partages',
+        'Posts count': 'count'
       },
       updateTargetColumn
     )
+    const radioButtons = d3.select('#vp-radio-buttons')
+
+    radioButtons.selectAll('input[type="radio"]')
+      .on('change', updateMode)
     data = preproc.addTimeBlocks(preproc.processDateTime(data))
 
     legend.initGradient(colorScale)
@@ -90,6 +101,13 @@ export function load (d3) {
       startDate = fromToDates.from
       endDate = fromToDates.to
       build()
+    }
+    /**
+     * Toggle show mode when a button is clicked
+     */
+    function updateMode () {
+      showTotal = !showTotal
+      updateTargetColumn(targetColumn)
     }
     /**
      *   This function handles the graph's sizing.
@@ -119,7 +137,7 @@ export function load (d3) {
      * @param {string} newTarget the new target column
      */
     function updateTargetColumn (newTarget) {
-      targetColumn = newTarget
+      if (showTotal) { targetColumn = newTarget.replace('Average', '') } else targetColumn = newTarget + 'Average'
       build()
     }
     /**
@@ -145,7 +163,6 @@ export function load (d3) {
         ['vues', 'likes', 'partages', 'commentaires'],
         ['dayOfWeek', 'timeBlock']
       )
-
       if (targetColumn === 'countAverage') {
         currentData = preproc.computeAverageCount(currentData, startDate, endDate)
       }
