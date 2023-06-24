@@ -109,21 +109,23 @@ export function updateLines (
     .style('stroke-width', 2)
     .on('mouseenter', function (d) {
       // draw other
-      d3.select(this).style('stroke', '#387DAF').style('stroke-width', '2')
+      d3.select(this).style('stroke', '#387DAF').style('stroke-width', 4)
       // draw the circles too
       d3.selectAll('.drawn-circle')
         .filter((circleData) => {
           return circleData['média'] === d.target.__data__.key
         })
+        .attr('r', 5)
         .style('fill', '#387DAF')
     })
     .on('mouseleave', function (d) {
-      d3.select(this).style('stroke', '#6a4270').style('stroke-width', '1')
+      d3.select(this).style('stroke', '#6a4270').style('stroke-width', 2)
       // undraw the circles too
       d3.selectAll('.drawn-circle')
         .filter((circleData) => {
           return circleData['média'] === d.target.__data__.key
         })
+        .attr('r', 3)
         .style('fill', '#6a4270')
     })
 
@@ -148,6 +150,7 @@ export function updateLines (
         .filter((circleData) => {
           return circleData['média'] === d.target.__data__['média']
         })
+        .attr('r', 5)
         .style('fill', 'steelblue')
 
       // draw the line too
@@ -156,9 +159,10 @@ export function updateLines (
           return lineData.key === d.target.__data__['média']
         })
         .style('stroke', 'steelblue')
+        .style('stroke-width', 4)
 
       // set hovered circle with higher radius
-      d3.select(this).style('fill', 'steelblue').attr('r', 6)
+      d3.select(this).style('fill', 'steelblue').attr('r', 7)
     })
     .on('mouseleave', function (d) {
       d3.select(this).style('fill', '#6a4270').attr('r', 3)
@@ -168,6 +172,7 @@ export function updateLines (
         .filter((circleData) => {
           return circleData['média'] === d.target.__data__['média']
         })
+        .attr('r', 3)
         .style('fill', '#6a4270')
 
       // undraw the line too
@@ -176,6 +181,7 @@ export function updateLines (
           return lineData.key === d.target.__data__['média']
         })
         .style('stroke', '#6a4270')
+        .style('stroke-width', 2)
     })
     .on('click', function (d) {
       displayPanel(d)
