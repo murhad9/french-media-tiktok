@@ -59,7 +59,7 @@ export function drawYAxis (yScale) {
     .call(yAxisGenerator)
   d3.select('#overview-graph-g .y.axis')
     .selectAll('.tick line')
-    .attr('x1', 6)
+    .attr('x1', 7)
 }
 
 /**
@@ -105,8 +105,8 @@ export function updateLines (
       return null
     })
     .style('fill', 'none')
-    .style('stroke', '#803082')
-    .style('stroke-width', 1)
+    .style('stroke', '#533458')
+    .style('stroke-width', 2)
     .on('mouseenter', function (d) {
       // draw other
       d3.select(this).style('stroke', '#387DAF').style('stroke-width', '2')
@@ -118,13 +118,13 @@ export function updateLines (
         .style('fill', '#387DAF')
     })
     .on('mouseleave', function (d) {
-      d3.select(this).style('stroke', '#803082').style('stroke-width', '1')
+      d3.select(this).style('stroke', '#533458').style('stroke-width', '1')
       // undraw the circles too
       d3.selectAll('.drawn-circle')
         .filter((circleData) => {
           return circleData['média'] === d.target.__data__.key
         })
-        .style('fill', '#803082')
+        .style('fill', '#533458')
     })
 
   d3.selectAll('.drawn-circle').remove()
@@ -137,8 +137,8 @@ export function updateLines (
     .filter((d) => {
       return selectedMediaList.includes(d['média'])
     })
-    .attr('r', 2)
-    .attr('fill', '#803082')
+    .attr('r', 3)
+    .attr('fill', '#533458')
     .attr('transform', (d) => {
       return `translate(${xScale(new Date(d.date))},${yScale(d[domainColumn])})`
     })
@@ -158,24 +158,24 @@ export function updateLines (
         .style('stroke', 'steelblue')
 
       // set hovered circle with higher radius
-      d3.select(this).style('fill', 'steelblue').attr('r', '4')
+      d3.select(this).style('fill', 'steelblue').attr('r', 6)
     })
     .on('mouseleave', function (d) {
-      d3.select(this).style('fill', '#803082').attr('r', '2')
+      d3.select(this).style('fill', '#533458').attr('r', 3)
 
       // undraw other circles too
       d3.selectAll('.drawn-circle')
         .filter((circleData) => {
           return circleData['média'] === d.target.__data__['média']
         })
-        .style('fill', '#803082')
+        .style('fill', '#533458')
 
       // undraw the line too
       d3.selectAll('.drawn-line')
         .filter((lineData) => {
           return lineData.key === d.target.__data__['média']
         })
-        .style('stroke', '#803082')
+        .style('stroke', '#533458')
     })
     .on('click', function (d) {
       displayPanel(d)

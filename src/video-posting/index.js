@@ -2,7 +2,7 @@
 
 import * as helper from './scripts/helper.js'
 import * as preproc from './scripts/preprocess.js'
-import * as viz from './scripts/heatmap_viz.js'
+import * as viz from './scripts/viz.js'
 import * as legend from './scripts/legend.js'
 import * as hover from './scripts/hover.js'
 import * as menu from '../components/media-selection-menu.js'

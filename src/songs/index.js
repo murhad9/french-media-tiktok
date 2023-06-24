@@ -35,6 +35,7 @@ export function load (d3) {
     .set('partagesAverage', 'Average Shares')
   const margin = { top: 80, right: 100, bottom: 80, left: 100 }
   const radiusModulator = 1100 // the greater the value, the smaller the circles at the same window width
+  const yPositionFactor = 1.1 // the greater the value, the lower the circles
 
   d3.csv('./data_source.csv', d3.autoType).then(function (data) {
     data = preproc.filterOutRowsByValue(
@@ -77,7 +78,9 @@ export function load (d3) {
         width: d3.select('#songs-beeswarm-plot')
           .node()
           .getBoundingClientRect().width,
-        height: 500
+        height: d3.select('#songs-beeswarm-plot')
+          .node()
+          .getBoundingClientRect().height
       }
 
       graphSize = {
@@ -96,7 +99,7 @@ export function load (d3) {
     function build () {
       xScale = viz.setXScale(graphSize.width, data, domainColumn)
 
-      viz.addCoordinatesToData(data, xScale, graphSize.height / 2, domainColumn)
+      viz.addCoordinatesToData(data, xScale, graphSize.height / 2 * yPositionFactor, domainColumn)
 
       viz.drawXAxis(xScale, graphSize.width, graphSize.height, axisTitleMap.get(domainColumn))
 
@@ -106,7 +109,7 @@ export function load (d3) {
       simulation = viz.getSimulation(
         timeBoundData,
         xScale,
-        graphSize.height / 2,
+        graphSize.height / 2 * yPositionFactor,
         domainColumn,
         radiusScale
       )
@@ -115,12 +118,18 @@ export function load (d3) {
     }
 
     /**
-     *   This function rebuilds the graph after a window resize or when the date range slider changes.
+     * This function rebuilds the graph after a window resize or when the date range slider changes.
+     *
+     * @param {boolean} resetY Whether or not to reset the y position of the circles
      */
-    function rebuild () {
+    function rebuild (resetY = false) {
       xScale = viz.setXScale(graphSize.width, data, domainColumn)
 
-      viz.updateXCoordinateInData(timeBoundData, xScale, domainColumn)
+      if (resetY) {
+        viz.addCoordinatesToData(timeBoundData, xScale, graphSize.height / 2 * yPositionFactor, domainColumn)
+      } else {
+        viz.updateXCoordinateInData(timeBoundData, xScale, domainColumn)
+      }
 
       viz.drawXAxis(xScale, graphSize.width, graphSize.height, axisTitleMap.get(domainColumn))
 
@@ -131,7 +140,7 @@ export function load (d3) {
       simulation = viz.getSimulation(
         timeBoundData,
         xScale,
-        graphSize.height / 2,
+        graphSize.height / 2 * yPositionFactor,
         domainColumn,
         radiusScale
       )
@@ -217,7 +226,7 @@ export function load (d3) {
 
     window.addEventListener('resize', () => {
       setSizing()
-      rebuild()
+      rebuild(true)
     })
   })
 }

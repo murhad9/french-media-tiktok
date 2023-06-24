@@ -231,6 +231,65 @@ button {
   padding-right: 4px;
 }
 
+/************************** SLIDER CSS RULES **************************
+ *
+ * All of the CSS rules for the time range slider.
+ */
+
+ .irs-from {
+  background-color: #5e3764 !important;
+}
+
+.irs-from::before {
+  border-top-color: #5e3764 !important;
+}
+
+.irs-to {
+  background-color: #5e3764 !important;
+}
+
+.irs-to::before {
+  border-top-color: #5e3764 !important;
+}
+
+.irs-single {
+  background-color: #5e3764 !important;
+}
+
+.irs-single::before {
+  border-top-color: #5e3764 !important;
+}
+
+.irs-bar {
+  background-color: #5e3764 !important;
+}
+
+.irs-handle {
+  border : 4px solid #5e3764 !important;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-color: #151515;
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #5e3764; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #352438; ;
+}
+
 /************************** OVERVIEW CSS RULES **************************
  *
  * All of the CSS rules for the "Overview" tab.
@@ -242,8 +301,8 @@ button {
 #overview-viz-wrapper {
   display: flex;
   flex-direction: row;
-  gap: 12px;
-  padding: 12px;
+  gap: 30px;
+  padding: 0px 12px;
 }
 
 #overview #overview-panel {
@@ -382,13 +441,20 @@ button {
  */
 
 #songs #songs-viz-wrapper {
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  grid-gap: 30px;
-  padding: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 30px;
+}
+
+#songs #songs-plot-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 
 #songs #songs-panel {
+  width: 16vw;
   background-color: #292929;
   grid-row: 1 / span 2;
   grid-column: 2;
@@ -451,6 +517,7 @@ button {
 }
 
 #songs #songs-control {
+  width: 50vw;
   background-color: #292929;
   border-radius: 16px;
   display: flex;
@@ -498,6 +565,11 @@ button {
 #songs .viz-container {
   padding-top: 10px;
   background-color: #151515;
+}
+
+#songs #songs-beeswarm-plot {
+  width: 50vw;
+  height: 25vw;
 }
 
 #songs .songs-svg {
@@ -601,65 +673,6 @@ button {
 
 }
 
-/************************** SLIDER CSS RULES **************************
- *
- * All of the CSS rules for the time range slider.
- */
-
-.irs-from {
-  background-color: #5e3764 !important;
-}
-
-.irs-from::before {
-  border-top-color: #5e3764 !important;
-}
-
-.irs-to {
-  background-color: #5e3764 !important;
-}
-
-.irs-to::before {
-  border-top-color: #5e3764 !important;
-}
-
-.irs-single {
-  background-color: #5e3764 !important;
-}
-
-.irs-single::before {
-  border-top-color: #5e3764 !important;
-}
-
-.irs-bar {
-  background-color: #5e3764 !important;
-}
-
-.irs-handle {
-  border : 4px solid #5e3764 !important;
-}
-
-/* width */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background-color: #151515;
-  border-radius: 10px;
-}
- 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #5e3764; 
-  border-radius: 10px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #352438; ;
-}
-
 /************************** HASHTAGS CSS RULES **************************
  *
  * All of the CSS rules for the "Hashtags" tab.
@@ -671,14 +684,21 @@ button {
 #hashtags #hashtags-viz-wrapper {
   display: flex;
   width: 100%;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 30px;
 }
 
 #hashtags #hashtags-controls {
-  width: 350px;
+  width: 280px;
   background-color: #292929;
   border-radius: 16px;
   padding: 0 20px 20px 20px;
+}
+
+#hashtags #hashtags-controls-sort-by {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
 #hashtags .hashtags-viz-container {
@@ -687,7 +707,7 @@ button {
 }
 
 #hashtags .hashtags-viz-container svg {
-  width: 63vw;
+  width: 50vw;
   padding-top: 70px;
   background: none;
   overflow: visible;
@@ -737,7 +757,8 @@ button {
   display: flex;
   width: 100%;
   align-items: stretch;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 30px;
 }
 
 #video-posting #vp-controls {
@@ -753,12 +774,8 @@ button {
 }
 
 #video-posting .video-posting-graph svg {
-  width: 63vw;
+  width: 50vw;
   padding-top: 70px;
   background: none;
   overflow: visible;
-}
-
-#video-posting h1 {
-  font-size: 29pt;
 }
