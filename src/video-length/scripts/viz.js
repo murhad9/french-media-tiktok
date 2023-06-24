@@ -1,3 +1,9 @@
+/**
+ * Initialises the color scale used to represent video count.
+ *
+ * @param {object[]} data The data to display
+ * @param {*} colorScale The color scale
+ */
 export function initColorScale (data, colorScale) {
   const paleColor = '#d7bddb'
   const darkColor = '#5e3764'
@@ -7,6 +13,16 @@ export function initColorScale (data, colorScale) {
     .nice()
 }
 
+/**
+ * Creates the histogram.
+ *
+ * @param {object[]} data The data to display
+ * @param {number} width The width of the graph
+ * @param {number} height The height of the graph
+ * @param {string} engagementCategory The metric to represent on the histogram
+ * @param {Function} displayPanel A callback function that displays the tooltip
+ * @param {*} colorScale The color scale used to represent video count
+ */
 export function appendRects (data, width, height, engagementCategory, displayPanel, colorScale) {
   const svg = d3.select('#video-length-graph-g')
 
@@ -64,6 +80,13 @@ export function appendRects (data, width, height, engagementCategory, displayPan
     })
 }
 
+/**
+ * Generates the subtitle for the visualization.
+ *
+ * @param {Date} minDate The minimum displayed date
+ * @param {Date} maxDate The maximum displayed date
+ * @param {number} width The width of the g element containing the visualization
+ */
 export function generateGraphSubtitle (minDate, maxDate, width) {
   const svg = d3.select('#video-length-graph-g')
 

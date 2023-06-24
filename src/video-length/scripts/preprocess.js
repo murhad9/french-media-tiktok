@@ -1,70 +1,87 @@
-export function groupByDuration (data) {
-  const groupes = {}
+/**
+ * Aggregates the data according to video length.
+ *
+ * @param {object[]} data The data to aggregate
+ * @returns {object[]} The aggregated data
+ */
+export function aggregateVideoLength (data) {
+  const totals = {}
 
+  // Calculate total statistics for each individual video length
   data.forEach((objet) => {
-    const duréeSecondes = objet.duréeSecondes
+    const lengthSec = objet.duréeSecondes
     const likes = objet.likes
-    const partages = objet.partages
-    const commentaires = objet.commentaires
-    const vues = objet.vues
+    const shares = objet.partages
+    const comments = objet.commentaires
+    const views = objet.vues
 
-    if (groupes[duréeSecondes]) {
-      groupes[duréeSecondes].likes += likes
-      groupes[duréeSecondes].partages += partages
-      groupes[duréeSecondes].commentaires += commentaires
-      groupes[duréeSecondes].vues += vues
-      groupes[duréeSecondes].count++
+    if (totals[lengthSec]) {
+      totals[lengthSec].likes += likes
+      totals[lengthSec].partages += shares
+      totals[lengthSec].commentaires += comments
+      totals[lengthSec].vues += views
+      totals[lengthSec].count++
     } else {
-      groupes[duréeSecondes] = {
-        duréeSecondes: duréeSecondes,
+      totals[lengthSec] = {
+        duréeSecondes: lengthSec,
         likes: likes,
-        partages: partages,
-        commentaires: commentaires,
-        vues: vues,
+        partages: shares,
+        commentaires: comments,
+        vues: views,
         count: 1
       }
     }
   })
 
-  const nouveauTableau = Object.values(groupes).map((groupe) => {
-    const moyenneLikes = groupe.likes / groupe.count
-    const moyennePartages = groupe.partages / groupe.count
-    const moyenneCommentaires = groupe.commentaires / groupe.count
-    const moyenneVues = groupe.vues / groupe.count
+  // Calculate average for each individual video length
+  const averages = Object.values(totals).map((group) => {
+    const averageLikes = group.likes / group.count
+    const averageShares = group.partages / group.count
+    const averageComments = group.commentaires / group.count
+    const averageViews = group.vues / group.count
     return {
-      duréeSecondes: groupe.duréeSecondes,
-      likes: moyenneLikes,
-      partages: moyennePartages,
-      commentaires: moyenneCommentaires,
-      vues: moyenneVues,
-      count: groupe.count
+      duréeSecondes: group.duréeSecondes,
+      likes: averageLikes,
+      partages: averageShares,
+      commentaires: averageComments,
+      vues: averageViews,
+      count: group.count
     }
   })
 
-  return nouveauTableau
+  return averages
 }
 
-export function topTenIdealVideo (data) {
-  const tab = []
-  let init = 0
+/**
+ * Aggregates the data according to the interval in which each video length falls.
+ *
+ * @param {object[]} data The data to aggregate
+ * @returns {object[]} The aggregated data
+ */
+export function aggregateByVideoLengthInterval (data) {
+  const aggregatedData = []
+
+  // Initialises object for every 25 interval up to 625s
+  let lowerBound = 0
   for (let index = 0; index < 25; index++) {
     const temp = {
-      intervalle1: init,
-      intervalle2: init + 25,
+      intervalle1: lowerBound,
+      intervalle2: lowerBound + 25,
       likes: 0,
       partages: 0,
       commentaires: 0,
       vues: 0,
       count: 0
     }
-    init += 25
-    tab.push(temp)
+    lowerBound += 25
+    aggregatedData.push(temp)
   }
 
-  const newData = groupByDuration(data)
+  const groupedData = aggregateVideoLength(data)
 
-  newData.forEach((objet) => {
-    for (const el of tab) {
+  // Calculate total of averages for each interval
+  groupedData.forEach((objet) => {
+    for (const el of aggregatedData) {
       if (el.intervalle1 <= objet.duréeSecondes && el.intervalle2 > objet.duréeSecondes) {
         el.likes += objet.likes
         el.partages += objet.partages
@@ -75,12 +92,13 @@ export function topTenIdealVideo (data) {
     }
   })
 
-  tab.forEach((objet) => {
+  // Calculate the average statistics for each interval
+  aggregatedData.forEach((objet) => {
     objet.likes = objet.likes / objet.count
     objet.partages = objet.partages / objet.count
     objet.commentaires = objet.commentaires / objet.count
     objet.vues = objet.vues / objet.count
   })
 
-  return tab
+  return aggregatedData
 }

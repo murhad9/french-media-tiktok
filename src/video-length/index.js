@@ -33,7 +33,7 @@ export function load (d3) {
 
   d3.csv('./data_source.csv', d3.autoType).then(function (data) {
     const rawData = data
-    let dataVideoLengthCategory = preproc.topTenIdealVideo(data)
+    let dataVideoLengthCategory = preproc.aggregateByVideoLengthInterval(data)
 
     slider.append(
       document.querySelector('#video-controls-time-range'),
@@ -116,7 +116,7 @@ export function load (d3) {
           new Date(row.date).getTime() <= fromToDates.to.getTime()
         )
       })
-      dataVideoLengthCategory = preproc.topTenIdealVideo(dataFromTo)
+      dataVideoLengthCategory = preproc.aggregateByVideoLengthInterval(dataFromTo)
       build()
     }
 
