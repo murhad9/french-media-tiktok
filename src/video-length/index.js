@@ -21,10 +21,10 @@ export function load (d3) {
 
   const colorScale = d3.scaleSequentialLog()
   const graphTitleMap = new Map()
-    .set('vues', 'Average view count per video length')
-    .set('likes', 'Average like count per video length')
-    .set('commentaires', 'Average comment count per video length')
-    .set('partages', 'Average share count per video length')
+    .set('vues', 'Average View Count per Video Length')
+    .set('likes', 'Average Like Count per Video Length')
+    .set('commentaires', 'Average Comment Count per Video Length')
+    .set('partages', 'Average Share Count per Video Length')
   const fromToDates = {
     from: new Date(2018, 10, 30),
     to: new Date(2023, 3, 14)

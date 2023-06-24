@@ -47,17 +47,17 @@ export function initLegendAxis () {
 /**
  * Draws the legend to the right of the histogram.
  *
- * @param {number} x The x position of the legend
- * @param {number} y The y position of the legend
+ * @param {number} xPosition The x position of the legend
+ * @param {number} yPosition The y position of the legend
  * @param {number} height The height of the legend
  * @param {number} width The width of the legend
  * @param {string} fill The fill of the legend
  * @param {*} colorScale The color scale represented by the legend
  */
-export function draw (x, y, height, width, fill, colorScale) {
+export function draw (xPosition, yPosition, height, width, fill, colorScale) {
   d3.select('.video-length-svg .legend.bar')
-    .attr('x', x)
-    .attr('y', y)
+    .attr('x', xPosition)
+    .attr('y', yPosition)
     .attr('width', width)
     .attr('height', height)
     .attr('fill', fill)
@@ -69,10 +69,19 @@ export function draw (x, y, height, width, fill, colorScale) {
     .join('text')
     .style('font', '10px sans-serif')
     .style('fill', '#ccc')
-    .attr('x', x + 25)
+    .attr('x', xPosition + 25)
     .attr('text-anchor', 'start')
     .attr('y', function (d, i) {
-      return ((ticks.length - 1) - i) * (height / (ticks.length - 1)) + y + 4
+      return ((ticks.length - 1) - i) * (height / (ticks.length - 1)) + yPosition + 4
     })
     .text(d => d.toLocaleString())
+
+  d3.select('.video-length-svg .legend.axis')
+    .append('text')
+    .style('font', '10px sans-serif')
+    .style('fill', '#fff')
+    .attr('x', xPosition + 5)
+    .attr('y', yPosition - 15)
+    .attr('text-anchor', 'middle')
+    .text('Video Count')
 }

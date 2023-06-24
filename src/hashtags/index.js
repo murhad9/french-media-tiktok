@@ -18,10 +18,10 @@ export function load (d3) {
   let svgSize
   let engagementCategory = 'vues'
   const graphTitleMap = new Map()
-    .set('vues', 'The 10 most popular hashtags by average view count')
-    .set('likes', 'The 10 most popular hashtags by average like count')
-    .set('commentaires', 'The 10 most popular hashtags by average comment count')
-    .set('partages', 'The 10 most popular hashtags by average share count')
+    .set('vues', 'The 10 Most Popular Hashtags by Average View Count')
+    .set('likes', 'The 10 Most Popular Hashtags by Average Like Count')
+    .set('commentaires', 'The 10 Most Popular Hashtags by Average Comment Count')
+    .set('partages', 'The 10 Most Popular Hashtags by Average Share Count')
   const fromToDates = {
     from: new Date(2018, 10, 30),
     to: new Date(2023, 3, 14)

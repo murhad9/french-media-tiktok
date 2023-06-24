@@ -678,7 +678,14 @@ button {
   display: flex;
   color: #f6f6f6;
   background-color: #292929;
+}
 
+#video-length #video-length-graph-g rect.selected {
+  fill: #64a2ce;
+}
+
+#video-length #video-length-graph-g rect:hover {
+  fill: #64a2ce;
 }
 
 /************************** HASHTAGS CSS RULES **************************

@@ -27,13 +27,13 @@ export function appendRects (data, width, height, engagementCategory, displayPan
   const svg = d3.select('#video-length-graph-g')
 
   // Add X axis
-
   const xScale = d3
     .scaleBand()
     .domain(data.map(function (d) {
       return d.intervalle1 + 's - ' + d.intervalle2 + 's'
     }))
-    .padding(0.2)
+    .paddingInner(0.2)
+    .paddingOuter(0.3)
     .range([0, width])
 
   d3.select('#video-length-graph-g .x.axis')
@@ -44,7 +44,6 @@ export function appendRects (data, width, height, engagementCategory, displayPan
     .style('text-anchor', 'end')
 
   // Add Y axis
-
   const nearestUpperPowerOfTen = Math.ceil(Math.log10(d3.max(data, d => d[engagementCategory]))) // this allows the y scale to end at a clean power of 10
   const yScale = d3
     .scaleSymlog()
@@ -54,7 +53,10 @@ export function appendRects (data, width, height, engagementCategory, displayPan
   const yAxisGenerator = d3.axisLeft(yScale)
     .tickValues([0].concat(d3.range(0, nearestUpperPowerOfTen + 1).map(power => 10 ** power)))
 
-  d3.select('#video-length-graph-g .y.axis').call(yAxisGenerator)
+  d3.select('#video-length-graph-g .y.axis')
+    .call(yAxisGenerator)
+    .selectAll('.tick line')
+    .attr('x1', 7)
 
   // Create and fill the bars
   svg
@@ -71,12 +73,10 @@ export function appendRects (data, width, height, engagementCategory, displayPan
     .attr('width', xScale.bandwidth())
     .attr('height', d => height - yScale(d[engagementCategory]))
     .attr('fill', d => colorScale(d.count))
-    .on('mouseover', function (d) {
+    .on('click', function (d) {
+      d3.select('#video-length-graph-g rect.selected').classed('selected', false)
+      d3.select(this).classed('selected', true)
       displayPanel(d)
-      d3.select(this).attr('fill', 'black')
-    })
-    .on('mouseleave', function (d) {
-      d3.select(this).attr('fill', d => colorScale(d.count))
     })
 }
 
