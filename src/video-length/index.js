@@ -39,6 +39,16 @@ export function load (d3) {
     to: new Date(2023, 3, 14)
   }
 
+  const colorScale = d3.scaleSequential(d3.interpolateBuPu)
+    .domain([0, 1]) // Define the domain of the scale
+
+  const darkColor = '#74427c'
+  const paleColor = '#e6d7f4'
+
+  const customInterpolator = t => d3.interpolate(paleColor, darkColor)(t)
+
+  colorScale.interpolator(customInterpolator)
+
   const tip = d3Tip().attr('class', 'd3-tip').html(function (d) { 
     return helper.getContents(d, engagementCategory)
   })
@@ -50,6 +60,8 @@ export function load (d3) {
   d3.csv('./data_source.csv', d3.autoType).then(function (data) {
     const rawData = data
     let dataVideoLengthCategory = preproc.topTenIdealVideo(data)
+    let max = preproc.findMax(dataVideoLengthCategory)
+    let min = preproc.findMin(dataVideoLengthCategory)
 
     slider.append(
       document.querySelector("#video-controls-time-range"),
@@ -71,6 +83,11 @@ export function load (d3) {
 
     let dataFromTo = rawData;
     engagementCategory = 'vues'
+
+
+    legend.initGradient(colorScale)
+    legend.initLegendBar()
+    legend.initLegendAxis()
 
     const g = helper.generateG(margin)
 
@@ -178,6 +195,9 @@ export function load (d3) {
         );
       });
       dataVideoLengthCategory = preproc.topTenIdealVideo(dataFromTo)
+      max = preproc.findMax(dataVideoLengthCategory)
+      min = preproc.findMin(dataVideoLengthCategory)
+
       build();
     }
 
@@ -188,6 +208,17 @@ export function load (d3) {
       viz.appendRects(dataVideoLengthCategory, graphSize.width, graphSize.height, engagementCategory, addons.displayPanel)
       viz.generateGraphTitle(graphTitleMap.get(engagementCategory), graphSize.width)
       viz.generateGraphSubtitle(fromToDates.from, fromToDates.to, graphSize.width)
+
+      // Draw the updated legend
+      legend.draw(
+        svgSize.width - 90,
+        margin.top + 5,
+        graphSize.height - 10,
+        15,
+        'url(#video-length-gradient)',
+        colorScale,
+        preproc.genererTableauEquilibre(min,max)
+      )
       //viz.appendRectsEvolve(data, graphSize.width, graphSize.height, engagementCategory)
     }
 
@@ -198,3 +229,8 @@ export function load (d3) {
     })
   })
 }
+
+
+
+
+

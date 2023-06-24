@@ -267,9 +267,9 @@ export function topTenIdealVideo (data) {
 
 
 
-  const newData = regrouperParDuree(data)
+  //const newData = regrouperParDuree(data)
 
-  newData.forEach((objet) => {
+  data.forEach((objet) => {
     for (const el of tab) {
       if (el.intervalle1 <= objet.duréeSecondes && el.intervalle2 > objet.duréeSecondes) {
         el.likes += objet.likes
@@ -281,12 +281,75 @@ export function topTenIdealVideo (data) {
     }
   })
 
-  tab.forEach((objet) => { 
-    objet.likes = objet.likes / objet.count
-    objet.partages = objet.partages / objet.count
-    objet.commentaires = objet.commentaires / objet.count
-    objet.vues = objet.vues / objet.count
-  })
 
+  tab.forEach((objet) => { 
+    if(objet.count > 0)
+    {
+      objet.likes = objet.likes / objet.count
+      objet.partages = objet.partages / objet.count
+      objet.commentaires = objet.commentaires / objet.count
+      objet.vues = objet.vues / objet.count
+    }
+    
+  })
   return tab
 }
+
+export function findMax(tab) {
+  let max = -1;
+
+  tab.forEach((objet) => { 
+    if(objet.count > max)
+    {
+      max = objet.count
+    }
+    
+  })
+
+  return max
+}
+
+export function findMin(tab) {
+  let min = 10000;
+
+  tab.forEach((objet) => { 
+    if(objet.count < min && objet.count != 0)
+    {
+      min = objet.count
+    }
+    
+  })
+  if (min == 10000) {
+    min = 0
+  }
+  return min
+}
+
+export function genererTableauEquilibre(a, b) {
+  let n = 6; // Nombre maximum d'éléments dans le tableau
+  const difference = b - a;
+
+  // Réduire le nombre d'éléments si la différence entre b et a n'est pas grande
+  if (difference < 600) {
+    let str = (a/b).toString()
+
+    n = Number(str[0]);
+  }
+
+  let longueurIntervalle = difference / (n - 1);
+ 
+  const tableau = [a]; // Premier élément est a
+
+  if(n > 1) {
+    for (let i = 1; i < n - 1; i++) {
+      const element = Math.floor(a + (i * longueurIntervalle) + Math.random() * longueurIntervalle);
+      tableau.push(element);
+    }
+  }
+  
+
+  tableau.push(b); // Dernier élément est b
+
+  return tableau;
+}
+

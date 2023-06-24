@@ -111,9 +111,11 @@
  * @param tip
  */
 export function appendRects (data, width, height, engagementCategory, displayPanel) {
+  const darkColor = '#74427c'
+  const paleColor = '#e6d7f4'
   const echelleCouleurs = d3.scaleSequential()
     .domain([0, d3.max(data, d => d.count)])
-    .interpolator(d3.interpolateReds) // Utilisation de la palette de couleurs Viridis
+    .interpolator(d3.interpolate(paleColor, darkColor)) // Utilisation de la palette de couleurs Viridis
 
   const svg = d3.select('#video-length-graph-g')
   const x = d3
@@ -155,12 +157,15 @@ export function appendRects (data, width, height, engagementCategory, displayPan
     .attr('width', x.bandwidth())
     .attr('height', d => height - y(d[engagementCategory]))
     .attr('fill', d => echelleCouleurs(d.count))
-    .on('mouseover', function (d) {
+    .on('click', function (d) {
       displayPanel(d);
-      d3.select(this).attr('fill', 'black')
+    })
+    .on('mouseover', function (d) {
+      d3.select(this).attr('filter', 'brightness(40%)')
+
     })
     .on('mouseleave', function (d) {
-      d3.select(this).attr('fill', d => echelleCouleurs(d.count))
+      d3.select(this).attr('filter', 'brightness(100%)')
     })
 }
 
