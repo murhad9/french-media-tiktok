@@ -105,7 +105,7 @@ export function updateLines (
       return null
     })
     .style('fill', 'none')
-    .style('stroke', '#533458')
+    .style('stroke', '#6a4270')
     .style('stroke-width', 2)
     .on('mouseenter', function (d) {
       // draw other
@@ -118,13 +118,13 @@ export function updateLines (
         .style('fill', '#387DAF')
     })
     .on('mouseleave', function (d) {
-      d3.select(this).style('stroke', '#533458').style('stroke-width', '1')
+      d3.select(this).style('stroke', '#6a4270').style('stroke-width', '1')
       // undraw the circles too
       d3.selectAll('.drawn-circle')
         .filter((circleData) => {
           return circleData['média'] === d.target.__data__.key
         })
-        .style('fill', '#533458')
+        .style('fill', '#6a4270')
     })
 
   d3.selectAll('.drawn-circle').remove()
@@ -138,7 +138,7 @@ export function updateLines (
       return selectedMediaList.includes(d['média'])
     })
     .attr('r', 3)
-    .attr('fill', '#533458')
+    .attr('fill', '#6a4270')
     .attr('transform', (d) => {
       return `translate(${xScale(new Date(d.date))},${yScale(d[domainColumn])})`
     })
@@ -161,21 +161,21 @@ export function updateLines (
       d3.select(this).style('fill', 'steelblue').attr('r', 6)
     })
     .on('mouseleave', function (d) {
-      d3.select(this).style('fill', '#533458').attr('r', 3)
+      d3.select(this).style('fill', '#6a4270').attr('r', 3)
 
       // undraw other circles too
       d3.selectAll('.drawn-circle')
         .filter((circleData) => {
           return circleData['média'] === d.target.__data__['média']
         })
-        .style('fill', '#533458')
+        .style('fill', '#6a4270')
 
       // undraw the line too
       d3.selectAll('.drawn-line')
         .filter((lineData) => {
           return lineData.key === d.target.__data__['média']
         })
-        .style('stroke', '#533458')
+        .style('stroke', '#6a4270')
     })
     .on('click', function (d) {
       displayPanel(d)
