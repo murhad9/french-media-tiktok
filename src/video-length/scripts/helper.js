@@ -1,4 +1,3 @@
-
 /**
  * Generates the SVG element g which will contain the data visualisation.
  *
@@ -11,15 +10,6 @@ export function generateG (margin) {
     .select('svg')
     .append('g')
     .attr('id', 'video-length-graph-g')
-    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-}
-
-export function generateGLineChart (margin) {
-  return d3
-    .select('.video-length-graph-evolve')
-    .select('svg')
-    .append('g')
-    .attr('id', 'video-length-graph-evolve-g')
     .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 }
 
@@ -36,13 +26,6 @@ export function setCanvasSize (width, height) {
     .attr('height', height)
 }
 
-export function setCanvasSizeEvolve (width, height) {
-  d3.select('#video-length-evolve-heatmap')
-    .select('svg')
-    .attr('width', width)
-    .attr('height', height)
-}
-
 /**
  * Appends an SVG g element which will contain the axes.
  *
@@ -54,52 +37,24 @@ export function appendAxes (g) {
   g.append('g').attr('class', 'y axis')
 }
 
-export function initButtons (switchAxis) {
-  const buttonDiv = d3.select('.video-viz-container')
-    .append('div')
-    
-
-  buttonDiv.append('button')
-    
-    .text('likes')
-    .on('click', () => switchAxis('likes'))
-
-  buttonDiv.append('button')
-    
-    .text('commentaires')
-    .on('click', () => switchAxis('commentaires'))
-
-  buttonDiv.append('button')
-    
-    .text('partages')
-    .on('click', () => switchAxis('partages'))
-
-  buttonDiv.append('button')
-  
-    .text('vues')
-    .on('click', () => switchAxis('vues'))
-}
-
 export function getContents (d, engagementCategory) {
   /* TODO : Define and return the tooltip contents including :
-      + A title stating the hovered element's group, with:
-        
-Font family: Grenze Gotish
-Font size: 24px
-Font weigth: normal+ A bold label for the player name followed
-  by the hovered elements's player's name+ A bold label for the player's line count
-  followed by the number of lines
-*/
+    + A title stating the hovered element's group, with:
 
-const target = d3.select(d.target)
+  Font family: Grenze Gotish
+  Font size: 24px
+  Font weigth: normal+ A bold label for the player name followed
+    by the hovered elements's player's name+ A bold label for the player's line count
+    followed by the number of lines
+  */
 
-  return  `<div class='tooltip'>
-<span class='tooltiptext'>${target.data()[0].count} </br>videos</br> posted
-</br>
-</br>
-Average ${engagementCategory}: ${Math.round(target.data()[0][engagementCategory])}
-</span>
-</div>
+  const target = d3.select(d.target)
 
-`
+  return `<div class='tooltip'>
+    <span class='tooltiptext'>${target.data()[0].count} </br>videos</br> posted
+    </br>
+    </br>
+    Average ${engagementCategory}: ${Math.round(target.data()[0][engagementCategory])}
+    </span>
+    </div>`
 }
