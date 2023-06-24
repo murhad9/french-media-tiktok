@@ -10,7 +10,7 @@ import * as d3Collection from 'd3-collection'
 export function updateXScale (data, xScale, width) {
   const xExtent = d3.extent(data, (d) => new Date(d.date))
 
-  xScale.domain(xExtent).range([0, width])
+  xScale.domain(xExtent).range([0, width]).nice()
 }
 
 /**
@@ -24,7 +24,7 @@ export function updateXScale (data, xScale, width) {
 export function updateYScale (yScale, data, height, domainColumn) {
   const yExtent = d3.extent(data, (row) => row[domainColumn])
 
-  yScale.domain(yExtent).range([height, 0])
+  yScale.domain(yExtent).range([height, 0]).nice()
 }
 
 /**
@@ -34,11 +34,17 @@ export function updateYScale (yScale, data, height, domainColumn) {
  * @param {number} height The height of the graph
  */
 export function drawXAxis (xScale, height) {
-  const xAxisGenerator = d3.axisBottom().scale(xScale)
+  const xAxisGenerator = d3.axisBottom().scale(xScale).ticks(10, d3.timeFormat('%b %Y'))
   d3.select('#overview-graph-g .x')
     .attr('transform', `translate(0,${height})`)
     .attr('color', 'white')
     .call(xAxisGenerator)
+  d3.select('#overview-graph-g .x.axis')
+    .selectAll('.tick text')
+    .attr('transform', 'translate(-20, 15) rotate(-40)')
+  d3.select('#overview-graph-g .x.axis')
+    .selectAll('.tick line')
+    .attr('y1', -4)
 }
 
 /**
@@ -47,10 +53,13 @@ export function drawXAxis (xScale, height) {
  * @param {*} yScale The scale to use to draw the axis
  */
 export function drawYAxis (yScale) {
-  const yAxisGenerator = d3.axisLeft().scale(yScale)
+  const yAxisGenerator = d3.axisLeft().scale(yScale).ticks(8)
   d3.select('#overview-graph-g .y')
     .attr('color', 'white')
     .call(yAxisGenerator)
+  d3.select('#overview-graph-g .y.axis')
+    .selectAll('.tick line')
+    .attr('x1', 6)
 }
 
 /**

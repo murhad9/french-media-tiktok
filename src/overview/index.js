@@ -26,7 +26,7 @@ export function load (d3) {
     .set('commentaires', 'Total comment count of Various Media Outlets Over Time')
     .set('partages', 'Total share count of Various Media Outlets Over Time')
   const fromTo = { from: new Date(2018, 10, 30), to: new Date(2023, 3, 14) }
-  const margin = { top: 10, right: 20, bottom: 35, left: 50 }
+  const margin = { top: 30, right: 70, bottom: 80, left: 70 }
   const xScale = d3.scaleTime()
   const yScale = d3.scaleLog()
 
@@ -83,6 +83,8 @@ export function load (d3) {
     helper.appendAxes(g)
     helper.appendPointG(g)
 
+    addons.initPanelDiv()
+
     setSizing()
     build()
 
@@ -122,7 +124,7 @@ export function load (d3) {
      */
     function updateSelectedMedia (mediaList) {
       selectedMediaList = mediaList
-      build()
+      build(false)
     }
 
     /**
@@ -140,15 +142,19 @@ export function load (d3) {
           new Date(row.date).getTime() <= fromToDates.to.getTime()
         )
       })
-      build()
+      build(false)
     }
 
     /**
-     *   This function builds the graph.
+     * This function builds the graph.
+     *
+     * @param {boolean} updateYScale Whether or not the y scale should be updated
      */
-    function build () {
+    function build (updateYScale = true) {
       viz.updateXScale(dataFromTo, xScale, graphSize.width)
-      viz.updateYScale(yScale, dataFromTo, graphSize.height, domainColumn)
+      if (updateYScale) {
+        viz.updateYScale(yScale, dataFromTo, graphSize.height, domainColumn)
+      }
 
       viz.drawXAxis(xScale, graphSize.height)
       viz.drawYAxis(yScale, graphSize.width)

@@ -279,6 +279,18 @@ button {
   width: 350px;
 }
 
+#overview #overview-controls-sort-by {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#overview #overview-controls-media-selection {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
 #overview .categories {
   margin-left: 50px;
 }
@@ -322,6 +334,45 @@ button {
   overflow: visible;
 }
 
+#overview #overview-panel.empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#overview #overview-panel .overview-tooltip-title {
+  font-family: 'Roboto';
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+}
+
+#overview #overview-panel .overview-tooltip-subtitle {
+  font-family: 'Roboto';
+  font-size: 16px;
+  text-align: center;
+  color: #A4A4A4;
+  padding-top: 3px;
+  padding-bottom: 15px;
+}
+
+#overview #overview-panel .overview-tooltip-main-text {
+  font-family: 'Roboto';
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  padding-top: 10px
+}
+
+#overview #overview-panel .overview-tooltip-sub-text {
+  font-family: 'Roboto';
+  font-size: 16px;
+  font-weight: none;
+  color: white;
+  padding-top: 3px;
+}
+
 /************************** SONGS CSS RULES **************************
  *
  * All of the CSS rules for the "Songs" tab.
@@ -350,6 +401,23 @@ button {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+#songs #songs-panel .songs-tooltip-title {
+  font-family: 'Roboto';
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+}
+
+#songs #songs-panel .songs-tooltip-subtitle {
+  font-family: 'Roboto';
+  font-size: 16px;
+  text-align: center;
+  color: #A4A4A4;
+  padding-top: 3px;
+  padding-bottom: 15px;
 }
 
 #songs #songs-panel .songs-tooltip-main-text {

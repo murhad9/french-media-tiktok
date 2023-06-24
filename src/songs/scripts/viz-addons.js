@@ -41,7 +41,7 @@ export function initPanelDiv () {
   d3.select('#songs-panel')
     .classed('empty', true)
     .append('div')
-    .text('Click on a dot to display the selected media\'s statistics')
+    .text('Click on a dot to display the selected song\'s statistics')
     .style('text-align', 'center')
     .style('color', '#A4A4A4')
 }
@@ -58,30 +58,21 @@ export function displayPanel (d) {
 
   // Song title
   panel.append('div')
-    .style('font-family', 'Roboto')
-    .style('font-size', '20px')
-    .style('font-weight', 'bold')
-    .style('text-align', 'center')
-    .style('color', '#fff')
+    .attr('class', 'songs-tooltip-title')
     .text(d.musiqueTitre)
 
   // Song artist
   panel.append('div')
-    .style('font-family', 'Roboto')
-    .style('font-size', '16px')
-    .style('text-align', 'center')
-    .style('color', '#A4A4A4')
-    .style('padding-top', '3px')
+    .attr('class', 'songs-tooltip-subtitle')
     .text(d.musiqueArtiste)
 
   // Number of videos
   panel.append('div')
     .attr('class', 'songs-tooltip-main-text')
-    .style('padding-top', '25px')
     .text('Number of videos which used the song')
   panel.append('div')
     .attr('class', 'songs-tooltip-sub-text')
-    .text(`${d.count}`)
+    .text(`${d.count.toLocaleString()}`)
 
   // Average views
   panel.append('div')
@@ -89,7 +80,7 @@ export function displayPanel (d) {
     .text('Average views per video')
   panel.append('div')
     .attr('class', 'songs-tooltip-sub-text')
-    .text(`${d.vuesAverage}`)
+    .text(`${d.vuesAverage.toLocaleString()}`)
 
   // Average likes
   panel.append('div')
@@ -97,7 +88,7 @@ export function displayPanel (d) {
     .text('Average likes per video')
   panel.append('div')
     .attr('class', 'songs-tooltip-sub-text')
-    .text(`${d.likesAverage}`)
+    .text(`${d.likesAverage.toLocaleString()}`)
 
   // Average shares
   panel.append('div')
@@ -105,7 +96,7 @@ export function displayPanel (d) {
     .text('Average shares per video')
   panel.append('div')
     .attr('class', 'songs-tooltip-sub-text')
-    .text(`${d.partagesAverage}`)
+    .text(`${d.partagesAverage.toLocaleString()}`)
 
   // Media outlets
   const mediaDiv = panel.append('div')
