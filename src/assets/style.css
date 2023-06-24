@@ -729,7 +729,7 @@ button {
   overflow: visible;
 }
 
-#hashtags .tooltip {
+.tooltip {
   position: relative;
   display: inline-block;
   background-color: #000;
@@ -737,7 +737,7 @@ button {
   width: auto;
 }
 
-#hashtags .tooltip .tooltiptext {
+.tooltip .tooltiptext {
   text-align: center;
   background-color: #555;
   color: #fff;
@@ -750,7 +750,7 @@ button {
   margin-left: -110px;
 }
 
-#hashtags .tooltip .tooltiptext::after {
+.tooltip .tooltiptext::after {
   content: "";
   position: absolute;
   top: 100%;
