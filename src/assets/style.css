@@ -628,17 +628,17 @@ button {
 #video-length #video-viz-wrapper {
   display: flex;
   flex-direction: row;
-  gap: 12px;
+  gap: 30px;
   padding: 12px;
+  justify-content: center;
 }
 
 #video-length #video-viz {
-  width: 80%;
-  height: 100%;
-  padding: 10px;
+  display: flex;
+  flex-direction: column;
   visibility: visible;
   border-radius: 16px;
-  
+  gap: 30px;
 }
 
 #video-length #video-panel {
@@ -649,12 +649,23 @@ button {
   border-radius: 16px;
   color: white;
   border: 1px solid #A6A6A6;
+  padding: 20px;
+}
+
+#video-length #video-panel.empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 #video-length .video-viz-container {
   border-radius: 16px;
   height: 80%;
   color: #f6f6f6;
+}
+
+#video-length .video-length-graph {
+  width: 60vw;
 }
 
 #video-length .video-viz-container svg {
@@ -664,7 +675,6 @@ button {
 
 #video-length .controls-2 {
   width: 50%;
-  text-align: center;
 }
 
 #video-length .controls-1 {
@@ -672,12 +682,40 @@ button {
 }
 
 #video-length #video-controls {
+  width: 60vw;
   border-radius: 16px;
-  padding: 0px 16px;
+  padding: 30px 0px;
   height: 20%;
   display: flex;
   color: #f6f6f6;
   background-color: #292929;
+  justify-content: space-around;
+}
+
+#video-length #video-controls-sort-by {
+  width: 250px;
+  margin: auto;
+}
+
+#video-length #video-dropdown-title {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+#video-length #video-controls-time-range {
+  width: 400px;
+  margin: auto;
+}
+
+#video-length #video-slider-title {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 #video-length #video-length-graph-g rect.selected {
@@ -686,6 +724,31 @@ button {
 
 #video-length #video-length-graph-g rect:hover {
   fill: #64a2ce;
+}
+
+#video-length #video-panel .video-length-tooltip-title {
+  font-family: 'Roboto';
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+  padding-bottom: 15px;
+}
+
+#video-length #video-panel .video-length-tooltip-main-text {
+  font-family: 'Roboto';
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  padding-top: 10px
+}
+
+#video-length #video-panel .video-length-tooltip-sub-text {
+  font-family: 'Roboto';
+  font-size: 16px;
+  font-weight: none;
+  color: white;
+  padding-top: 3px;
 }
 
 /************************** HASHTAGS CSS RULES **************************

@@ -66,6 +66,8 @@ export function load (d3) {
 
     helper.appendAxes(g)
 
+    addons.initPanelDiv()
+
     setSizing()
     build()
 

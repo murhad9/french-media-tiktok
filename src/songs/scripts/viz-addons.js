@@ -90,6 +90,14 @@ export function displayPanel (d) {
     .attr('class', 'songs-tooltip-sub-text')
     .text(`${d.likesAverage.toLocaleString()}`)
 
+  // Average comments
+  panel.append('div')
+    .attr('class', 'songs-tooltip-main-text')
+    .text('Average comments per video')
+  panel.append('div')
+    .attr('class', 'songs-tooltip-sub-text')
+    .text(`${d.commentairesAverage.toLocaleString()}`)
+
   // Average shares
   panel.append('div')
     .attr('class', 'songs-tooltip-main-text')
