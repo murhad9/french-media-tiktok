@@ -226,3 +226,37 @@ export function normalizeColumn (data, targetColumn) {
 
   return data
 }
+
+/**
+ * Fills data summary to avoid undefined time blocks
+ *
+ * @param {object[]} data the data to be filled
+ * @returns {object[]} the filled data
+ */
+export function fill (data) {
+  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  const timeBlocks = Array.from({ length: 12 }, (_, i) => `${(i * 2).toString().padStart(2, '0')}:00 to ${(i * 2 + 2).toString().padStart(2, '0')}:00`)
+
+  const filler = {
+    commentaires: 0,
+    commentairesAverage: 0,
+    count: 0,
+    likes: 0,
+    likesAverage: 0,
+    partages: 0,
+    partagesAverage: 0,
+    vues: 0,
+    vuesAverage: 0
+  }
+  for (const dayOfWeek of daysOfWeek) {
+    for (const timeBlock of timeBlocks) {
+      const entry = data.find(item => item.dayOfWeek === dayOfWeek && item.timeBlock === timeBlock)
+      if (entry) {
+        continue
+      }
+      data.push({ ...filler, dayOfWeek, timeBlock })
+    }
+  }
+
+  return data
+}

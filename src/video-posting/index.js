@@ -149,6 +149,7 @@ export function load (d3) {
       if (targetColumn === 'countAverage') {
         currentData = preproc.computeAverageCount(currentData, startDate, endDate)
       }
+      currentData = preproc.fill(currentData)
       currentData = preproc.sortByColumns(
         currentData,
         ['vuesAverage', 'vues', 'likes', 'partages', 'commentaires'],
