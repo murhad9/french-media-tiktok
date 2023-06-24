@@ -19,7 +19,7 @@ export function load (d3) {
   let engagementCategory
   let graphSize
 
-  const colorScale = d3.scaleSequential()
+  const colorScale = d3.scaleSequentialLog()
   const graphTitleMap = new Map()
     .set('vues', 'Average view count per video length')
     .set('likes', 'Average like count per video length')
@@ -29,7 +29,7 @@ export function load (d3) {
     from: new Date(2018, 10, 30),
     to: new Date(2023, 3, 14)
   }
-  const margin = { top: 75, right: 200, bottom: 50, left: 50 }
+  const margin = { top: 100, right: 130, bottom: 80, left: 80 }
 
   d3.csv('./data_source.csv', d3.autoType).then(function (data) {
     const rawData = data

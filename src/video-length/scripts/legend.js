@@ -62,7 +62,7 @@ export function draw (x, y, height, width, fill, colorScale) {
     .attr('height', height)
     .attr('fill', fill)
 
-  const ticks = colorScale.ticks()
+  const ticks = colorScale.ticks(4)
   d3.select('.video-length-svg .legend.axis')
     .selectAll('text')
     .data(ticks)
@@ -72,12 +72,7 @@ export function draw (x, y, height, width, fill, colorScale) {
     .attr('x', x + 25)
     .attr('text-anchor', 'start')
     .attr('y', function (d, i) {
-      return ((ticks.length - 1) - i) * (height / (ticks.length - 1)) + y
+      return ((ticks.length - 1) - i) * (height / (ticks.length - 1)) + y + 4
     })
-    .text(function (d, i) {
-      if (i % 2 === 0) {
-        if (d >= 1000) return Math.floor((d / 1000)) + ',' + (d % 1000).toString().padStart(3, '0')
-        return d
-      }
-    })
+    .text(d => d.toLocaleString())
 }

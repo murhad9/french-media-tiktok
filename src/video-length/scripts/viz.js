@@ -1,15 +1,18 @@
 export function initColorScale (data, colorScale) {
-  const paleColor = '#e6d7f4'
-  const darkColor = '#74427c'
+  const paleColor = '#d7bddb'
+  const darkColor = '#5e3764'
 
-  colorScale.domain([0, d3.max(data, d => d.count)])
+  colorScale.domain([d3.min(data, d => d.count), d3.max(data, d => d.count)])
     .interpolator(d3.interpolate(paleColor, darkColor))
     .nice()
 }
 
 export function appendRects (data, width, height, engagementCategory, displayPanel, colorScale) {
   const svg = d3.select('#video-length-graph-g')
-  const x = d3
+
+  // Add X axis
+
+  const xScale = d3
     .scaleBand()
     .domain(data.map(function (d) {
       return d.intervalle1 + 's - ' + d.intervalle2 + 's'
@@ -19,19 +22,23 @@ export function appendRects (data, width, height, engagementCategory, displayPan
 
   d3.select('#video-length-graph-g .x.axis')
     .attr('transform', `translate(0,${height})`)
-    .call(d3.axisBottom(x))
+    .call(d3.axisBottom(xScale))
     .selectAll('text')
-    .attr('transform', 'rotate(-45)')
+    .attr('transform', 'rotate(-30)')
     .style('text-anchor', 'end')
 
   // Add Y axis
 
-  const y = d3
-    .scaleLinear()
-    .domain([0, d3.max(data, d => d[engagementCategory])]) // Utilisation de d3.max pour obtenir la valeur maximale des étoiles
+  const nearestUpperPowerOfTen = Math.ceil(Math.log10(d3.max(data, d => d[engagementCategory]))) // this allows the y scale to end at a clean power of 10
+  const yScale = d3
+    .scaleSymlog()
+    .domain([0, 10 ** nearestUpperPowerOfTen])
     .range([height, 0])
 
-  d3.select('#video-length-graph-g .y.axis').call(d3.axisLeft(y))
+  const yAxisGenerator = d3.axisLeft(yScale)
+    .tickValues([0].concat(d3.range(0, nearestUpperPowerOfTen + 1).map(power => 10 ** power)))
+
+  d3.select('#video-length-graph-g .y.axis').call(yAxisGenerator)
 
   // Create and fill the bars
   svg
@@ -43,10 +50,10 @@ export function appendRects (data, width, height, engagementCategory, displayPan
     .data(data)
     .join('rect')
     .attr('class', 'bar') // Ajout de la classe "bar" pour les éléments <rect>
-    .attr('x', d => x(d.intervalle1 + 's - ' + d.intervalle2 + 's'))
-    .attr('y', d => y(d[engagementCategory]))
-    .attr('width', x.bandwidth())
-    .attr('height', d => height - y(d[engagementCategory]))
+    .attr('x', d => xScale(d.intervalle1 + 's - ' + d.intervalle2 + 's'))
+    .attr('y', d => yScale(d[engagementCategory]))
+    .attr('width', xScale.bandwidth())
+    .attr('height', d => height - yScale(d[engagementCategory]))
     .attr('fill', d => colorScale(d.count))
     .on('mouseover', function (d) {
       displayPanel(d)

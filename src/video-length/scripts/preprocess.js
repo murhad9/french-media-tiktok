@@ -36,7 +36,8 @@ export function groupByDuration (data) {
       likes: moyenneLikes,
       partages: moyennePartages,
       commentaires: moyenneCommentaires,
-      vues: moyenneVues
+      vues: moyenneVues,
+      count: groupe.count
     }
   })
 
@@ -69,7 +70,7 @@ export function topTenIdealVideo (data) {
         el.partages += objet.partages
         el.commentaires += objet.commentaires
         el.vues += objet.vues
-        el.count++
+        el.count += objet.count
       }
     }
   })
