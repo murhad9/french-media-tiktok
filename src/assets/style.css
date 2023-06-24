@@ -629,7 +629,6 @@ button {
   display: flex;
   flex-direction: row;
   gap: 30px;
-  padding: 12px;
   justify-content: center;
 }
 

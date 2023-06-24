@@ -28,8 +28,8 @@ import * as videoPosting from './video-posting/index.js'
   videoPosting.load(d3)
 
   // default tab
-  document.getElementById('video-length').style.display = 'block'
-  document.getElementById('video-length-tab').style.background = '#ffffff11'
+  document.getElementById('overview').style.display = 'block'
+  document.getElementById('overview-tab').style.background = '#ffffff11'
 
   addClickEvent('overview-tab', 'overview')
   addClickEvent('hashtags-tab', 'hashtags')
