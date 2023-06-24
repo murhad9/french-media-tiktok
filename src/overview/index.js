@@ -21,10 +21,10 @@ export function load (d3) {
   let selectedMediaList = []
 
   const graphTitleMap = new Map()
-    .set('vues', 'Total view count of Various Media Outlets Over Time')
-    .set('likes', 'Total like count of Various Media Outlets Over Time')
-    .set('commentaires', 'Total comment count of Various Media Outlets Over Time')
-    .set('partages', 'Total share count of Various Media Outlets Over Time')
+    .set('vues', 'Total Monthly View Count of Various Media Outlets')
+    .set('likes', 'Total Monthly Like Count of Various Media Outlets')
+    .set('commentaires', 'Total Monthly Comment Count of Various Media Outlets')
+    .set('partages', 'Total Monthly Share Count of Various Media Outlets')
   const fromTo = { from: new Date(2018, 10, 30), to: new Date(2023, 3, 14) }
   const margin = { top: 30, right: 70, bottom: 80, left: 70 }
   const xScale = d3.scaleTime()

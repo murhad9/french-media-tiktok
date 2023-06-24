@@ -298,6 +298,14 @@ button {
  * elements within the div associated with the tab.
  */
 
+#overview h2 {
+  font-weight: bold;
+}
+
+#overview h3 {
+  font-weight: bold;
+}
+
 #overview-viz-wrapper {
   display: flex;
   flex-direction: row;
@@ -680,6 +688,14 @@ button {
  * Every selector is prefixed by #hashtags and therefore only applies to
  * elements within the div associated with the tab.
  */
+
+#hashtags h2 {
+  font-weight: bold;
+}
+
+#hashtags h3 {
+  font-weight: bold;
+}
 
 #hashtags #hashtags-viz-wrapper {
   display: flex;
