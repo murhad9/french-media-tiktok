@@ -4,7 +4,6 @@ import * as helper from './scripts/helper.js'
 import * as preproc from './scripts/preprocess.js'
 import * as viz from './scripts/viz.js'
 import * as legend from './scripts/legend.js'
-import * as hover from './scripts/hover.js'
 import * as menu from '../components/media-selection-menu.js'
 import * as slider from '../components/slider.js'
 import * as sortBySelect from '../components/sort-by-select.js'
@@ -35,8 +34,7 @@ export function load (d3) {
     .set('partages', 'Total amount of comments received during each time block')
     .set('partagesAverage', 'Weekly Average Amount of comments received during each time block')
     .set('count', 'Amount of Videos Uploaded per Time of Day')
-  const margin = { top: 70, right: 200, bottom: 70, left: 200 }
-  // TODO: Use this file for welcom vizs
+  const margin = { top: 70, right: 120, bottom: 50, left: 130 }
   const xScale = d3.scaleBand().padding(0.05)
   const yScale = d3.scaleBand().padding(0.2)
   const colorScale = d3.scaleSequential(d3.interpolateBuPu)
@@ -47,10 +45,9 @@ export function load (d3) {
 
   const customInterpolator = t => d3.interpolate(paleColor, darkColor)(t)
 
-  colorScale.interpolator(customInterpolator)
+  colorScale.interpolator(customInterpolator).nice()
 
   d3.csv('./data_source.csv', d3.autoType).then(function (data) {
-    // These are just examples
     const mediaList = preproc.getMediaList(data)
 
     // creates the media selection component
@@ -72,7 +69,7 @@ export function load (d3) {
         Likes: 'likes',
         Comments: 'commentaires',
         Shares: 'partages',
-        'Posts count': 'count'
+        'Post Count': 'count'
       },
       updateTargetColumn
     )
@@ -181,7 +178,7 @@ export function load (d3) {
 
       // Draw the updated legend
       legend.draw(
-        margin.left / 2,
+        margin.left - 50,
         margin.top + 5,
         graphSize.height - 10,
         15,
@@ -210,17 +207,8 @@ export function load (d3) {
       viz.generateGraphTitle(graphTitleMap.get(targetColumn), graphSize.width)
       viz.generateGraphSubtitle(startDate, endDate, graphSize.width)
 
-      hover.setRectHandler(
-        xScale,
-        yScale,
-        hover.rectSelected,
-        hover.rectUnselected,
-        hover.selectTicks,
-        hover.unselectTicks
-      )
-
       legend.update(
-        margin.left / 2,
+        margin.left - 50,
         margin.top + 5,
         graphSize.height - 10,
         colorScale
