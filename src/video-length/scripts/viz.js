@@ -1,8 +1,13 @@
-export function appendRects (data, width, height, engagementCategory, displayPanel) {
-  const echelleCouleurs = d3.scaleSequential()
-    .domain([0, d3.max(data, d => d.count)])
-    .interpolator(d3.interpolateReds) // Utilisation de la palette de couleurs Viridis
+export function initColorScale (data, colorScale) {
+  const paleColor = '#e6d7f4'
+  const darkColor = '#74427c'
 
+  colorScale.domain([0, d3.max(data, d => d.count)])
+    .interpolator(d3.interpolate(paleColor, darkColor))
+    .nice()
+}
+
+export function appendRects (data, width, height, engagementCategory, displayPanel, colorScale) {
   const svg = d3.select('#video-length-graph-g')
   const x = d3
     .scaleBand()
@@ -42,13 +47,13 @@ export function appendRects (data, width, height, engagementCategory, displayPan
     .attr('y', d => y(d[engagementCategory]))
     .attr('width', x.bandwidth())
     .attr('height', d => height - y(d[engagementCategory]))
-    .attr('fill', d => echelleCouleurs(d.count))
+    .attr('fill', d => colorScale(d.count))
     .on('mouseover', function (d) {
       displayPanel(d)
       d3.select(this).attr('fill', 'black')
     })
     .on('mouseleave', function (d) {
-      d3.select(this).attr('fill', d => echelleCouleurs(d.count))
+      d3.select(this).attr('fill', d => colorScale(d.count))
     })
 }
 

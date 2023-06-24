@@ -20,7 +20,7 @@ export function generateG (margin) {
  * @param {number} height The desired height
  */
 export function setCanvasSize (width, height) {
-  d3.select('#video-length-heatmap')
+  d3.select('#video-length-graph')
     .select('svg')
     .attr('width', width)
     .attr('height', height)
@@ -35,26 +35,4 @@ export function appendAxes (g) {
   g.append('g').attr('class', 'x axis')
 
   g.append('g').attr('class', 'y axis')
-}
-
-export function getContents (d, engagementCategory) {
-  /* TODO : Define and return the tooltip contents including :
-    + A title stating the hovered element's group, with:
-
-  Font family: Grenze Gotish
-  Font size: 24px
-  Font weigth: normal+ A bold label for the player name followed
-    by the hovered elements's player's name+ A bold label for the player's line count
-    followed by the number of lines
-  */
-
-  const target = d3.select(d.target)
-
-  return `<div class='tooltip'>
-    <span class='tooltiptext'>${target.data()[0].count} </br>videos</br> posted
-    </br>
-    </br>
-    Average ${engagementCategory}: ${Math.round(target.data()[0][engagementCategory])}
-    </span>
-    </div>`
 }
