@@ -116,7 +116,7 @@ function countWeeks (startDate, endDate) {
 export function computeAverageCount (data, startDate, endDate) {
   const weeksCount = countWeeks(startDate, endDate)
   // eslint-disable-next-line no-return-assign
-  data.forEach(row => row.countAverage = Math.floor(row.count / weeksCount))
+  data.forEach(row => row.countAverage = row.count / weeksCount)
   return data
 }
 /**
@@ -241,6 +241,7 @@ export function fill (data) {
     commentaires: 0,
     commentairesAverage: 0,
     count: 0,
+    countAverage: 0,
     likes: 0,
     likesAverage: 0,
     partages: 0,
