@@ -17,6 +17,7 @@ export function load (d3) {
   let bounds
   let svgSize
   let graphSize
+  let yScale
   let domainColumn = 'vues'
   let selectedMediaList = []
 
@@ -28,7 +29,6 @@ export function load (d3) {
   const fromTo = { from: new Date(2018, 10, 30), to: new Date(2023, 3, 14) }
   const margin = { top: 30, right: 70, bottom: 80, left: 70 }
   const xScale = d3.scaleTime()
-  const yScale = d3.scaleLog()
 
   d3.csv('./data_source.csv', d3.autoType).then(function (data) {
     // removes video in april 2023 because the month is not entirely covered in input data
@@ -153,11 +153,11 @@ export function load (d3) {
     function build (updateYScale = true) {
       viz.updateXScale(dataFromTo, xScale, graphSize.width)
       if (updateYScale) {
-        viz.updateYScale(yScale, dataFromTo, graphSize.height, domainColumn)
+        yScale = viz.setYScale(dataFromTo, graphSize.height, domainColumn)
       }
 
       viz.drawXAxis(xScale, graphSize.height)
-      viz.drawYAxis(yScale, graphSize.width)
+      viz.drawYAxis(yScale)
 
       viz.generateGraphTitle(graphTitleMap.get(domainColumn), graphSize.width)
       viz.generateGraphSubtitle(fromTo.from, fromTo.to, graphSize.width)

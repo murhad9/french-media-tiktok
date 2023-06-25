@@ -16,15 +16,23 @@ export function updateXScale (data, xScale, width) {
 /**
  * Updates the domain and range of the scale for the y axis
  *
- * @param {*} yScale The scale for the y axis
  * @param {object[]} data The data to display
  * @param {number} height The height of the diagram
  * @param {string} domainColumn The column used to determine the domain of the scale
+ * @returns {*} The y scale
  */
-export function updateYScale (yScale, data, height, domainColumn) {
+export function setYScale (data, height, domainColumn) {
   const yExtent = d3.extent(data, (row) => row[domainColumn])
 
-  yScale.domain(yExtent).range([height, 0]).nice()
+  let yScale
+  if (yExtent[0] === 0) { // a symlog scale is needed
+    const nearestUpperPowerOfTen = Math.ceil(Math.log10(yExtent[1])) // this allows the y scale to end at a clean power of 10
+    yScale = d3.scaleSymlog().domain([0, 10 ** nearestUpperPowerOfTen])
+  } else {
+    yScale = d3.scaleLog().domain(yExtent)
+  }
+
+  return yScale.range([height, 0]).nice()
 }
 
 /**
@@ -53,10 +61,22 @@ export function drawXAxis (xScale, height) {
  * @param {*} yScale The scale to use to draw the axis
  */
 export function drawYAxis (yScale) {
-  const yAxisGenerator = d3.axisLeft().scale(yScale).ticks(8)
+  let yAxisGenerator
+  if (isNaN(yScale(0))) { // check if yScale is a log scale, otherwise axis ticks need to be formatted manually
+    yAxisGenerator = d3.axisLeft()
+      .scale(yScale)
+      .ticks(8)
+  } else {
+    yAxisGenerator = d3.axisLeft()
+      .scale(yScale)
+      .tickValues([0].concat(d3.range(0, Math.log10(yScale.domain()[1] + 1)).map(power => 10 ** power)))
+      .tickFormat(d3.format('~s'))
+  }
+
   d3.select('#overview-graph-g .y')
     .attr('color', 'white')
     .call(yAxisGenerator)
+
   d3.select('#overview-graph-g .y.axis')
     .selectAll('.tick line')
     .attr('x1', 7)

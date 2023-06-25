@@ -52,6 +52,7 @@ export function appendRects (data, width, height, engagementCategory, displayPan
 
   const yAxisGenerator = d3.axisLeft(yScale)
     .tickValues([0].concat(d3.range(0, nearestUpperPowerOfTen + 1).map(power => 10 ** power)))
+    .tickFormat(d3.format('~s'))
 
   d3.select('#video-length-graph-g .y.axis')
     .call(yAxisGenerator)
