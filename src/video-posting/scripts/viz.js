@@ -62,7 +62,6 @@ export function updateYScale (yScale, timeBlocks, height) {
  *  @param {*} xScale The scale to use to draw the axis
  */
 export function drawXAxis (xScale) {
-  // TODO : Draw X axis
   const xAxisGenerator = d3.axisTop().scale(xScale)
   d3.select('#video-posting-graph-g .x').call(xAxisGenerator)
 }
@@ -74,7 +73,6 @@ export function drawXAxis (xScale) {
  * @param {number} width The width of the graphic
  */
 export function drawYAxis (yScale, width) {
-  // TODO : Draw Y axis
   const yAxisGenerator = d3.axisRight().scale(yScale)
   d3.select('#video-posting-graph-g .y')
     .attr('transform', `translate(${width},0)`)
@@ -85,7 +83,6 @@ export function drawYAxis (yScale, width) {
  * Rotates the ticks on the Y axis 30 degrees towards the left.
  */
 export function rotateYTicks () {
-  // TODO : Rotate Y ticks.
   d3.selectAll('#video-posting-graph-g .y .tick').attr(
     'transform',
     function () {
@@ -104,7 +101,6 @@ export function rotateYTicks () {
  * @param {string} targetColumn The column to use as domain
  */
 export function updateRects (xScale, yScale, colorScale, targetColumn) {
-  // TODO : Set position, size and fill of rectangles according to bound data
   d3.selectAll('#video-posting-graph-g .cell')
     .attr(
       'transform',

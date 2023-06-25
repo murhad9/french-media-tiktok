@@ -88,7 +88,7 @@ export function append (parent, items, onSelection) {
   function createSelectAllButton (container) {
     const button = document.createElement('button')
     button.setAttribute('type', 'button')
-    button.classList.add('select-all')
+    button.classList.add('dropdown-select-all')
     button.innerText = 'Select all media'
     button.addEventListener('click', () => {
       const listItems = container.parentElement.querySelectorAll('li')
@@ -109,7 +109,7 @@ export function append (parent, items, onSelection) {
     const button = document.createElement('button')
     button.setAttribute('type', 'button')
     button.innerText = 'Remove all media'
-    button.classList.add('remove-all')
+    button.classList.add('dropdown-remove-all')
     button.addEventListener('click', () => {
       const listItems = container.parentElement.querySelectorAll('li')
       const btnText = container.parentElement.querySelector('.dropdown-btn-text')

@@ -3,12 +3,10 @@
 import * as helper from './scripts/helper.js'
 import * as menu from '../components/media-selection-menu.js'
 import * as preproc from './scripts/preprocess.js'
-import * as viz from './scripts/heatmap_viz.js'
+import * as viz from './scripts/viz.js'
 import * as addons from './scripts/viz-addons.js'
 import * as slider from '../components/slider.js'
 import * as sortBySelect from '../components/sort-by-select.js'
-
-import * as d3Chromatic from 'd3-scale-chromatic'
 
 /**
  * Loads the overview tab.
@@ -19,26 +17,26 @@ export function load (d3) {
   let bounds
   let svgSize
   let graphSize
-
+  let yScale
   let domainColumn = 'vues'
   let selectedMediaList = []
+
   const graphTitleMap = new Map()
-    .set('vues', 'Total view count of Various Media Outlets Over Time')
-    .set('likes', 'Total like count of Various Media Outlets Over Time')
-    .set('commentaires', 'Total comment count of Various Media Outlets Over Time')
-    .set('partages', 'Total share count of Various Media Outlets Over Time')
+    .set('vues', 'Total Monthly View Count of Various Media Outlets')
+    .set('likes', 'Total Monthly Like Count of Various Media Outlets')
+    .set('commentaires', 'Total Monthly Comment Count of Various Media Outlets')
+    .set('partages', 'Total Monthly Share Count of Various Media Outlets')
   const fromTo = { from: new Date(2018, 10, 30), to: new Date(2023, 3, 14) }
-  const margin = { top: 10, right: 20, bottom: 35, left: 50 }
-  // TODO: Use this file for welcom vizs
+  const margin = { top: 30, right: 70, bottom: 80, left: 70 }
   const xScale = d3.scaleTime()
-  const yScale = d3.scaleLog()
-  const colorScale = d3.scaleSequential(d3Chromatic.interpolateBuPu)
 
   d3.csv('./data_source.csv', d3.autoType).then(function (data) {
     // removes video in april 2023 because the month is not entirely covered in input data
     data = preproc.removeAfter(data, new Date('2023-03-30'))
     data = preproc.setYear(data)
     const mediaList = preproc.getMediaList(data)
+
+    selectedMediaList = mediaList // display all media outlets by default
 
     // creates the media selection component
     menu.append(
@@ -77,22 +75,16 @@ export function load (d3) {
       ['date'],
       ['yearMonth', 'média']
     )
+    preproc.normalizeDates(data)
 
     let dataFromTo = data
-
-    // viz.setColorScaleDomain(colorScale, data, "vuesAverageNormalized");
-
-    // legend.initGradient(colorScale);
-    // legend.initLegendBar();
-    // legend.initLegendAxis();
 
     const g = helper.generateG(margin)
 
     helper.appendAxes(g)
-    viz.appendLines(data)
+    helper.appendPointG(g)
 
-    // addons.initPanelDiv();
-    // addons.initButtons(updateDomainColumn);
+    addons.initPanelDiv()
 
     setSizing()
     build()
@@ -133,7 +125,7 @@ export function load (d3) {
      */
     function updateSelectedMedia (mediaList) {
       selectedMediaList = mediaList
-      build()
+      build(false)
     }
 
     /**
@@ -151,27 +143,29 @@ export function load (d3) {
           new Date(row.date).getTime() <= fromToDates.to.getTime()
         )
       })
-      build()
+      build(false)
     }
 
     /**
-     *   This function builds the graph.
+     * This function builds the graph.
+     *
+     * @param {boolean} updateYScale Whether or not the y scale should be updated
      */
-    function build () {
+    function build (updateYScale = true) {
       viz.updateXScale(dataFromTo, xScale, graphSize.width)
-      viz.updateYScale(yScale, dataFromTo, graphSize.height, domainColumn)
+      if (updateYScale) {
+        yScale = viz.setYScale(dataFromTo, graphSize.height, domainColumn)
+      }
 
       viz.drawXAxis(xScale, graphSize.height)
-      viz.drawYAxis(yScale, graphSize.width)
+      viz.drawYAxis(yScale)
 
-      viz.rotateYTicks()
       viz.generateGraphTitle(graphTitleMap.get(domainColumn), graphSize.width)
       viz.generateGraphSubtitle(fromTo.from, fromTo.to, graphSize.width)
 
       viz.updateLines(
         xScale,
         yScale,
-        colorScale,
         dataFromTo,
         domainColumn,
         addons.displayPanel,
