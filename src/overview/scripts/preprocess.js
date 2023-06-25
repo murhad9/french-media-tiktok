@@ -1,4 +1,17 @@
 /**
+ * Changes the date property of every row of data to be at the beginning of its month.
+ *
+ * @param {object[]} data The data to process
+ */
+export function normalizeDates (data) {
+  data.forEach(row => {
+    const date = new Date(row.date)
+    const normalizedDate = new Date(date.getFullYear(), date.getMonth(), 1)
+    row.date = normalizedDate.getTime()
+  })
+}
+
+/**
  * Trims the data to only the wanted columns
  *
  * @param {object[]} data The data to analyze

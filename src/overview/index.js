@@ -75,6 +75,7 @@ export function load (d3) {
       ['date'],
       ['yearMonth', 'média']
     )
+    preproc.normalizeDates(data)
 
     let dataFromTo = data
 
