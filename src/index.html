@@ -19,32 +19,36 @@
 
   <body>
     <div class="tab-container">
-      <button id="about-us-tab" class="tab-link">About this website</button>
+      <button id="about-us-tab" class="tab-link">About This Website</button>
       <button id="overview-tab" class="tab-link">Media Outlets</button>
       <button id="hashtags-tab" class="tab-link">Hashtags</button>
       <button id="video-length-tab" class="tab-link">Video Length</button>
       <button id="songs-tab" class="tab-link">Songs</button>
-      <button id="video-posting-tab" class="tab-link">Posting and engagement</button>
+      <button id="video-posting-tab" class="tab-link">Posting and Engagement</button>
     </div>
 
     <div id="about-us" class="tab-content">
       <header>
         <h1>
-          Welcome to our visualization tool for Tiktok usage amongst French media
+          Welcome to our visualization tool for TikTok usage among French-speaking media
         </h1>
       </header>
       <main>
         <h2>About us</h2>
-        <p>Welcome to our website, where we offer 5 different data visualizations centered around French speaking media. This website was made in the context of the course Data Visualization (INF8808E) at Polytechnique Montréal. The original data was provided by Jean-Hugues Roy, from UQAM. Whether you're an industry professional, a journalist, a researcher, or simply someone interested in the world of French media, our website will provide you interesting information.</p>
-        <p>This website was made by Maximus Shymko, Zachary Thibodeau, Mohammed Aymen Chebbi, Thierry Ndimis, Augustin Lompo, Murhad Masabbir, Théo Reibell and Yannick Désiré</p>
+        <p class="home-text">In this website, we offer 5 different data visualizations centered around the habits of 40 different French-speaking media outlets on TikTok.
+          We also compare viewer engagement for each of the 21,972 videos in our dataset, and attempt to demonstrate correlations of this engagement to characterstics such as the hashtags used, the video length, the songs used and so on.
+          In each of our visualizations, we measure viewer engagement seperately through 4 metrics: views, likes, comments and shares.
+          Whether you're an industry professional, a journalist, a researcher, or simply someone interested in the world of French media on TikTok, our website will provide you interesting and relevant information. 
+          This website was made in the context of the Data Visualization course (INF8808E) at Polytechnique Montréal. The original data was provided by Jean-Hugues Roy, from UQAM. </p>
+        <p class="home-text">This website was created by Maximus Shymko, Zachary Thibodeau, Mohammed Aymen Chebbi, Thierry Ndimis, Augustin Lompo, Murhad Masabbir, Théo Reibell and Yannick Désiré</p>
         <h2>Explore the data</h2>
-        <p>As stated earlier, there are 5 different data visualizations offered in this website, which are</p>
+        <p>As stated earlier, we have created 5 different data visualizations, each in their own tab:</p>
         <ul>
-          <li><h3>Media outlets :</h3> this visualization shows the evolution of viewer engagement for different media outlets</li>
-          <li><h3>Hashtags :</h3> this visualization shows the top 10 hashtags that generate the most viewer engagement</li>
-          <li><h3>Video length :</h3> this visualization shows what video length generates the most and the least amount of viewer engagement</li>
-          <li><h3>Songs :</h3> this visualization shows which songs generate the most and the least amount of viewer engagement</li>
-          <li><h3>Posting and engagement :</h3> this visualization shows the posting habits and engagement of french medias through the week</li>
+          <li><h3>Media Outlets:</h3> This visualization shows the evolution of viewer engagement for different media outlets over time.</li>
+          <li><h3>Hashtags:</h3> This visualization shows the top 10 hashtags that generate the most viewer engagement.</li>
+          <li><h3>Video Length:</h3> This visualization shows which video lengths generate the most and the least amount of viewer engagement.</li>
+          <li><h3>Songs:</h3> This visualization shows which songs generate the most and the least amount of viewer engagement.</li>
+          <li><h3>Posting and Engagement:</h3> This visualization shows the posting habits and viewer engagement for videos during different time slots throughout the week.</li>
         </ul>
         <p>Have fun exploring the data!</p>
       </main>
@@ -55,6 +59,9 @@
         <h1>
           Media Outlets
         </h1>
+        <h2 class="title">
+          placeholder
+        </h2>
       </header>
       <main>
         <div class="viz-container" id="overview-viz-container">
@@ -86,8 +93,8 @@
           The hashtag that generated the most views on average is #murray, here is the top 10
         </h1>
         <h2 class="title">
-          
-In this visualization, explore the top 10 hashtags that generate the highest engagement based on view count, comment count, share count, and like count (averaged or totaled). Additionally, you have the option to filter the data by date using the slider.
+          In this visualization, explore the top 10 hashtags that generate the highest engagement based on view count, comment count, share count, and like count (averaged or totaled).
+          Additionally, you have the option to filter the data by upload date using the slider.
         </h2>
       </header>
       <main>
@@ -114,6 +121,9 @@ In this visualization, explore the top 10 hashtags that generate the highest eng
         <h1>
           Video Length
         </h1>
+        <h2 class="title">
+          placeholder
+        </h2>
       </header>
       <main>
         <div class="viz-container" id="video-viz-container">
@@ -147,7 +157,8 @@ In this visualization, explore the top 10 hashtags that generate the highest eng
           "Suspense, horror, piano and music box" is the most used song from our data
         </h1>
         <h2 class="title">
-          In this visualization, you can explore which songs help generate the most amount of engagement on a Tiktok video
+          The beeswarm plot below shows the average amount of viewer engagement for each song used in videos from our dataset.
+          More information for a song can be viewed by clicking on its corresponding point, and a few filters are availible above the visualization.
         </h2>
       </header>
       <main>
@@ -172,8 +183,9 @@ In this visualization, explore the top 10 hashtags that generate the highest eng
           Posting and engagement
         </h1>
         <h2 class="title">
-          In this visualization, you can see the total or weekly average of a metric of your choice for every weekday throughout a period of your choice. 
-                  </h2>
+          In this visualization, you can see the total or weekly average of a selected metric for different time slots throughout the week. 
+          The data can also be filtered by upload date using the slider. 
+        </h2>
       </header>
       <main>
         <div class="vp-viz-wrapper" id="vp-viz-container">
