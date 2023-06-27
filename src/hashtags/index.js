@@ -16,12 +16,16 @@ import d3Tip from 'd3-tip'
 export function load (d3) {
   let bounds
   let svgSize
-  let engagementCategory = 'vues'
+  let engagementCategory = 'moyenneVues'
   const graphTitleMap = new Map()
-    .set('vues', 'The 10 Most Popular Hashtags by Average View Count')
-    .set('likes', 'The 10 Most Popular Hashtags by Average Like Count')
-    .set('commentaires', 'The 10 Most Popular Hashtags by Average Comment Count')
-    .set('partages', 'The 10 Most Popular Hashtags by Average Share Count')
+    .set('vues', 'The 10 Most Popular Hashtags by Total View Count')
+    .set('likes', 'The 10 Most Popular Hashtags by Total Like Count')
+    .set('commentaires', 'The 10 Most Popular Hashtags by Total Comment Count')
+    .set('partages', 'The 10 Most Popular Hashtags by Total Share Count')
+    .set('moyenneVues', 'The 10 Most Popular Hashtags by Average View Count')
+    .set('moyenneLikes', 'The 10 Most Popular Hashtags by Average Like Count')
+    .set('moyenneCommentaires', 'The 10 Most Popular Hashtags by Average Comment Count')
+    .set('moyennePartages', 'The 10 Most Popular Hashtags by Average Share Count')
   const fromToDates = {
     from: new Date(2018, 10, 30),
     to: new Date(2023, 3, 14)
@@ -50,10 +54,14 @@ export function load (d3) {
     sortBySelect.append(
       document.querySelector('#hashtags-controls-sort-by'),
       {
-        'Average Views': 'vues',
-        'Average Likes': 'likes',
-        'Average Comments': 'commentaires',
-        'Average Shares': 'partages'
+        'Average Views': 'moyenneVues',
+        'Average Likes': 'moyenneLikes',
+        'Average Comments': 'moyenneCommentaires',
+        'Average Shares': 'moyennePartages',
+        'Total Views': 'vues',
+        'Total Likes': 'likes',
+        'Total Comments': 'commentaires',
+        'Total Shares': 'partages'
       },
       updateDomainColumn
     )

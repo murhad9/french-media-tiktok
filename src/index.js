@@ -28,9 +28,10 @@ import * as videoPosting from './video-posting/index.js'
   videoPosting.load(d3)
 
   // default tab
-  document.getElementById('overview').style.display = 'block'
-  document.getElementById('overview-tab').style.background = '#ffffff11'
+  document.getElementById('about-us').style.display = 'block'
+  document.getElementById('about-us-tab').style.background = '#ffffff11'
 
+  addClickEvent('about-us-tab', 'about-us')
   addClickEvent('overview-tab', 'overview')
   addClickEvent('hashtags-tab', 'hashtags')
   addClickEvent('video-length-tab', 'video-length')
@@ -65,5 +66,6 @@ import * as videoPosting from './video-posting/index.js'
     document.getElementById('video-length-tab').style.background = ''
     document.getElementById('songs-tab').style.background = ''
     document.getElementById('video-posting-tab').style.background = ''
+    document.getElementById('about-us-tab').style.background = ''
   }
 })(d3)

@@ -19,11 +19,35 @@
 
   <body>
     <div class="tab-container">
+      <button id="about-us-tab" class="tab-link">About this website</button>
       <button id="overview-tab" class="tab-link">Media Outlets</button>
       <button id="hashtags-tab" class="tab-link">Hashtags</button>
       <button id="video-length-tab" class="tab-link">Video Length</button>
       <button id="songs-tab" class="tab-link">Songs</button>
       <button id="video-posting-tab" class="tab-link">Video Posting</button>
+    </div>
+
+    <div id="about-us" class="tab-content">
+      <header>
+        <h1>
+          Welcome to our visualization tool for Tiktok usage amongst French media
+        </h1>
+      </header>
+      <main>
+        <h2>About us</h2>
+        <p>Welcome to our website, where we offer 5 different data visualizations centered around French speaking media. This website was made in the context of the course Data Visualization (INF8808E) at Polytechnique Montréal. The original data was provided by Jean-Hugues Roy, from UQAM. Whether you're an industry professional, a journalist, a researcher, or simply someone interested in the world of French media, our website will provide you interesting information.</p>
+        <p>This website was made by Maximus Shymko, Zachary Thibodeau, Mohammed Aymen Chebbi, Thierry Ndimis, Augustin Lompo, Murhad Masabbir, Théo Reibell and Yannick Désiré</p>
+        <h2>Explore the data</h2>
+        <p>As stated earlier, there are 5 different data visualizations offered in this website, which are</p>
+        <ul>
+          <li><h3>Media outlets :</h3> this visualization shows the evolution of viewer engagement for different media outlets</li>
+          <li><h3>Hashtags :</h3> this visualization shows the top 10 hashtags that generate the most viewer engagement</li>
+          <li><h3>Video length :</h3> this visualization shows what video length generates the most and the least amount of viewer engagement</li>
+          <li><h3>Songs :</h3> this visualization shows which songs generate the most and the least amount of viewer angagement</li>
+          <li><h3>Video postings :</h3> this visualization shows what time of day and what day of week seem to generate the most amount of viewer engagement</li>
+        </ul>
+        <p>Have fun exploring the data!</p>
+      </main>
     </div>
 
     <div id="overview" class="tab-content">
@@ -59,8 +83,12 @@
     <div id="hashtags" class="tab-content">
       <header>
         <h1>
-          Hashtags
+          The hashtag that generated the most views on average is #murray, here is the top 10
         </h1>
+        <h2 class="title">
+          
+In this visualization, explore the top 10 hashtags that generate the highest engagement based on view count, comment count, share count, and like count (averaged or totaled). Additionally, you have the option to filter the data by date using the slider.
+        </h2>
       </header>
       <main>
         <div id="hashtags-viz-wrapper">

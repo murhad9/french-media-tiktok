@@ -22,6 +22,7 @@ body {
 header {
   background-color: #141414;
   padding: 25px 100px;
+  align-items: left;
 }
 
 main {
@@ -32,7 +33,7 @@ main {
 h1 {
   color: #F0F0F0;
   font-family: "Roboto Slab", "serif";
-  font-size: 56px;
+  font-size: 42px;
   margin: 0;
   font-weight: normal;
 }
@@ -758,8 +759,13 @@ button {
  * elements within the div associated with the tab.
  */
 
-#hashtags h2 {
-  font-weight: bold;
+#hashtags h2.title {
+  font-weight: normal;
+  font-size: 13pt;
+  color: darkgray;
+  width: 80%;
+  align-self: center;
+  text-align: left;
 }
 
 #hashtags h3 {
@@ -933,4 +939,35 @@ button {
 
 #video-posting .radio-buttons input[type="radio"] {
   margin-right: 5px;
+}
+
+#about-us header {
+  padding-left: 12vw;
+  padding-right: 12vw;
+}
+
+#about-us main {
+  padding-left: 12vw;
+  padding-right: 12vw;
+  display: flex;
+  flex-direction: column;
+}
+
+#about-us p {
+  font-size: 12pt;
+  color: #888;
+  text-align: left;
+}
+
+#about-us h2 {
+  text-align: left;
+}
+
+#about-us h3 {
+  display: inline-block;
+  margin: 8px;
+}
+
+#about-us li {
+  color: #888888;
 }

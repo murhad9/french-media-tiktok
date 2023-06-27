@@ -47,10 +47,14 @@ export function regrouperParHashtags (data, fromToDates) {
     const moyenneVues = groupe.vues / groupe.count
     return {
       hashtag: groupe.hashtag,
-      likes: moyenneLikes,
-      partages: moyennePartages,
-      commentaires: moyenneCommentaires,
-      vues: moyenneVues
+      likes: groupe.likes,
+      partages: groupe.partages,
+      commentaires: groupe.commentaires,
+      vues: groupe.vues,
+      moyenneLikes: moyenneLikes,
+      moyennePartages: moyennePartages,
+      moyenneCommentaires: moyenneCommentaires,
+      moyenneVues: moyenneVues
     }
   })
 
