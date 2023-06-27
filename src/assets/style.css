@@ -449,6 +449,15 @@ button {
  * elements within the div associated with the tab.
  */
 
+ #songs h2.title {
+  font-weight: normal;
+  font-size: 13pt;
+  color: darkgray;
+  width: 80%;
+  align-self: center;
+  text-align: left;
+}
+
 #songs #songs-viz-wrapper {
   display: flex;
   flex-direction: row;
