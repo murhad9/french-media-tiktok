@@ -25,6 +25,10 @@ header {
   align-items: left;
 }
 
+footer {
+  height: 30px;
+}
+
 main {
   height: 100%;
   padding-right: 25px;
@@ -238,7 +242,7 @@ button {
  * All of the CSS rules for the time range slider.
  */
 
- .irs-from {
+.irs-from {
   background-color: #5e3764 !important;
 }
 
@@ -724,14 +728,6 @@ button {
   border-radius: 16px;
 }
 
-#video-length .controls-2 {
-  width: 50%;
-}
-
-#video-length .controls-1 {
-  width: 50%;
-}
-
 #video-length #video-controls {
   width: 60vw;
   border-radius: 16px;
@@ -758,7 +754,6 @@ button {
 
 #video-length #video-controls-time-range {
   width: 400px;
-  margin: auto;
 }
 
 #video-length #video-slider-title {

@@ -3,6 +3,7 @@
 import * as preproc from './scripts/preprocess.js'
 import * as viz from './scripts/viz.js'
 import * as addons from './scripts/viz-addons.js'
+import * as legend from './scripts/legend.js'
 import * as slider from '../components/slider.js'
 import * as dropdown from '../components/sort-by-select.js'
 
@@ -60,6 +61,7 @@ export function load (d3) {
     viz.appendPointG(g)
     viz.appendAxis(g)
     viz.appendGraphLabel(g)
+    legend.appendLegend(g)
 
     minDate = d3.min(nonAggregatedData, row => new Date(row.date))
     maxDate = d3.max(nonAggregatedData, row => new Date(row.date))
@@ -103,6 +105,8 @@ export function load (d3) {
 
       viz.drawXAxis(xScale, graphSize.width, graphSize.height, axisTitleMap.get(domainColumn))
 
+      legend.drawLegend(graphSize.width + 40, 80, radiusScale)
+
       viz.generateGraphTitle(graphTitleMap.get(domainColumn), graphSize.width)
       viz.generateGraphSubtitle(minDate, maxDate, graphSize.width)
 
@@ -132,6 +136,8 @@ export function load (d3) {
       }
 
       viz.drawXAxis(xScale, graphSize.width, graphSize.height, axisTitleMap.get(domainColumn))
+
+      legend.drawLegend(graphSize.width + 40, margin.top, radiusScale)
 
       viz.generateGraphTitle(graphTitleMap.get(domainColumn), graphSize.width)
       viz.generateGraphSubtitle(minDate, maxDate, graphSize.width)
