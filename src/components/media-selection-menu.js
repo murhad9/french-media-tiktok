@@ -1,3 +1,5 @@
+import { mediaDisplayNamesMap, mediaDisplayNamesReverseMap } from '../assets/media-names.js'
+
 /**
  * Generates a media selection menu and appends it to the provided parent element.
  *
@@ -64,7 +66,7 @@ export function append (parent, items, onSelection) {
       listItem.addEventListener('click', () => {
         listItem.classList.toggle('checked')
         const checkedElements = container.querySelectorAll('.checked')
-        const checkedMedia = Array.from(checkedElements).map(element => element.innerText)
+        const checkedMedia = Array.from(checkedElements).map(element => mediaDisplayNamesReverseMap[element.innerText])
         const btnText = container.querySelector('.dropdown-btn-text')
         if (checkedElements && checkedElements.length > 0) {
           btnText.innerText = `${checkedElements.length} Selected`
@@ -77,7 +79,7 @@ export function append (parent, items, onSelection) {
         <span class="dropdown-checkbox">
           <i class="fa-solid fa-check dropdown-check-icon"></i>
         </span>
-        <span class="dropdown-item-text">${item}</span>
+        <span class="dropdown-item-text">${mediaDisplayNamesMap[item]}</span>
       `
       list.appendChild(listItem)
     })
