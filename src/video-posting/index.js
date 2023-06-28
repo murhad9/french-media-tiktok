@@ -151,9 +151,7 @@ export function load (d3) {
      */
     function process () {
       currentData = data
-      if (selectedMediaList.length > 0) {
-        currentData = currentData.filter(row => selectedMediaList.includes(row['média']))
-      }
+      currentData = currentData.filter(row => selectedMediaList.includes(row['média']))
       currentData = preproc.filterDataByDates(currentData, startDate, endDate)
       currentData = preproc.aggregateColumns(
         currentData,
@@ -169,12 +167,18 @@ export function load (d3) {
         ['vuesAverage', 'vues', 'likes', 'partages', 'commentaires'],
         true
       )
+
+      setSizing()
+
+      const dataExists = currentData.some(timeSlot => timeSlot.count !== 0)
+      viz.setHeatmapAsVisible(dataExists, [svgSize.width / 2, 250])
+
       viz.setColorScaleDomain(colorScale, currentData, targetColumn)
       viz.appendRects(currentData)
+      viz.appendNoDataText()
       legend.initGradient(colorScale)
       legend.initLegendBar()
       legend.initLegendAxis()
-      setSizing()
 
       // Draw the updated legend
       legend.draw(
