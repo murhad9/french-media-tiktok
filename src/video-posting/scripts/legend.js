@@ -96,6 +96,10 @@ export function draw (x, y, height, width, fill, colorScale) {
  */
 export function update (x, y, height, colorScale) {
   const ticks = colorScale.ticks(6)
+    .reduce((acc, tick) => {
+      if (Number.isInteger(tick)) acc.push(tick) // removes tick values that have decimal points
+      return acc
+    }, [])
 
   // Remove existing ticks
   d3.select('.video-posting-heatmap-svg .legend.axis')
