@@ -26,6 +26,41 @@ export function appendRects (data) {
 }
 
 /**
+ * Appends the text to display when no data is availible.
+ */
+export function appendNoDataText () {
+  d3.select('.video-posting-heatmap-svg')
+    .append('text')
+    .attr('id', 'video-posting-no-data')
+    .attr('fill', 'white')
+    .attr('text-anchor', 'middle')
+    .attr('font-size', '40px')
+    .attr('visibility', 'hidden')
+    .text('NO DATA')
+}
+
+/**
+ * Makes the heatmap visible or not depending on the value of isVisible.
+ * Displays the "NO DATA" text if the heatmap should not be visible.
+ *
+ * @param {boolean} isVisible Whether or not the heatmap should be visible
+ * @param {number[]} noDataTextPosition The position of the "NO DATA" text
+ */
+export function setHeatmapAsVisible (isVisible, noDataTextPosition) {
+  const svgCSSSelector = '.video-posting-heatmap-svg :not(#video-posting-no-data)'
+  if (isVisible) {
+    d3.selectAll(svgCSSSelector).style('visibility', 'visible')
+    d3.select('#video-posting-no-data').attr('visibility', 'hidden')
+  } else {
+    d3.selectAll(svgCSSSelector).style('visibility', 'hidden')
+    d3.select('#video-posting-no-data')
+      .attr('x', noDataTextPosition[0])
+      .attr('y', noDataTextPosition[1])
+      .attr('visibility', 'visible')
+  }
+}
+
+/**
  * Updates the domain and range of the scale for the x axis
  *
  * @param {*} xScale The scale for the x axis

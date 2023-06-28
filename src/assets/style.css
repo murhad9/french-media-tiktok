@@ -908,7 +908,7 @@ button {
 }
 
 #video-posting .tick line {
-  visibility: hidden;
+  visibility: hidden !important;
 }
 
 #video-posting .axis path {
@@ -1002,4 +1002,8 @@ button {
 
 #video-posting .radio-buttons input[type="radio"] {
   margin-right: 5px;
+}
+
+#video-posting-graph-g {
+  visibility: visible !important;
 }
