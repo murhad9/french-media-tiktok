@@ -34,7 +34,7 @@ export function load (d3) {
     .set('likesAverage', 'Average Likes')
     .set('commentairesAverage', 'Average Comments')
     .set('partagesAverage', 'Average Shares')
-  const margin = { top: 80, right: 100, bottom: 80, left: 100 }
+  const margin = { top: 80, right: 140, bottom: 80, left: 100 }
   const radiusModulator = 1100 // the greater the value, the smaller the circles at the same window width
   const yPositionFactor = 1.1 // the greater the value, the lower the circles
 
