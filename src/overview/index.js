@@ -36,15 +36,6 @@ export function load (d3) {
     data = preproc.setYear(data)
     const mediaList = preproc.getMediaList(data)
 
-    selectedMediaList = mediaList // display all media outlets by default
-
-    // creates the media selection component
-    menu.append(
-      document.querySelector('#overview-controls-media-selection'),
-      mediaList,
-      updateSelectedMedia
-    )
-
     slider.append(
       document.querySelector('#overview-controls-time-range'),
       new Date(2018, 10, 30),
@@ -88,6 +79,12 @@ export function load (d3) {
 
     setSizing()
     build()
+
+    menu.append(
+      document.querySelector('#overview-controls-media-selection'),
+      mediaList,
+      updateSelectedMedia
+    )
 
     /**
      *   This function handles the graph's sizing.
