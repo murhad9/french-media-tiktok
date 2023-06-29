@@ -94,10 +94,12 @@ export function aggregateByVideoLengthInterval (data) {
 
   // Calculate the average statistics for each interval
   aggregatedData.forEach((objet) => {
-    objet.likes = objet.likes / objet.count
-    objet.partages = objet.partages / objet.count
-    objet.commentaires = objet.commentaires / objet.count
-    objet.vues = objet.vues / objet.count
+    if (objet.count !== 0) {
+      objet.likes = objet.likes / objet.count
+      objet.partages = objet.partages / objet.count
+      objet.commentaires = objet.commentaires / objet.count
+      objet.vues = objet.vues / objet.count
+    }
   })
 
   return aggregatedData
