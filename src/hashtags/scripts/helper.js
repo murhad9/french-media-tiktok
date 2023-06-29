@@ -48,7 +48,7 @@ export function getContents (d, engagementCategory) {
     <span class='tooltiptext' style="padding: 10px; width: 200px">${target.data()[0].hashtag}
         </br>
         </br>
-        Average likes: ${Math.round(target.data()[0].likes)}
+        Total likes: ${Math.round(target.data()[0].likes)}
         </span>
         </div>
 
@@ -58,7 +58,7 @@ export function getContents (d, engagementCategory) {
       <span class='tooltiptext' style="padding: 10px; width: 200px">${target.data()[0].hashtag}
         </br>
         </br>
-        Average shares: ${Math.round(target.data()[0].partages)}
+        Total shares: ${Math.round(target.data()[0].partages)}
         </span>
         </div>
     `
@@ -67,7 +67,7 @@ export function getContents (d, engagementCategory) {
       <span class='tooltiptext' style="padding: 10px; width: 200px">${target.data()[0].hashtag}
         </br>
         </br>
-        Average views: ${Math.round(target.data()[0].vues)}
+        Total views: ${Math.round(target.data()[0].vues)}
         </span>
         </div>
 
@@ -77,7 +77,46 @@ export function getContents (d, engagementCategory) {
       <span class='tooltiptext' style="padding: 10px; width: 200px">${target.data()[0].hashtag}
         </br>
         </br>
-        Average comments: ${Math.round(target.data()[0].commentaires)}
+        Total comments: ${Math.round(target.data()[0].commentaires)}
+
+        </span>
+        </div>
+    `
+  } else if (engagementCategory === 'moyenneLikes') {
+    return `<div class='tooltip'>
+    <span class='tooltiptext' style="padding: 10px; width: 200px">${target.data()[0].hashtag}
+        </br>
+        </br>
+        Average likes: ${Math.round(target.data()[0].moyenneLikes)}
+        </span>
+        </div>
+
+    `
+  } else if (engagementCategory === 'moyennePartages') {
+    return `<div class='tooltip'>
+      <span class='tooltiptext' style="padding: 10px; width: 200px">${target.data()[0].hashtag}
+        </br>
+        </br>
+        Average shares: ${Math.round(target.data()[0].moyennePartages)}
+        </span>
+        </div>
+    `
+  } else if (engagementCategory === 'moyenneVues') {
+    return `<div class='tooltip'>
+      <span class='tooltiptext' style="padding: 10px; width: 200px">${target.data()[0].hashtag}
+        </br>
+        </br>
+        Average views: ${Math.round(target.data()[0].moyenneVues)}
+        </span>
+        </div>
+
+    `
+  } else if (engagementCategory === 'moyenneCommentaires') {
+    return `<div class='tooltip'>
+      <span class='tooltiptext' style="padding: 10px; width: 200px">${target.data()[0].hashtag}
+        </br>
+        </br>
+        Average comments: ${Math.round(target.data()[0].moyenneCommentaires)}
 
         </span>
         </div>

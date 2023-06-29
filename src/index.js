@@ -27,35 +27,16 @@ import * as videoPosting from './video-posting/index.js'
   songs.load(d3)
   videoPosting.load(d3)
 
-  document.getElementById('overview').style.display = 'block' // default tab
-  document.getElementById('overview-tab').style.background = '#ffffff11'
+  // default tab
+  document.getElementById('about-us').style.display = 'block'
+  document.getElementById('about-us-tab').style.background = '#ffffff11'
 
-  document.getElementById('overview-tab').addEventListener('click', () => {
-    displayTab('overview')
-    resetStyles()
-    document.getElementById('overview-tab').style.background = '#ffffff11'
-  })
-
-  document.getElementById('hashtags-tab').addEventListener('click', () => {
-    displayTab('hashtags')
-    resetStyles()
-    document.getElementById('hashtags-tab').style.background = '#ffffff11'
-  })
-  document.getElementById('video-length-tab').addEventListener('click', () => {
-    displayTab('video-length')
-    resetStyles()
-    document.getElementById('video-length-tab').style.background = '#ffffff11'
-  })
-  document.getElementById('songs-tab').addEventListener('click', () => {
-    displayTab('songs')
-    resetStyles()
-    document.getElementById('songs-tab').style.background = '#ffffff11'
-  })
-  document.getElementById('video-posting-tab').addEventListener('click', () => {
-    displayTab('video-posting')
-    resetStyles()
-    document.getElementById('video-posting-tab').style.background = '#ffffff11'
-  })
+  addClickEvent('about-us-tab', 'about-us')
+  addClickEvent('overview-tab', 'overview')
+  addClickEvent('hashtags-tab', 'hashtags')
+  addClickEvent('video-length-tab', 'video-length')
+  addClickEvent('songs-tab', 'songs')
+  addClickEvent('video-posting-tab', 'video-posting')
 
   /**
    * Displays the tab with the corresponding id
@@ -71,11 +52,20 @@ import * as videoPosting from './video-posting/index.js'
     window.dispatchEvent(new Event('resize'))
   }
 
+  function addClickEvent (tabID, divID) {
+    document.getElementById(tabID).addEventListener('click', () => {
+      displayTab(divID)
+      resetStyles()
+      document.getElementById(tabID).style.background = '#ffffff11'
+    })
+  }
+
   function resetStyles () {
     document.getElementById('overview-tab').style.background = ''
     document.getElementById('hashtags-tab').style.background = ''
     document.getElementById('video-length-tab').style.background = ''
     document.getElementById('songs-tab').style.background = ''
     document.getElementById('video-posting-tab').style.background = ''
+    document.getElementById('about-us-tab').style.background = ''
   }
 })(d3)

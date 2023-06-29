@@ -32,10 +32,13 @@ export function append (parent, min, max, onChange) {
       })
     },
     onChange: (data) => {
+      const toDate = new Date(data.to)
+      toDate.setHours(23)
+      toDate.setMinutes(59)
       // transform data into Date objects
       onChange({
         from: new Date(data.from),
-        to: new Date(data.to)
+        to: new Date(toDate)
       })
     }
   })

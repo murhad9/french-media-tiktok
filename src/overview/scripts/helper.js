@@ -14,13 +14,22 @@ export function generateG (margin) {
 }
 
 /**
+ * Appends an SVG g element which will contain the lines and points representing the data.
+ *
+ * @param {*} g The d3 Selection of the graph's g SVG element
+ */
+export function appendPointG (g) {
+  g.append('g').attr('class', 'lines')
+}
+
+/**
  * Sets the size of the SVG canvas containing the graph.
  *
  * @param {number} width The desired width
  * @param {number} height The desired height
  */
 export function setCanvasSize (width, height) {
-  d3.select('#overview-heatmap')
+  d3.select('#overview-graph')
     .select('svg')
     .attr('width', width)
     .attr('height', height)

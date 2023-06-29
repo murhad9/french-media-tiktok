@@ -95,7 +95,11 @@ export function draw (x, y, height, width, fill, colorScale) {
  * @param {*} colorScale The color scale represented by the legend
  */
 export function update (x, y, height, colorScale) {
-  const ticks = colorScale.ticks()
+  const ticks = colorScale.ticks(6)
+    .reduce((acc, tick) => {
+      if (Number.isInteger(tick)) acc.push(tick) // removes tick values that have decimal points
+      return acc
+    }, [])
 
   // Remove existing ticks
   d3.select('.video-posting-heatmap-svg .legend.axis')
@@ -115,12 +119,7 @@ export function update (x, y, height, colorScale) {
     })
     .attr('text-anchor', 'end')
     .attr('y', function (d, i) {
-      return ((ticks.length - 1) - i) * (height / (ticks.length - 1)) + y
+      return ((ticks.length - 1) - i) * (height / (ticks.length - 1)) + y + 4
     })
-    .text(function (d, i) {
-      if (i % 2 === 0) {
-        if (d >= 1000) return Math.floor((d / 1000)) + ',' + (d % 1000).toString().padStart(3, '0')
-        return d
-      }
-    })
+    .text(d => d3.format('~s')(d))
 }

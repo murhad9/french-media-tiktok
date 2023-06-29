@@ -26,6 +26,41 @@ export function appendRects (data) {
 }
 
 /**
+ * Appends the text to display when no data is availible.
+ */
+export function appendNoDataText () {
+  d3.select('.video-posting-heatmap-svg')
+    .append('text')
+    .attr('id', 'video-posting-no-data')
+    .attr('fill', 'white')
+    .attr('text-anchor', 'middle')
+    .attr('font-size', '40px')
+    .attr('visibility', 'hidden')
+    .text('NO DATA')
+}
+
+/**
+ * Makes the heatmap visible or not depending on the value of isVisible.
+ * Displays the "NO DATA" text if the heatmap should not be visible.
+ *
+ * @param {boolean} isVisible Whether or not the heatmap should be visible
+ * @param {number[]} noDataTextPosition The position of the "NO DATA" text
+ */
+export function setHeatmapAsVisible (isVisible, noDataTextPosition) {
+  const svgCSSSelector = '.video-posting-heatmap-svg :not(#video-posting-no-data)'
+  if (isVisible) {
+    d3.selectAll(svgCSSSelector).style('visibility', 'visible')
+    d3.select('#video-posting-no-data').attr('visibility', 'hidden')
+  } else {
+    d3.selectAll(svgCSSSelector).style('visibility', 'hidden')
+    d3.select('#video-posting-no-data')
+      .attr('x', noDataTextPosition[0])
+      .attr('y', noDataTextPosition[1])
+      .attr('visibility', 'visible')
+  }
+}
+
+/**
  * Updates the domain and range of the scale for the x axis
  *
  * @param {*} xScale The scale for the x axis
@@ -62,7 +97,6 @@ export function updateYScale (yScale, timeBlocks, height) {
  *  @param {*} xScale The scale to use to draw the axis
  */
 export function drawXAxis (xScale) {
-  // TODO : Draw X axis
   const xAxisGenerator = d3.axisTop().scale(xScale)
   d3.select('#video-posting-graph-g .x').call(xAxisGenerator)
 }
@@ -74,7 +108,6 @@ export function drawXAxis (xScale) {
  * @param {number} width The width of the graphic
  */
 export function drawYAxis (yScale, width) {
-  // TODO : Draw Y axis
   const yAxisGenerator = d3.axisRight().scale(yScale)
   d3.select('#video-posting-graph-g .y')
     .attr('transform', `translate(${width},0)`)
@@ -85,7 +118,6 @@ export function drawYAxis (yScale, width) {
  * Rotates the ticks on the Y axis 30 degrees towards the left.
  */
 export function rotateYTicks () {
-  // TODO : Rotate Y ticks.
   d3.selectAll('#video-posting-graph-g .y .tick').attr(
     'transform',
     function () {
@@ -104,7 +136,6 @@ export function rotateYTicks () {
  * @param {string} targetColumn The column to use as domain
  */
 export function updateRects (xScale, yScale, colorScale, targetColumn) {
-  // TODO : Set position, size and fill of rectangles according to bound data
   d3.selectAll('#video-posting-graph-g .cell')
     .attr(
       'transform',
