@@ -82,7 +82,7 @@ export function load (d3) {
 
       svgSize = {
         width: bounds.width,
-        height: 500
+        height: 440
       }
 
       graphSize = {

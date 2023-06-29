@@ -715,12 +715,12 @@ button {
 
 #video-length .video-viz-container {
   border-radius: 16px;
-  height: 80%;
+  height: 85%;
   color: #f6f6f6;
 }
 
 #video-length .video-length-graph {
-  width: 60vw;
+  width: 56vw;
 }
 
 #video-length .video-viz-container svg {
@@ -729,10 +729,10 @@ button {
 }
 
 #video-length #video-controls {
-  width: 60vw;
+  width: 56vw;
   border-radius: 16px;
-  padding: 30px 0px;
-  height: 20%;
+  padding: 20px 0px;
+  height: 15%;
   display: flex;
   color: #f6f6f6;
   background-color: #292929;
@@ -804,6 +804,10 @@ button {
  * Every selector is prefixed by #hashtags and therefore only applies to
  * elements within the div associated with the tab.
  */
+
+#hashtags h2 {
+  font-weight: bold;
+}
 
 #hashtags h2.title {
   font-weight: normal;
