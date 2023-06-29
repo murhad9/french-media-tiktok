@@ -17,35 +17,35 @@ export function aggregateVideoLength (data) {
 
     if (totals[lengthSec]) {
       totals[lengthSec].likes += likes
-      totals[lengthSec].partages += shares
-      totals[lengthSec].commentaires += comments
-      totals[lengthSec].vues += views
+      totals[lengthSec].shares += shares
+      totals[lengthSec].comments += comments
+      totals[lengthSec].views += views
       totals[lengthSec].count++
     } else {
       totals[lengthSec] = {
-        duréeSecondes: lengthSec,
+        lengthSec: lengthSec,
         likes: likes,
-        partages: shares,
-        commentaires: comments,
-        vues: views,
+        shares: shares,
+        comments: comments,
+        views: views,
         count: 1
       }
     }
   })
 
   // Calculate averages for each individual video length
-  const averages = Object.values(totals).map((group) => {
-    const averageLikes = group.likes / group.count
-    const averageShares = group.partages / group.count
-    const averageComments = group.commentaires / group.count
-    const averageViews = group.vues / group.count
+  const averages = Object.values(totals).map((lengthStats) => {
+    const averageLikes = lengthStats.likes / lengthStats.count
+    const averageShares = lengthStats.shares / lengthStats.count
+    const averageComments = lengthStats.comments / lengthStats.count
+    const averageViews = lengthStats.views / lengthStats.count
     return {
-      duréeSecondes: group.duréeSecondes,
+      duréeSecondes: lengthStats.lengthSec,
       likes: averageLikes,
       partages: averageShares,
       commentaires: averageComments,
       vues: averageViews,
-      count: group.count
+      count: lengthStats.count
     }
   })
 

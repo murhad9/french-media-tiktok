@@ -1,13 +1,31 @@
 /* eslint-disable jsdoc/require-param-type */
 /* eslint-disable jsdoc/require-param-description */
 
-export function updateYScale (yScale, data, height, domainColumn) {
-  yScale.domain([0, d3.max(data, d => d[domainColumn])]) // Utilisation de d3.max pour obtenir la valeur maximale des étoiles
+/**
+ * Updates the y scale used for the height the the bars
+ *
+ * @param {*} yScale The y scale
+ * @param {object[]} data The data to display
+ * @param {number} height The height of the bar chart
+ * @param {string} engagementCategory The engagement category used for the y axis
+ */
+export function updateYScale (yScale, data, height, engagementCategory) {
+  yScale.domain([0, d3.max(data, d => d[engagementCategory])])
     .range([height, 0])
     .nice()
 }
 
-export function appendRects (data, width, height, engagementCategory, tip, yScale) {
+/**
+ * Draws the bar chart
+ *
+ * @param {object[]} data The data to display
+ * @param {number} width The width of the bar chart
+ * @param {number} height The height of the bar chart
+ * @param {string} engagementCategory The engagement category used for the y axis
+ * @param {*} tip The tooltip
+ * @param {*} yScale The y scale used for the hight of the bars
+ */
+export function drawBarChart (data, width, height, engagementCategory, tip, yScale) {
   const svg = d3.select('#hashtags-graph-g')
   const xScale = d3
     .scaleBand()

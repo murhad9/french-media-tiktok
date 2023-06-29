@@ -48,7 +48,7 @@ export function getContents (d, engagementCategory) {
     <span class='tooltiptext' style="padding: 10px; width: 200px">${target.data()[0].hashtag}
         </br>
         </br>
-        Total likes: ${Math.round(target.data()[0].likes)}
+        Total likes: ${Math.round(target.data()[0].likes).toLocaleString()}
         </span>
         </div>
 
@@ -58,7 +58,7 @@ export function getContents (d, engagementCategory) {
       <span class='tooltiptext' style="padding: 10px; width: 200px">${target.data()[0].hashtag}
         </br>
         </br>
-        Total shares: ${Math.round(target.data()[0].partages)}
+        Total shares: ${Math.round(target.data()[0].partages).toLocaleString()}
         </span>
         </div>
     `
@@ -67,7 +67,7 @@ export function getContents (d, engagementCategory) {
       <span class='tooltiptext' style="padding: 10px; width: 200px">${target.data()[0].hashtag}
         </br>
         </br>
-        Total views: ${Math.round(target.data()[0].vues)}
+        Total views: ${Math.round(target.data()[0].vues).toLocaleString()}
         </span>
         </div>
 
@@ -77,7 +77,7 @@ export function getContents (d, engagementCategory) {
       <span class='tooltiptext' style="padding: 10px; width: 200px">${target.data()[0].hashtag}
         </br>
         </br>
-        Total comments: ${Math.round(target.data()[0].commentaires)}
+        Total comments: ${Math.round(target.data()[0].commentaires).toLocaleString()}
 
         </span>
         </div>
@@ -87,7 +87,7 @@ export function getContents (d, engagementCategory) {
     <span class='tooltiptext' style="padding: 10px; width: 200px">${target.data()[0].hashtag}
         </br>
         </br>
-        Average likes: ${Math.round(target.data()[0].moyenneLikes)}
+        Average likes: ${Math.round(target.data()[0].moyenneLikes).toLocaleString()}
         </span>
         </div>
 
@@ -97,7 +97,7 @@ export function getContents (d, engagementCategory) {
       <span class='tooltiptext' style="padding: 10px; width: 200px">${target.data()[0].hashtag}
         </br>
         </br>
-        Average shares: ${Math.round(target.data()[0].moyennePartages)}
+        Average shares: ${Math.round(target.data()[0].moyennePartages).toLocaleString()}
         </span>
         </div>
     `
@@ -106,7 +106,7 @@ export function getContents (d, engagementCategory) {
       <span class='tooltiptext' style="padding: 10px; width: 200px">${target.data()[0].hashtag}
         </br>
         </br>
-        Average views: ${Math.round(target.data()[0].moyenneVues)}
+        Average views: ${Math.round(target.data()[0].moyenneVues).toLocaleString()}
         </span>
         </div>
 
@@ -116,7 +116,7 @@ export function getContents (d, engagementCategory) {
       <span class='tooltiptext' style="padding: 10px; width: 200px">${target.data()[0].hashtag}
         </br>
         </br>
-        Average comments: ${Math.round(target.data()[0].moyenneCommentaires)}
+        Average comments: ${Math.round(target.data()[0].moyenneCommentaires).toLocaleString()}
 
         </span>
         </div>

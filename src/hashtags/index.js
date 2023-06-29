@@ -43,7 +43,7 @@ export function load (d3) {
 
   d3.csv('./data_source.csv', d3.autoType).then(function (csvData) {
     const g = helper.generateG(margin)
-    let data = preproc.regrouperParHashtags(csvData, fromToDates).sort((a, b) => b[engagementCategory] - a[engagementCategory]).slice(0, 10)
+    let data = preproc.groupByHashtag(csvData, fromToDates).sort((a, b) => b[engagementCategory] - a[engagementCategory]).slice(0, 10)
     slider.append(
       document.querySelector('#hashtags-controls-time-range'),
       new Date(2018, 10, 30),
@@ -96,11 +96,11 @@ export function load (d3) {
      * This function builds the graph.
      */
     function build () {
-      data = preproc.regrouperParHashtags(csvData, fromToDates).sort((a, b) => b[engagementCategory] - a[engagementCategory]).slice(0, 10)
+      data = preproc.groupByHashtag(csvData, fromToDates).sort((a, b) => b[engagementCategory] - a[engagementCategory]).slice(0, 10)
       viz.generateGraphTitle(graphTitleMap.get(engagementCategory), graphSize.width)
       viz.generateGraphSubtitle(fromToDates.from, fromToDates.to, graphSize.width)
       viz.updateYScale(yScale, data, graphSize.height, engagementCategory)
-      viz.appendRects(data, graphSize.width, graphSize.height, engagementCategory, tip, yScale)
+      viz.drawBarChart(data, graphSize.width, graphSize.height, engagementCategory, tip, yScale)
     }
 
     /**

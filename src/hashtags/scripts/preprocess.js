@@ -7,32 +7,32 @@
  * @param {object[]} data The data to analyze
  * @returns {object[]} The column with the normalized data
  */
-export function regrouperParHashtags (data, fromToDates) {
-  const groupes = {}
+export function groupByHashtag (data, fromToDates) {
+  const totals = {}
 
   data.forEach((objet) => {
     if (new Date(objet.date).getTime() >= fromToDates.from.getTime() &&
     new Date(objet.date).getTime() <= fromToDates.to.getTime()) {
       const likes = objet.likes
-      const partages = objet.partages
-      const commentaires = objet.commentaires
-      const vues = objet.vues
+      const shares = objet.partages
+      const comments = objet.commentaires
+      const views = objet.vues
       const hashtags = (objet.description ?? '').match(/#\w+/g) ?? []
 
       for (const hashtag of hashtags) {
-        if (groupes[hashtag]) {
-          groupes[hashtag].likes += likes
-          groupes[hashtag].partages += partages
-          groupes[hashtag].commentaires += commentaires
-          groupes[hashtag].vues += vues
-          groupes[hashtag].count++
+        if (totals[hashtag]) {
+          totals[hashtag].likes += likes
+          totals[hashtag].shares += shares
+          totals[hashtag].comments += comments
+          totals[hashtag].views += views
+          totals[hashtag].count++
         } else {
-          groupes[hashtag] = {
+          totals[hashtag] = {
             hashtag: hashtag,
             likes: likes,
-            partages: partages,
-            commentaires: commentaires,
-            vues: vues,
+            shares: shares,
+            comments: comments,
+            views: views,
             count: 1
           }
         }
@@ -40,23 +40,23 @@ export function regrouperParHashtags (data, fromToDates) {
     }
   })
 
-  const nouveauTableau = Object.values(groupes).map((groupe) => {
-    const moyenneLikes = groupe.likes / groupe.count
-    const moyennePartages = groupe.partages / groupe.count
-    const moyenneCommentaires = groupe.commentaires / groupe.count
-    const moyenneVues = groupe.vues / groupe.count
+  const averages = Object.values(totals).map((hashtagStats) => {
+    const averageLikes = hashtagStats.likes / hashtagStats.count
+    const averageShares = hashtagStats.shares / hashtagStats.count
+    const averageComments = hashtagStats.comments / hashtagStats.count
+    const averageViews = hashtagStats.views / hashtagStats.count
     return {
-      hashtag: groupe.hashtag,
-      likes: groupe.likes,
-      partages: groupe.partages,
-      commentaires: groupe.commentaires,
-      vues: groupe.vues,
-      moyenneLikes: moyenneLikes,
-      moyennePartages: moyennePartages,
-      moyenneCommentaires: moyenneCommentaires,
-      moyenneVues: moyenneVues
+      hashtag: hashtagStats.hashtag,
+      likes: hashtagStats.likes,
+      partages: hashtagStats.shares,
+      commentaires: hashtagStats.comments,
+      vues: hashtagStats.views,
+      moyenneLikes: averageLikes,
+      moyennePartages: averageShares,
+      moyenneCommentaires: averageComments,
+      moyenneVues: averageViews
     }
   })
 
-  return nouveauTableau
+  return averages
 }
