@@ -2,7 +2,7 @@
 
 import * as helper from './scripts/helper.js'
 import * as preproc from './scripts/preprocess.js'
-import * as viz from './scripts/heatmap_viz.js'
+import * as viz from './scripts/viz.js'
 import * as slider from '../components/slider.js'
 import * as sortBySelect from '../components/sort-by-select.js'
 
@@ -16,16 +16,21 @@ import d3Tip from 'd3-tip'
 export function load (d3) {
   let bounds
   let svgSize
-  let engagementCategory = 'vues'
+  let engagementCategory = 'moyenneVues'
   const graphTitleMap = new Map()
-    .set('vues', 'The 10 most popular hashtags by average view count')
-    .set('likes', 'The 10 most popular hashtags by average like count')
-    .set('commentaires', 'The 10 most popular hashtags by average comment count')
-    .set('partages', 'The 10 most popular hashtags by average share count')
+    .set('vues', 'The 10 Most Popular Hashtags by Total View Count')
+    .set('likes', 'The 10 Most Popular Hashtags by Total Like Count')
+    .set('commentaires', 'The 10 Most Popular Hashtags by Total Comment Count')
+    .set('partages', 'The 10 Most Popular Hashtags by Total Share Count')
+    .set('moyenneVues', 'The 10 Most Popular Hashtags by Average View Count')
+    .set('moyenneLikes', 'The 10 Most Popular Hashtags by Average Like Count')
+    .set('moyenneCommentaires', 'The 10 Most Popular Hashtags by Average Comment Count')
+    .set('moyennePartages', 'The 10 Most Popular Hashtags by Average Share Count')
   const fromToDates = {
     from: new Date(2018, 10, 30),
     to: new Date(2023, 3, 14)
   }
+  const yScale = d3.scaleLinear()
   // eslint-disable-next-line no-unused-vars
   let graphSize
 
@@ -34,7 +39,7 @@ export function load (d3) {
   })
   d3.select('.hashtags-heatmap-svg').call(tip)
 
-  const margin = { top: 35, right: 50, bottom: 50, left: 70 }
+  const margin = { top: 35, right: 60, bottom: 120, left: 100 }
 
   d3.csv('./data_source.csv', d3.autoType).then(function (csvData) {
     const g = helper.generateG(margin)
@@ -49,10 +54,14 @@ export function load (d3) {
     sortBySelect.append(
       document.querySelector('#hashtags-controls-sort-by'),
       {
-        'Average Views': 'vues',
-        'Average Likes': 'likes',
-        'Average Comments': 'commentaires',
-        'Average Shares': 'partages'
+        'Average Views': 'moyenneVues',
+        'Average Likes': 'moyenneLikes',
+        'Average Comments': 'moyenneCommentaires',
+        'Average Shares': 'moyennePartages',
+        'Total Views': 'vues',
+        'Total Likes': 'likes',
+        'Total Comments': 'commentaires',
+        'Total Shares': 'partages'
       },
       updateDomainColumn
     )
@@ -84,13 +93,14 @@ export function load (d3) {
     }
 
     /**
-     *   This function builds the graph.
+     * This function builds the graph.
      */
     function build () {
       data = preproc.regrouperParHashtags(csvData, fromToDates).sort((a, b) => b[engagementCategory] - a[engagementCategory]).slice(0, 10)
       viz.generateGraphTitle(graphTitleMap.get(engagementCategory), graphSize.width)
       viz.generateGraphSubtitle(fromToDates.from, fromToDates.to, graphSize.width)
-      viz.appendRects(data, graphSize.width, graphSize.height, engagementCategory, tip)
+      viz.updateYScale(yScale, data, graphSize.height, engagementCategory)
+      viz.appendRects(data, graphSize.width, graphSize.height, engagementCategory, tip, yScale)
     }
 
     /**
@@ -104,7 +114,7 @@ export function load (d3) {
       const g = helper.generateG(margin)
       helper.appendAxes(g)
       setSizing()
-      build()
+      build(false)
     }
 
     /**

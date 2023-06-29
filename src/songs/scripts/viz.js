@@ -242,7 +242,7 @@ export function drawXAxis (xScale, width, height, title) {
 
   d3.select('#songs-graph-g .x.axis-text')
     .attr('x', width / 2)
-    .attr('y', height + 30)
+    .attr('y', height + 40)
     .text(`${title}`)
     .style('fill', '#C7C7C7')
 
@@ -271,7 +271,7 @@ export function updateCircles (data, simulation, radiusScale, displayPanel) {
     .selectAll('circle')
     .data(data)
     .join('circle')
-    .attr('fill', '#533458')
+    .attr('fill', '#6a4270')
     .attr('stroke', '#292929')
     .attr('r', d => radiusScale(d.count))
     .on('mouseover', function () {

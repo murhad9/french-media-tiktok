@@ -1,4 +1,3 @@
-
 /**
  * Generates the SVG element g which will contain the data visualisation.
  *
@@ -6,21 +5,19 @@
  * @returns {*} The d3 Selection for the created g element
  */
 export function generateG (margin) {
-  return d3
-    .select('.video-length-graph')
-    .select('svg')
-    .append('g')
+  // Sélectionne l'élément avec la classe '.video-length-graph'
+  const graph = d3.select('.video-length-graph')
+
+  // Sélectionne l'élément <svg> à l'intérieur de l'élément avec la classe '.video-length-graph'
+  const svg = graph.select('svg')
+
+  // Ajoute un élément <g> à l'élément <svg> pour regrouper les éléments du graphique
+  const g = svg.append('g')
     .attr('id', 'video-length-graph-g')
     .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-}
 
-export function generateGLineChart (margin) {
-  return d3
-    .select('.video-length-graph-evolve')
-    .select('svg')
-    .append('g')
-    .attr('id', 'video-length-graph-evolve-g')
-    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+  // Retourne l'élément <g> nouvellement créé
+  return g
 }
 
 /**
@@ -30,16 +27,14 @@ export function generateGLineChart (margin) {
  * @param {number} height The desired height
  */
 export function setCanvasSize (width, height) {
-  d3.select('#video-length-heatmap')
-    .select('svg')
-    .attr('width', width)
-    .attr('height', height)
-}
+  // Sélectionne l'élément avec l'ID 'video-length-graph'
+  const graph = d3.select('#video-length-graph')
 
-export function setCanvasSizeEvolve (width, height) {
-  d3.select('#video-length-evolve-heatmap')
-    .select('svg')
-    .attr('width', width)
+  // Sélectionne l'élément <svg> à l'intérieur de l'élément avec l'ID 'video-length-graph'
+  const svg = graph.select('svg')
+
+  // Définit la largeur et la hauteur de l'élément <svg> pour définir la taille du canevas
+  svg.attr('width', width)
     .attr('height', height)
 }
 
@@ -49,57 +44,11 @@ export function setCanvasSizeEvolve (width, height) {
  * @param {*} g The d3 Selection of the graph's g SVG element
  */
 export function appendAxes (g) {
-  g.append('g').attr('class', 'x axis')
+  // Ajoute un élément <g> à l'élément 'g' spécifié, pour créer l'axe x
+  g.append('g')
+    .attr('class', 'x axis')
 
-  g.append('g').attr('class', 'y axis')
-}
-
-export function initButtons (switchAxis) {
-  const buttonDiv = d3.select('.video-viz-container')
-    .append('div')
-    
-
-  buttonDiv.append('button')
-    
-    .text('likes')
-    .on('click', () => switchAxis('likes'))
-
-  buttonDiv.append('button')
-    
-    .text('commentaires')
-    .on('click', () => switchAxis('commentaires'))
-
-  buttonDiv.append('button')
-    
-    .text('partages')
-    .on('click', () => switchAxis('partages'))
-
-  buttonDiv.append('button')
-  
-    .text('vues')
-    .on('click', () => switchAxis('vues'))
-}
-
-export function getContents (d, engagementCategory) {
-  /* TODO : Define and return the tooltip contents including :
-      + A title stating the hovered element's group, with:
-        
-Font family: Grenze Gotish
-Font size: 24px
-Font weigth: normal+ A bold label for the player name followed
-  by the hovered elements's player's name+ A bold label for the player's line count
-  followed by the number of lines
-*/
-
-const target = d3.select(d.target)
-
-  return  `<div class='tooltip'>
-<span class='tooltiptext'>${target.data()[0].count} </br>videos</br> posted
-</br>
-</br>
-Average ${engagementCategory}: ${Math.round(target.data()[0][engagementCategory])}
-</span>
-</div>
-
-`
+  // Ajoute un élément <g> à l'élément 'g' spécifié, pour créer l'axe y
+  g.append('g')
+    .attr('class', 'y axis')
 }
