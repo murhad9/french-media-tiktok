@@ -72,7 +72,7 @@ export function load (d3) {
     build()
 
     /**
-     *   This function handles the graph's sizing.
+     *   Cette fonction gère le dimensionnement du graphique.
      */
     function setSizing () {
       bounds = d3
@@ -94,7 +94,7 @@ export function load (d3) {
     }
 
     /**
-     * Callback function to update the column used for the x axis
+     * Fonction de rappel pour mettre à jour la colonne utilisée pour l'axe des x
      *
      * @param {*} column The new column to use
      */
@@ -104,9 +104,9 @@ export function load (d3) {
     }
 
     /**
-     * Updates the plot with the select date range
+     * Met à jour le graphique avec la plage de dates sélectionnée
      *
-     * @param {object} fromToDatesParam Object with "from" and "to" properties containing Date objects
+     * @param {object} fromToDatesParam Objet avec les propriétés "from" et "to" contenant des objets Date.
      */
     function updateSelectedDates (fromToDatesParam) {
       dataFromTo = rawData
@@ -123,7 +123,7 @@ export function load (d3) {
     }
 
     /**
-     *   This function builds the graph.
+     *   Cette fonction construit le graphique.
      */
     function build () {
       viz.appendRects(dataVideoLengthCategory, graphSize.width, graphSize.height, engagementCategory, addons.displayPanel, colorScale)
