@@ -129,19 +129,27 @@ export function updateLines (
     .style('stroke-width', 2)
     .on('mouseenter', function (d) {
       // draw other
-      d3.select(this).style('stroke', '#387DAF').style('stroke-width', 4)
+      d3.select(this).style('stroke', '#387DAF').style('stroke-width', 4).each(function () { this.parentElement.append(this) })
       // draw the circles too
-      d3.selectAll('.drawn-circle')
+      d3.selectAll('.drawn-circle:not(.click-selected)')
         .filter((circleData) => {
           return circleData['média'] === d.target.__data__.key
         })
         .attr('r', 5)
         .style('fill', '#387DAF')
+        .each(function () { this.parentElement.append(this) })
+      // current selection must remain above everything else
+      d3.selectAll('.drawn-line.selected').each(function () { this.parentElement.append(this) })
+      d3.selectAll('.drawn-circle.selected').each(function () { this.parentElement.append(this) })
     })
     .on('mouseleave', function (d) {
-      d3.select(this).style('stroke', '#6a4270').style('stroke-width', 2)
+      const thisLine = d3.select(this)
+      if (!thisLine.classed('selected')) { // do not reset styles if line is selected
+        thisLine.style('stroke', '#6a4270').style('stroke-width', 2)
+      }
+
       // undraw the circles too
-      d3.selectAll('.drawn-circle')
+      d3.selectAll('.drawn-circle:not(.selected)')
         .filter((circleData) => {
           return circleData['média'] === d.target.__data__.key
         })
@@ -165,14 +173,6 @@ export function updateLines (
       return `translate(${xScale(new Date(d.date))},${yScale(d[domainColumn])})`
     })
     .on('mouseenter', function (d) {
-      // draw other circles too
-      d3.selectAll('.drawn-circle')
-        .filter((circleData) => {
-          return circleData['média'] === d.target.__data__['média']
-        })
-        .attr('r', 5)
-        .style('fill', 'steelblue')
-
       // draw the line too
       d3.selectAll('.drawn-line')
         .filter((lineData) => {
@@ -180,15 +180,34 @@ export function updateLines (
         })
         .style('stroke', 'steelblue')
         .style('stroke-width', 4)
+        .each(function () { this.parentElement.append(this) })
+
+      // draw other circles too
+      d3.selectAll('.drawn-circle:not(.click-selected')
+        .filter((circleData) => {
+          return circleData['média'] === d.target.__data__['média']
+        })
+        .attr('r', 5)
+        .style('fill', 'steelblue')
+        .each(function () { this.parentElement.append(this) })
 
       // set hovered circle with higher radius
       d3.select(this).style('fill', 'steelblue').attr('r', 7)
+
+      // current selection must remain above everything else
+      d3.selectAll('.drawn-line.selected').each(function () { this.parentElement.append(this) })
+      d3.selectAll('.drawn-circle.selected').each(function () { this.parentElement.append(this) })
     })
     .on('mouseleave', function (d) {
-      d3.select(this).style('fill', '#6a4270').attr('r', 3)
+      const thisCircle = d3.select(this)
+      if (!thisCircle.classed('selected')) { // do not reset styles if circle is selected
+        thisCircle.style('fill', '#6a4270').attr('r', 3)
+      } else if (!thisCircle.classed('click-selected')) {
+        thisCircle.attr('r', 5)
+      }
 
       // undraw other circles too
-      d3.selectAll('.drawn-circle')
+      d3.selectAll('.drawn-circle:not(.selected)')
         .filter((circleData) => {
           return circleData['média'] === d.target.__data__['média']
         })
@@ -196,7 +215,7 @@ export function updateLines (
         .style('fill', '#6a4270')
 
       // undraw the line too
-      d3.selectAll('.drawn-line')
+      d3.selectAll('.drawn-line:not(.selected)')
         .filter((lineData) => {
           return lineData.key === d.target.__data__['média']
         })
@@ -204,6 +223,33 @@ export function updateLines (
         .style('stroke-width', 2)
     })
     .on('click', function (d) {
+      // remove previous selection
+      d3.selectAll('.drawn-circle.selected').attr('r', 3).style('fill', '#6a4270').classed('selected', false)
+      d3.selectAll('.drawn-line.selected').style('stroke', '#6a4270').style('stroke-width', 2).classed('selected', false)
+      d3.select('.click-selected').classed('click-selected', false)
+
+      // draw the line too
+      d3.selectAll('.drawn-line')
+        .filter((lineData) => {
+          return lineData.key === d.target.__data__['média']
+        })
+        .classed('selected', true)
+        .style('stroke', 'steelblue')
+        .style('stroke-width', 4)
+        .each(function () { this.parentElement.append(this) })
+
+      // draw other circles too
+      d3.selectAll('.drawn-circle')
+        .filter((circleData) => {
+          return circleData['média'] === d.target.__data__['média']
+        })
+        .classed('selected', true)
+        .attr('r', 5)
+        .style('fill', 'steelblue')
+        .each(function () { this.parentElement.append(this) })
+
+      // set hovered circle with higher radius
+      d3.select(this).style('fill', 'steelblue').attr('r', 7).classed('click-selected', true)
       displayPanel(d)
     })
 }
