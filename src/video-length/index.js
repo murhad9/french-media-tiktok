@@ -138,8 +138,3 @@ export function load (d3) {
     })
   })
 }
-
-
-
-
-
