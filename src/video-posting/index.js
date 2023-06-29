@@ -21,19 +21,19 @@ export function load (d3) {
   let targetColumn = 'vues'
   let startDate = new Date(2018, 10, 30)
   let endDate = new Date(2023, 3, 14)
-  let showTotal = true
+  let showTotal
   let currentData
   const graphTitleMap = new Map()
-    .set('vuesAverage', 'Weekly Average views of Videos Uploaded during each time block')
-    .set('vues', 'Total of views during each time block')
-    .set('likesAverage', 'Weekly Average likes received during each time block')
-    .set('likes', 'Total likes received during each time block')
-    .set('commentaires', 'Total amount of comments received during each time block')
-    .set('commentairesAverage', 'Weekly Average Amount of comments received during each time block')
-    .set('countAverage', 'Weekly Average Amount of Videos Uploaded per Time of Day')
-    .set('partages', 'Total amount of comments received during each time block')
-    .set('partagesAverage', 'Weekly Average Amount of comments received during each time block')
-    .set('count', 'Amount of Videos Uploaded per Time of Day')
+    .set('vuesAverage', 'Weekly Average Views of Videos Uploaded During Each Time Slot')
+    .set('vues', 'Total Views of Videos Uploaded During Each Time Slot')
+    .set('likesAverage', 'Weekly Average Likes of Videos Uploaded During Each Time Slot')
+    .set('likes', 'Total Likes of Videos Uploaded During Each Time Slot')
+    .set('commentairesAverage', 'Weekly Average Comments of Videos Uploaded During Each Time Slot')
+    .set('commentaires', 'Total Comments of Videos Uploaded During Each Time Slot')
+    .set('partages', 'Total Shares of Videos Uploaded During Each Time Slot')
+    .set('partagesAverage', 'Weekly Average Shares of Videos Uploaded During Each Time Slot')
+    .set('count', 'Amount of Videos Uploaded During Each Time Slot')
+    .set('countAverage', 'Weekly Average Amount of Videos Videos Uploaded During Each Time Slot')
   const margin = { top: 70, right: 120, bottom: 50, left: 130 }
   const xScale = d3.scaleBand().padding(0.05)
   const yScale = d3.scaleBand().padding(0.2)
@@ -78,6 +78,9 @@ export function load (d3) {
     radioButtons.selectAll('input[type="radio"]')
       .on('change', updateMode)
     data = preproc.addTimeBlocks(preproc.processDateTime(data))
+
+    showTotal = false // show average by default
+    updateTargetColumn(targetColumn)
 
     legend.initGradient(colorScale)
     legend.initLegendBar()
