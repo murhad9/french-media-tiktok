@@ -8,13 +8,8 @@ export function initColorScale (data, colorScale) {
   const paleColor = '#d7bddb'
   const darkColor = '#5e3764'
 
-  // Définition du domaine de la colorScale en utilisant les valeurs minimale et maximale de la propriété 'count' dans les données
-  colorScale.domain([d3.min(data, d => d.count), d3.max(data, d => d.count)])
-
-    // Définition de l'interpolation de couleur pour la colorScale
+  colorScale.domain([d3.min(data, d => d.count), d3.max(data, d => d.count)]) // color scale is based on the video count for each video length interval
     .interpolator(d3.interpolate(paleColor, darkColor))
-
-    // Arrondissement des valeurs du domaine pour une échelle plus lisse
     .nice()
 }
 
@@ -31,7 +26,7 @@ export function initColorScale (data, colorScale) {
 export function appendRects (data, width, height, engagementCategory, displayPanel, colorScale) {
   const svg = d3.select('#video-length-graph-g')
 
-  // Ajouter l'axe X
+  // Create the x scale
   const xScale = d3
     .scaleBand()
     .domain(data.map(function (d) {
@@ -41,6 +36,7 @@ export function appendRects (data, width, height, engagementCategory, displayPan
     .paddingOuter(0.3)
     .range([0, width])
 
+  // Add x axis
   d3.select('#video-length-graph-g .x.axis')
     .attr('transform', `translate(0,${height})`)
     .call(d3.axisBottom(xScale))
@@ -48,32 +44,28 @@ export function appendRects (data, width, height, engagementCategory, displayPan
     .attr('transform', 'rotate(-30)')
     .style('text-anchor', 'end')
 
-  // Ajouter l'axe Y
-  const nearestUpperPowerOfTen = Math.ceil(Math.log10(d3.max(data, d => d[engagementCategory]))) // cela permet à l'échelle Y de se terminer à une puissance de 10 propre
+  // Create the y scale
+  const nearestUpperPowerOfTen = Math.ceil(Math.log10(d3.max(data, d => d[engagementCategory]))) // allows the y axis to end at an exact power of 10 (necessary for symlog scale)
   const yScale = d3
     .scaleSymlog()
     .domain([0, 10 ** nearestUpperPowerOfTen])
     .range([height, 0])
 
+  // Add y axis
   const yAxisGenerator = d3.axisLeft(yScale)
     .tickValues([0].concat(d3.range(0, nearestUpperPowerOfTen + 1).map(power => 10 ** power)))
     .tickFormat(d3.format('~s'))
-
   d3.select('#video-length-graph-g .y.axis')
     .call(yAxisGenerator)
     .selectAll('.tick line')
     .attr('x1', 7)
 
-  // Créer et remplir les barres
-  svg
-    .selectAll('.bar')
-    .remove()
-
-  svg
-    .selectAll('.bar') // Utilisation de la classe ".bar" pour sélectionner les barres
+  // Draw the bars
+  svg.selectAll('.bar').remove()
+  svg.selectAll('.bar')
     .data(data)
     .join('rect')
-    .attr('class', 'bar') // Ajout de la classe "bar" pour les éléments <rect>
+    .attr('class', 'bar')
     .attr('x', d => xScale(d.intervalle1 + 's - ' + d.intervalle2 + 's'))
     .attr('y', d => yScale(d[engagementCategory]))
     .attr('width', xScale.bandwidth())
@@ -94,10 +86,8 @@ export function appendRects (data, width, height, engagementCategory, displayPan
  * @param {number} width The width of the g element containing the visualization
  */
 export function generateGraphSubtitle (minDate, maxDate, width) {
-  // Sélectionne l'élément <g> avec l'ID 'video-length-graph-g'
   const svg = d3.select('#video-length-graph-g')
 
-  // Formate les dates minimale et maximale au format souhaité
   const formattedMinDate = minDate.toLocaleDateString('en', {
     year: 'numeric',
     month: 'long',
@@ -109,16 +99,13 @@ export function generateGraphSubtitle (minDate, maxDate, width) {
     day: 'numeric'
   })
 
-  // Sélectionne l'élément avec la classe '.video-length-subtitle'
   const subtitle = d3.select('#video-length .video-length-subtitle')
 
-  if (subtitle.node()) {
-    // Met à jour la position et le texte du sous-titre s'il existe déjà
+  if (subtitle.node()) { // update title if it already exists
     subtitle
       .attr('x', width / 2)
       .text(`From ${formattedMinDate} to ${formattedMaxDate}`)
   } else {
-    // Crée un nouvel élément <text> pour représenter le sous-titre du graphique
     svg.append('text')
       .attr('class', 'video-length-subtitle')
       .attr('x', width / 2)
@@ -137,19 +124,14 @@ export function generateGraphSubtitle (minDate, maxDate, width) {
  * @param {number} width The width of the g element containing the visualization
  */
 export function generateGraphTitle (title, width) {
-  // Sélectionne l'élément <g> avec l'ID 'video-length-graph-g'
   const svg = d3.select('#video-length-graph-g')
-
-  // Sélectionne l'élément avec la classe '.video-length-title'
   const graphTitle = d3.select('#video-length .video-length-title')
 
-  if (graphTitle.node()) { // Vérifie si le titre existe déjà
-    // Met à jour la position et le texte du titre s'il existe déjà
+  if (graphTitle.node()) { // update title if it already exists
     graphTitle
       .attr('x', width / 2)
       .text(title)
   } else {
-    // Crée un nouvel élément <text> pour représenter le titre du graphique
     svg.append('text')
       .attr('class', 'video-length-title')
       .attr('x', width / 2)

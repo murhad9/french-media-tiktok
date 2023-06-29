@@ -33,7 +33,7 @@ export function aggregateVideoLength (data) {
     }
   })
 
-  // Calculate average for each individual video length
+  // Calculate averages for each individual video length
   const averages = Object.values(totals).map((group) => {
     const averageLikes = group.likes / group.count
     const averageShares = group.partages / group.count
@@ -77,6 +77,7 @@ export function aggregateByVideoLengthInterval (data) {
     aggregatedData.push(temp)
   }
 
+  // Calculates the average metrics for each individual video length
   const groupedData = aggregateVideoLength(data)
 
   // Calculate total of averages for each interval

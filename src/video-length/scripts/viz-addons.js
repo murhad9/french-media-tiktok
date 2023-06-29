@@ -22,7 +22,7 @@ export function displayPanel (d) {
 
   panel.selectAll('*').remove()
 
-  // Interval
+  // Video length interval
   panel.append('div')
     .attr('class', 'video-length-tooltip-title')
     .text(`${data.intervalle1}s to ${data.intervalle2}s`)

@@ -50,7 +50,7 @@ export function load (d3) {
         'Average Comments': 'commentaires',
         'Average Shares': 'partages'
       },
-      updateDomainColumn
+      updateEngagementCategory
     )
 
     let dataFromTo = rawData
@@ -72,7 +72,7 @@ export function load (d3) {
     build()
 
     /**
-     *   Cette fonction gère le dimensionnement du graphique.
+     *   This function handles the graph's sizing.
      */
     function setSizing () {
       bounds = d3
@@ -94,19 +94,19 @@ export function load (d3) {
     }
 
     /**
-     * Fonction de rappel pour mettre à jour la colonne utilisée pour l'axe des x
+     * Callback function to update the engagement category used for the y axis
      *
-     * @param {*} column The new column to use
+     * @param {string} category The new category to use
      */
-    function updateDomainColumn (column) {
-      engagementCategory = column
+    function updateEngagementCategory (category) {
+      engagementCategory = category
       build()
     }
 
     /**
-     * Met à jour le graphique avec la plage de dates sélectionnée
+     * Updates the plot with the select date range
      *
-     * @param {object} fromToDatesParam Objet avec les propriétés "from" et "to" contenant des objets Date.
+     * @param {*} fromToDatesParam Object with "from" and "to" properties containing Date objects
      */
     function updateSelectedDates (fromToDatesParam) {
       dataFromTo = rawData
@@ -123,7 +123,7 @@ export function load (d3) {
     }
 
     /**
-     *   Cette fonction construit le graphique.
+     *   This function builds the visualization.
      */
     function build () {
       viz.appendRects(dataVideoLengthCategory, graphSize.width, graphSize.height, engagementCategory, addons.displayPanel, colorScale)
