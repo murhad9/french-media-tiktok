@@ -159,7 +159,7 @@ button {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   display: none;
   overflow-y: auto;
-  max-height: 400px;
+  max-height: 250px;
   z-index: 10;
 }
 
