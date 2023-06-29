@@ -37,8 +37,8 @@ export const mediaDisplayNamesMap = {
   lequipe: "L'équipe",
   konbini: 'Konbini',
   'hamza.sdt': 'HAMZA (@hamza.sdt)',
-  brutofficiel: 'Brut',
-  hugodecrypte: 'Hugo Decrypte'
+  brutofficiel: 'Brut.',
+  hugodecrypte: 'Hugo Décrypte'
 }
 
 export const mediaDisplayNamesReverseMap = {
@@ -80,6 +80,6 @@ export const mediaDisplayNamesReverseMap = {
   "L'équipe": 'lequipe',
   Konbini: 'konbini',
   'HAMZA (@hamza.sdt)': 'hamza.sdt',
-  Brut: 'brutofficiel',
-  'Hugo Decrypte': 'hugodecrypte'
+  'Brut.': 'brutofficiel',
+  'Hugo Décrypte': 'hugodecrypte'
 }
